@@ -73,3 +73,38 @@ jobs:
             bin/fenestra-linux-amd64
             bin/fenestra-linux-arm64
           if-no-files-found: error
+
+  macos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Vet
+        working-directory: macos
+        run: go vet ./...
+
+      - name: Build arm64
+        working-directory: macos
+        run: CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags "-s -w" -o ../bin/fenestra-darwin-arm64 .
+
+      - name: Build amd64
+        working-directory: macos
+        run: CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags "-s -w" -o ../bin/fenestra-darwin-amd64 .
+
+      - name: Check Mach-O
+        run: |
+          file bin/fenestra-darwin-arm64 | grep -q "Mach-O"
+          file bin/fenestra-darwin-amd64 | grep -q "Mach-O"
+          echo "mach-o ok"
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: fenestra-macos
+          path: bin/fenestra-darwin-*
+          if-no-files-found: error

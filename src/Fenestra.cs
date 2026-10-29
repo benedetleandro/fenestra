@@ -33,7 +33,7 @@ namespace Fenestra
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
                 {
-                    MessageBox.Show("Fenestra 0.3.0", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Fenestra 0.4.0", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 

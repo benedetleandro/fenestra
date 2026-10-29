@@ -120,6 +120,18 @@ cd linux
 CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fenestra .
 ```
 
+## macOS
+
+Não existe binário pronto para macOS, e é de propósito. Distribuir um exigiria
+notarização da Apple (US$ 99/ano); sem ela, o download é bloqueado pelo Gatekeeper.
+
+Em vez disso, [`macos/`](macos) é um kit de montagem: instale o Go (instalador
+oficial assinado, sem aviso), faça `git clone` e rode um comando. O `git clone`
+não marca os arquivos com quarentena, então o macOS não pede permissão nenhuma.
+Veja [macos/README.md](macos/README.md).
+
+O macOS não é coberto por CI num Mac real; o código é o mesmo da build Linux, que é.
+
 ## Quando funciona
 
 | Caso | Funciona? | Por quê |
