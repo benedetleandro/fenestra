@@ -60,6 +60,7 @@
         <a href="#compat" data-i18n="nav.compat">Compatibility</a>
         <a href="#platforms" data-i18n="nav.plat">Platforms</a>
         <a href="#install" data-i18n="nav.install">Install</a>
+        <a href="#browser" data-i18n="nav.browser">Browser</a>
         <a href="#macos" data-i18n="nav.macos">macOS</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
       </nav>
@@ -443,6 +444,53 @@
 <span class="cmd">Fenestra.exe --install</span>
 <span class="cmd">Fenestra.exe --uninstall</span></pre>
         </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------- browser -->
+    <section id="browser">
+      <div class="wrap">
+        <p class="kicker" data-i18n="browser.kicker">Browser</p>
+        <h2 data-i18n="browser.title">Pick the browser, once</h2>
+        <p class="section-lead" data-i18n="browser.lead">
+          Fenestra opens a normal tab in the browser you choose. The choice is saved and applies
+          to every double-click from now on.
+        </p>
+
+        <div class="two-col">
+          <div>
+            <h3 data-i18n="browser.choose">Choose it</h3>
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser firefox</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser firefox</span>
+
+<span class="cmt"># hand the choice to the OS</span>
+<span class="cmd">fenestra --browser default</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+
+          <div>
+            <h3 data-i18n="browser.system">Use the system default</h3>
+            <p class="muted" data-i18n="browser.systemText">
+              With --browser default, the operating system decides. To change what that means:
+            </p>
+            <ul class="def-list">
+              <li data-i18n="browser.win">Windows: Settings → Apps → Default apps → choose your browser.</li>
+              <li data-i18n="browser.mac">macOS: System Settings → Desktop &amp; Dock → Default web browser.</li>
+              <li data-i18n="browser.linux">Linux: xdg-settings set default-web-browser firefox.desktop</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="side-note" data-i18n="browser.store">
+          Stored in %LOCALAPPDATA%\Fenestra\browser.txt (Windows), ~/.config/fenestra/browser
+          (Linux) and ~/Library/Application Support/Fenestra/browser (macOS).
+        </p>
       </div>
     </section>
 
