@@ -315,19 +315,42 @@
     <section id="install">
       <div class="wrap">
         <p class="kicker" data-i18n="install.kicker">Install</p>
-        <h2 data-i18n="install.title">One executable. No installer.</h2>
+        <h2 data-i18n="install.title">One file. No installer.</h2>
         <p class="section-lead" data-i18n="install.lead">
-          Windows 10/11, Linux, and macOS (built from source). Any modern browser. That is the whole
-          requirement list — the .NET Framework used to build it already ships with Windows.
+          Pick the package for your system. Every one of them is a single file — no installer, no runtime.
         </p>
+
+        <div class="dl-grid">
+          <a class="dl-card" href="https://github.com/benedetleandro/fenestra/releases/download/v0.4.1/Fenestra.exe">
+            <span class="dl-os">Windows 10/11</span>
+            <strong>Fenestra.exe</strong>
+            <span class="dl-meta">51 KB · .exe</span>
+            <span class="dl-go" data-i18n="dl.download">Download →</span>
+          </a>
+          <a class="dl-card" href="https://github.com/benedetleandro/fenestra/releases/download/v0.4.1/fenestra-linux-amd64">
+            <span class="dl-os">Linux · amd64</span>
+            <strong>fenestra-linux-amd64</strong>
+            <span class="dl-meta">6.5 MB · static</span>
+            <span class="dl-go" data-i18n="dl.download">Download →</span>
+          </a>
+          <a class="dl-card" href="https://github.com/benedetleandro/fenestra/releases/download/v0.4.1/fenestra-linux-arm64">
+            <span class="dl-os">Linux · arm64</span>
+            <strong>fenestra-linux-arm64</strong>
+            <span class="dl-meta">6.1 MB · static</span>
+            <span class="dl-go" data-i18n="dl.download">Download →</span>
+          </a>
+          <a class="dl-card" href="#macos">
+            <span class="dl-os">macOS</span>
+            <strong>Homebrew</strong>
+            <span class="dl-meta">brew install</span>
+            <span class="dl-go" data-i18n="dl.guide">See the guide →</span>
+          </a>
+        </div>
 
         <div class="two-col">
           <div>
-            <h3 data-i18n="install.dl">Download</h3>
-            <p class="muted" data-i18n="install.dlText">Grab Fenestra.exe from the latest release and put it anywhere you like.</p>
-            <p><a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra/releases/latest">
-              <span data-i18n="install.dlBtn">Download v0.4.1</span>
-            </a></p>
+            <h3 data-i18n="install.dl">Windows</h3>
+            <p class="muted" data-i18n="install.dlText">The 51 KB .exe above runs as-is. No installer, no runtime.</p>
 
             <div class="side-note" data-i18n="install.signNote">
               The binary is not code-signed yet, so Windows SmartScreen will ask for confirmation
