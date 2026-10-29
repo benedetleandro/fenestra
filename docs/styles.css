@@ -810,6 +810,29 @@ footer {
 .footer-brand { display: flex; align-items: center; gap: 9px; color: var(--muted); }
 .footer-brand svg { width: 18px; height: 18px; }
 
+/* ------------------------------------------------------------------ a11y */
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--silver);
+  color: #0a0b0e;
+  border-radius: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: 650;
+}
+.skip:focus {
+  left: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 /* --------------------------------------------------------------- reveal */
 
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }

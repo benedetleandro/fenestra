@@ -6,10 +6,41 @@
   <title>Fenestra — double-click a local site, it opens in your browser</title>
   <meta name="description" content="Fenestra is a tiny local server for Windows, Linux and macOS that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported.">
   <meta name="theme-color" content="#08090c">
+  <link rel="canonical" href="https://benedetleandro.github.io/fenestra/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Fenestra">
+  <meta property="og:title" content="Fenestra — a window to your local site">
+  <meta property="og:description" content="A tiny local server that turns any dist/index.html into a working site in your browser. Windows, Linux and macOS.">
+  <meta property="og:url" content="https://benedetleandro.github.io/fenestra/">
+  <meta property="og:image" content="https://benedetleandro.github.io/fenestra/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fenestra — a window to your local site">
+  <meta name="twitter:description" content="A tiny local server that turns any dist/index.html into a working site in your browser. Windows, Linux and macOS.">
+  <meta name="twitter:image" content="https://benedetleandro.github.io/fenestra/og.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Fenestra",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Windows, Linux, macOS",
+    "description": "A tiny local server that turns any dist/index.html into a working site in your browser.",
+    "url": "https://benedetleandro.github.io/fenestra/",
+    "codeRepository": "https://github.com/benedetleandro/fenestra",
+    "license": "https://github.com/benedetleandro/fenestra/blob/main/LICENSE",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=0.5.0">
 </head>
 <body id="top">
+
+  <a class="skip" href="#main" data-i18n="skip.label">Skip to content</a>
 
   <div class="progress" id="progress"></div>
 
@@ -68,7 +99,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main">
 
     <!-- ------------------------------------------------------------- hero -->
     <section class="hero">
@@ -97,7 +128,7 @@
           </div>
 
           <div class="hero-meta">
-            <span>47 KB</span>
+            <span>54 KB</span>
             <span data-i18n="hero.meta1">MIT license</span>
             <span data-i18n="hero.meta2">no .NET SDK</span>
             <span data-i18n="hero.meta3">one file, no installer</span>
@@ -477,13 +508,13 @@
         <p class="kicker" data-i18n="under.kicker">Under the hood</p>
         <h2 data-i18n="under.title">Small on purpose</h2>
         <p class="section-lead" data-i18n="under.lead">
-          One C# file, no dependencies, built by the compiler that ships with Windows. The whole
-          thing is under a thousand lines — small enough to audit in an afternoon.
+          One C# file for Windows, and two small Go ports for Linux and macOS. No dependencies, built
+          by compilers you already have — small enough to audit in an afternoon.
         </p>
 
         <div class="points">
-          <div class="point"><b data-i18n="under.p1b">Server</b><span data-i18n="under.p1s">HTTP/1.1 on a TcpListener, bound to 127.0.0.1 only. Never 0.0.0.0.</span></div>
-          <div class="point"><b data-i18n="under.p2b">Paths</b><span data-i18n="under.p2s">Normalized and confined to the served root. .. , : and ::$DATA are rejected.</span></div>
+          <div class="point"><b data-i18n="under.p1b">Server</b><span data-i18n="under.p1s">HTTP/1.1 on a TcpListener, bound to 127.0.0.1 only. Only loopback Host headers are accepted.</span></div>
+          <div class="point"><b data-i18n="under.p2b">Paths</b><span data-i18n="under.p2s">Normalized and confined to the served root. .. , : and ::$DATA are rejected, and so are symlinks that escape it.</span></div>
           <div class="point"><b data-i18n="under.p3b">Ports</b><span data-i18n="under.p3s">FNV-1a hash of the folder maps to a port that is stored and reused, so localStorage survives.</span></div>
           <div class="point"><b data-i18n="under.p4b">SPA fallback</b><span data-i18n="under.p4s">Extensionless requests return index.html; missing assets still return 404.</span></div>
           <div class="point"><b data-i18n="under.p5b">Single instance</b><span data-i18n="under.p5s">A second double-click pings the running server and just opens another tab.</span></div>
@@ -508,6 +539,23 @@
       </div>
     </section>
 
+    <!-- --------------------------------------------------------------- name -->
+    <section id="name">
+      <div class="wrap">
+        <p class="kicker" data-i18n="name.kicker">The name</p>
+        <h2 data-i18n="name.title">A window, not a browser</h2>
+        <p class="section-lead" data-i18n-html="name.lead">
+          <em>Fenestra</em> is Latin for window: the opening, not the room. That is the whole idea —
+          Fenestra does not render your site, it opens a window onto it and lets your browser look through.
+        </p>
+        <p class="muted" data-i18n-html="name.p2">
+          The word survives in Italian <em>finestra</em>, French <em>fenêtre</em> and Portuguese
+          <em>fenestra</em> (the anatomical one), so it reads as "window" to a Romance speaker and as a
+          proper name to everyone else. It is also a quiet joke: a browser is the frame; this is the opening.
+        </p>
+      </div>
+    </section>
+
     <!-- --------------------------------------------------------------- faq -->
     <section id="faq">
       <div class="wrap">
@@ -521,7 +569,7 @@
           </details>
           <details>
             <summary data-i18n="faq.q2">Do I need Node.js or any runtime?</summary>
-            <p data-i18n="faq.a2">No. Fenestra is a single 47 KB executable built against the .NET Framework that ships with Windows. Nothing to install, nothing to keep updated.</p>
+            <p data-i18n="faq.a2">No. Fenestra is a single 54 KB executable built against the .NET Framework that ships with Windows. Nothing to install, nothing to keep updated.</p>
           </details>
           <details>
             <summary data-i18n="faq.q3">Why does Windows ask me to confirm the .html handler?</summary>
