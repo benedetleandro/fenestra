@@ -36,7 +36,7 @@
   }
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0.5.2">
+  <link rel="stylesheet" href="styles.css?v=0.5.2-2">
 </head>
 <body id="top">
 
@@ -301,7 +301,7 @@
               <span class="os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</span>
               <span class="pill yes" data-i18n="plat.win.tag">.exe</span>
             </header>
-            <p data-i18n="plat.win.desc">A single 51 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
+            <p data-i18n="plat.win.desc">A single 54 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
             <ul>
               <li data-i18n-html="plat.win.run">Download <code>Fenestra.exe</code> and run it, or make it the <code>.html</code> handler.</li>
               <li data-i18n-html="plat.win.build">Build with <code>build.ps1</code> using the <code>csc</code> that ships with Windows.</li>
@@ -327,7 +327,7 @@
               <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</span>
               <span class="pill yes" data-i18n="plat.macos.tag">build</span>
             </header>
-            <p data-i18n="plat.macos.desc">No prebuilt binary, on purpose: Apple notarization costs US$ 99/year. You build it locally.</p>
+            <p data-i18n="plat.macos.desc">No notarized app bundle: the CLI installs via Homebrew, the Finder app you build locally.</p>
             <ul>
               <li data-i18n-html="plat.macos.run"><code>cd macos &amp;&amp; ./build.command</code> builds the CLI and <code>Fenestra.app</code>.</li>
               <li data-i18n-html="plat.macos.build">Go only — no Xcode, no Apple account, no quarantine after a clone.</li>
@@ -381,7 +381,7 @@
         <div class="two-col">
           <div>
             <h3 data-i18n="install.dl">Windows</h3>
-            <p class="muted" data-i18n="install.dlText">The 51 KB .exe above runs as-is. No installer, no runtime.</p>
+            <p class="muted" data-i18n="install.dlText">The 54 KB .exe above runs as-is. No installer, no runtime.</p>
 
             <div class="side-note" data-i18n="install.signNote">
               The binary is not code-signed yet, so Windows SmartScreen will ask for confirmation
@@ -616,6 +616,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=0.5.2"></script>
+  <script src="app.js?v=0.5.2-2"></script>
 </body>
 </html>
