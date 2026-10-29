@@ -33,7 +33,7 @@ namespace Fenestra
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
                 {
-                    MessageBox.Show("Fenestra 0.4.1", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Fenestra 0.4.2", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -59,7 +59,7 @@ namespace Fenestra
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Nao consegui abrir esta aplicacao.\r\n\r\n" + ex.Message,
+                    "Could not open this application.\r\n\r\n" + ex.Message,
                     "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -91,7 +91,7 @@ namespace Fenestra
             }
             else
             {
-                throw new FileNotFoundException("Caminho nao encontrado: " + target);
+                throw new FileNotFoundException("Path not found: " + target);
             }
 
             _root = _root.TrimEnd('\\');
@@ -128,7 +128,7 @@ namespace Fenestra
             accept.IsBackground = true;
             accept.Start();
 
-            Log("servindo " + _root + " em 127.0.0.1:" + port);
+            Log("serving " + _root + " at 127.0.0.1:" + port);
 
             _idleTimer = new System.Threading.Timer(IdleCheck, null, 60000, 60000);
 
@@ -260,11 +260,11 @@ namespace Fenestra
                     _lastRequest = DateTime.UtcNow.Ticks;
 
                     string[] parts = line.Split(' ');
-                    if (parts.Length < 2) { SendText(ns, 400, "Pedido invalido"); return; }
+                    if (parts.Length < 2) { SendText(ns, 400, "Bad request"); return; }
 
                     string method = parts[0].ToUpperInvariant();
                     bool head = method == "HEAD";
-                    if (method != "GET" && !head) { SendText(ns, 405, "Metodo nao suportado"); return; }
+                    if (method != "GET" && !head) { SendText(ns, 405, "Method not allowed"); return; }
 
                     string target = parts[1];
                     int q = target.IndexOf('?');
@@ -280,7 +280,7 @@ namespace Fenestra
                     string rel = PercentDecode(target);
                     if (rel.IndexOf('\0') >= 0 || rel.IndexOf(':') >= 0)
                     {
-                        SendText(ns, 403, "Acesso negado");
+                        SendText(ns, 403, "Access denied");
                         return;
                     }
 
@@ -288,11 +288,11 @@ namespace Fenestra
 
                     string full;
                     try { full = Path.GetFullPath(Path.Combine(_root, rel)); }
-                    catch { SendText(ns, 400, "Caminho invalido"); return; }
+                    catch { SendText(ns, 400, "Invalid path"); return; }
 
                     if (!IsInside(_root, full))
                     {
-                        SendText(ns, 403, "Acesso negado");
+                        SendText(ns, 403, "Access denied");
                         return;
                     }
 
@@ -333,7 +333,7 @@ namespace Fenestra
             }
             catch (Exception ex)
             {
-                SendText(ns, 500, "Erro ao ler o arquivo: " + ex.Message);
+                SendText(ns, 500, "Could not read the file: " + ex.Message);
             }
         }
 
@@ -372,11 +372,11 @@ namespace Fenestra
 
         private static void Send404(NetworkStream ns, string target, bool head)
         {
-            string html = "<!doctype html><meta charset=\"utf-8\"><title>Nao encontrado</title>" +
+            string html = "<!doctype html><meta charset=\"utf-8\"><title>Not found</title>" +
                           "<body style=\"font:15px/1.5 system-ui,sans-serif;background:#0f0f10;color:#e8e8ea;padding:40px;max-width:800px;margin:auto\">" +
-                          "<h1 style=\"font-weight:600\">404</h1><p>Nao encontrei <code style=\"color:#9cc4ff\">" + Html(target) + "</code> em:</p>" +
+                          "<h1 style=\"font-weight:600\">404</h1><p>Could not find <code style=\"color:#9cc4ff\">" + Html(target) + "</code> at:</p>" +
                           "<p style=\"color:#8a8a90;word-break:break-all\">" + Html(_root) + "</p>" +
-                          "<p><a style=\"color:#9cc4ff\" href=\"/\">Voltar para a raiz</a></p></body>";
+                          "<p><a style=\"color:#9cc4ff\" href=\"/\">Back to the root</a></p></body>";
             Respond(ns, 404, "text/html; charset=utf-8", Encoding.UTF8.GetBytes(html), head);
         }
 
@@ -566,7 +566,7 @@ namespace Fenestra
             // Usado pelos testes e pelo CI: sobe o servidor sem abrir navegador.
             if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1")
             {
-                Log("FENESTRA_NO_OPEN=1, servidor headless em " + url);
+                Log("FENESTRA_NO_OPEN=1, headless server at " + url);
                 return null;
             }
 
@@ -578,7 +578,7 @@ namespace Fenestra
             string exe = ResolveBrowser();
             if (exe == null)
             {
-                Log("nenhum navegador conhecido; usando o padrao do sistema");
+                Log("no known browser; using the system default");
                 try { Process.Start(target); } catch { }
                 return null;
             }
@@ -591,7 +591,7 @@ namespace Fenestra
             psi.Arguments = "\"" + target + "\"";
             psi.UseShellExecute = false;
 
-            Log("abrindo " + exe + " " + target);
+            Log("opening " + exe + " " + target);
             return Process.Start(psi);
         }
 
@@ -752,15 +752,15 @@ namespace Fenestra
             if (!valid)
             {
                 MessageBox.Show(
-                    "Navegador desconhecido: " + name + "\r\n\r\n" +
-                    "Opcoes: edge, chrome, firefox, brave, vivaldi, opera, chromium, default",
+                    "Unknown browser: " + name + "\r\n\r\n" +
+                    "Options: edge, chrome, firefox, brave, vivaldi, opera, chromium, default",
                     "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (name != "default" && FindBrowser(name) == null)
             {
-                MessageBox.Show("Nao encontrei " + name + " instalado nesta maquina.",
+                MessageBox.Show("Could not find " + name + " installed on this machine.",
                     "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
@@ -768,7 +768,7 @@ namespace Fenestra
             try { File.WriteAllText(BrowserPrefPath(), name); }
             catch (Exception ex)
             {
-                MessageBox.Show("Nao consegui salvar a preferencia: " + ex.Message,
+                MessageBox.Show("Could not save the preference: " + ex.Message,
                     "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -776,8 +776,8 @@ namespace Fenestra
             if (showMessage)
             {
                 MessageBox.Show(
-                    "Navegador do Fenestra: " + name + "\r\n\r\n" +
-                    "Vale para os proximos duplo cliques em .html.",
+                    "Fenestra browser: " + name + "\r\n\r\n" +
+                    "Applies to every double-click from now on.",
                     "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -792,10 +792,10 @@ namespace Fenestra
             for (int i = 0; i < keys.Length; i++)
             {
                 string exe = FindBrowser(keys[i]);
-                sb.Append(keys[i]).Append(": ").Append(exe == null ? "nao encontrado" : exe).Append("\r\n");
+                sb.Append(keys[i]).Append(": ").Append(exe == null ? "not found" : exe).Append("\r\n");
             }
 
-            sb.Append("\r\nAtual: ").Append(ReadBrowserPref()).Append("\r\n\r\n");
+            sb.Append("\r\nCurrent: ").Append(ReadBrowserPref()).Append("\r\n\r\n");
             sb.Append("Trocar: Fenestra.exe --browser chrome");
 
             MessageBox.Show(sb.ToString(), "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -816,7 +816,7 @@ namespace Fenestra
                 }
                 catch { }
 
-                Shutdown("navegador fechado");
+                Shutdown("browser closed");
             });
             t.IsBackground = true;
             t.Start();
@@ -895,7 +895,7 @@ namespace Fenestra
 
             using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Fenestra.html"))
             {
-                k.SetValue("", "Aplicacao local (Fenestra)");
+                k.SetValue("", "Fenestra (local app)");
                 using (RegistryKey icon = k.CreateSubKey("DefaultIcon"))
                 {
                     icon.SetValue("", "\"" + exe + "\",0");
@@ -921,15 +921,15 @@ namespace Fenestra
             AddOpenWith(".htm");
 
             MessageBox.Show(
-                "Fenestra registrado.\r\n\r\n" +
-                "Agora, uma unica vez, para o duplo clique funcionar:\r\n\r\n" +
-                "1. Botao direito no index.html\r\n" +
-                "2. Abrir com > Escolher outro aplicativo\r\n" +
-                "3. Selecione \"Aplicacao local (Fenestra)\"\r\n" +
-                "4. Marque \"Sempre usar este aplicativo\"\r\n\r\n" +
-                "Depois disso, qualquer .html abre: o Fenestra sobe a porta\r\n" +
-                "quando necessario e o Edge mostra a pagina.\r\n\r\n" +
-                "Para desfazer: Fenestra.exe --uninstall",
+                "Fenestra registered.\r\n\r\n" +
+                "One time only, to make the double-click work:\r\n\r\n" +
+                "1. Right-click the index.html\r\n" +
+                "2. Open with > Choose another app\r\n" +
+                "3. Select \"Fenestra (local app)\"\r\n" +
+                "4. Check \"Always use this app\"\r\n\r\n" +
+                "After that, any .html opens: Fenestra starts the port\r\n" +
+                "when needed and your browser shows the page.\r\n\r\n" +
+                "To undo: Fenestra.exe --uninstall",
                 "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -949,7 +949,7 @@ namespace Fenestra
             TryDeleteValue(@"Software\Classes\.html\OpenWithProgids", "Fenestra.html");
             TryDeleteValue(@"Software\Classes\.htm\OpenWithProgids", "Fenestra.html");
 
-            MessageBox.Show("Fenestra removido das associacoes.", "Fenestra",
+            MessageBox.Show("Fenestra removed from the .html handler.", "Fenestra",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -973,18 +973,18 @@ namespace Fenestra
         private static void Usage()
         {
             MessageBox.Show(
-                "Fenestra 0.1\r\n\r\n" +
-                "Uso:\r\n" +
-                "  Fenestra.exe \"C:\\caminho\\index.html\"\r\n" +
-                "  Fenestra.exe \"C:\\caminho\\pasta\"\r\n" +
-                "  Fenestra.exe --serve \"C:\\caminho\\index.html\"   forca o servidor\r\n" +
-                "  Fenestra.exe --browser chrome \"C:\\caminho\\index.html\"\r\n" +
-                "  Fenestra.exe --browser chrome              troca o navegador padrao\r\n" +
-                "  Fenestra.exe --browsers                    lista os navegadores achados\r\n\r\n" +
-                "  Navegadores: edge (padrao), chrome, firefox, brave, vivaldi, opera,\r\n" +
+                "Fenestra 0.4.2\r\n\r\n" +
+                "Usage:\r\n" +
+                "  Fenestra.exe \"C:\\path\\index.html\"\r\n" +
+                "  Fenestra.exe \"C:\\path\\folder\"\r\n" +
+                "  Fenestra.exe --serve \"C:\\path\\index.html\"   force the server\r\n" +
+                "  Fenestra.exe --browser chrome \"C:\\path\\index.html\"\r\n" +
+                "  Fenestra.exe --browser chrome              set the preferred browser\r\n" +
+                "  Fenestra.exe --browsers                    list detected browsers\r\n\r\n" +
+                "  Browsers: edge (default), chrome, firefox, brave, vivaldi, opera,\r\n" +
                 "  chromium, default\r\n\r\n" +
-                "  --install [arquivo]   registra para abrir .html\r\n" +
-                "  --uninstall           remove o registro\r\n",
+                "  --install [file]      register the .html handler\r\n" +
+                "  --uninstall           remove it\r\n",
                 "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

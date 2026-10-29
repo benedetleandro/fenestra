@@ -1,26 +1,26 @@
 #!/bin/bash
-# Fenestra — build para macOS.
-# Duplo clique, ou rode: bash build.command
+# Fenestra — macOS build.
+# Double-click it, or run: bash build.command
 set -euo pipefail
 cd "$(dirname "$0")"
 
 VERSION=$(sed -n 's/^const version = "\([^"]*\)".*/\1/p' main.go)
 [ -n "$VERSION" ] || VERSION="0.0.0"
 
-trap 'echo; echo "FALHOU na linha $LINENO. Copie a mensagem acima e me mande."; exit 1' ERR
+trap 'echo; echo "FAILED at line $LINENO. Copy the message above and send it."; exit 1' ERR
 
-echo "Fenestra — build para macOS"
+echo "Fenestra — macOS build"
 echo
 
 if ! command -v go >/dev/null 2>&1; then
   cat <<'MSG'
-Go nao encontrado.
+Go not found.
 
-  1. Baixe o instalador oficial: https://go.dev/dl/
-  2. Instale (nao aparece aviso: o instalador e assinado pela Google)
-  3. Rode este script de novo
+  1. Download the official installer: https://go.dev/dl/
+  2. Install it (no warning: the installer is signed by Google)
+  3. Run this script again
 MSG
-  read -r -p "Abrir go.dev/dl agora? [s/N] " answer || true
+  read -r -p "Open go.dev/dl now? [y/N] " answer || true
   case "${answer:-}" in
     s|S|y|Y) open "https://go.dev/dl/" ;;
   esac
@@ -30,14 +30,14 @@ fi
 echo "Go: $(go version)"
 echo
 
-echo "compilando fenestra..."
+echo "building fenestra..."
 CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fenestra .
 chmod +x fenestra
 echo "ok: $(pwd)/fenestra"
 echo
 
 if command -v osacompile >/dev/null 2>&1; then
-  echo "montando Fenestra.app..."
+  echo "building Fenestra.app..."
 
   if [ -d "Fenestra.app" ]; then
     rm -rf "Fenestra.app"
@@ -69,18 +69,18 @@ if command -v osacompile >/dev/null 2>&1; then
       done
       if iconutil -c icns "$ICONSET_DIR" -o /tmp/fenestra.icns 2>/dev/null; then
         cp /tmp/fenestra.icns "Fenestra.app/Contents/Resources/droplet.icns"
-        echo "icone aplicado"
+        echo "icon applied"
       fi
       rm -rf "$(dirname "$ICONSET_DIR")"
     fi
 
-    # Editar o Info.plist invalida a assinatura que o osacompile criou.
-    # Sem re-assinar, o macOS recusa abrir o app ("assinatura invalida").
+    # Editing Info.plist invalidates the signature osacompile created.
+    # Without re-signing, macOS refuses to open the app.
     if command -v codesign >/dev/null 2>&1; then
       if codesign --force --deep --sign - "Fenestra.app" 2>/tmp/fenestra-codesign.log; then
-        echo "assinatura ad-hoc refeita"
+        echo "ad-hoc signature re-applied"
       else
-        echo "aviso: codesign falhou; veja /tmp/fenestra-codesign.log"
+        echo "warning: codesign failed; see /tmp/fenestra-codesign.log"
       fi
     fi
 
@@ -92,22 +92,22 @@ if command -v osacompile >/dev/null 2>&1; then
 
     echo "ok: $(pwd)/Fenestra.app"
   else
-    echo "osacompile falhou. Veja /tmp/fenestra-osacompile.log"
-    echo "O binario ./fenestra foi gerado e funciona sozinho."
+    echo "osacompile failed. See /tmp/fenestra-osacompile.log"
+    echo "The ./fenestra binary was built and works on its own."
   fi
   echo
 else
-  echo "osacompile nao encontrado; so o binario foi gerado."
+  echo "osacompile not found; only the binary was built."
   echo
 fi
 
 cat <<'MSG'
-Pronto.
+Done.
 
-  Teste:   ./fenestra ~/caminho/dist/index.html
-  Finder:  arraste Fenestra.app para /Applications
-           botao direito num index.html > Abrir com > Fenestra > Sempre
+  Test:   ./fenestra ~/path/dist/index.html
+  Finder: drag Fenestra.app to /Applications
+          right-click an index.html > Open with > Fenestra > Always
 
-Se o macOS reclamar na primeira vez, va em
-Ajustes > Privacidade e Seguranca > Abrir assim mesmo.
+If macOS complains the first time, go to
+System Settings > Privacy & Security > Open Anyway.
 MSG

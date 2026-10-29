@@ -24,7 +24,7 @@ import (
 	"time"
 )
 
-const version = "0.4.1"
+const version = "0.4.2"
 
 var lastRequest int64 = time.Now().UnixNano()
 
@@ -71,18 +71,18 @@ func main() {
 func usage() {
 	fmt.Print(`Fenestra ` + version + ` (linux)
 
-Uso:
-  fenestra "~/projetos/app/dist/index.html"
-  fenestra "~/projetos/app/dist"
-  fenestra --serve "~/index.html"          forca o servidor
-  fenestra --browser firefox               troca o navegador padrao
+Usage:
+  fenestra "~/projects/app/dist/index.html"
+  fenestra "~/projects/app/dist"
+  fenestra --serve "~/index.html"          force the server
+  fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
-  fenestra --browsers                      lista os navegadores achados
-  fenestra --install                       registra para abrir .html
-  fenestra --uninstall                     remove o registro
+  fenestra --browsers                      list detected browsers
+  fenestra --install                       register the .html handler
+  fenestra --uninstall                     remove it
 
-Navegadores: edge, chrome, chromium, firefox, brave, vivaldi, opera, default
-(edge e o padrao; "default" entrega para o xdg-open)
+Browsers: edge, chrome, chromium, firefox, brave, vivaldi, opera, default
+(edge is the default; "default" hands off to xdg-open)
 `)
 }
 
@@ -96,7 +96,7 @@ func run(target string, force bool) {
 
 	info, err := os.Stat(abs)
 	if err != nil {
-		fatal(fmt.Errorf("caminho nao encontrado: %s", target))
+		fatal(fmt.Errorf("path not found: %s", target))
 	}
 
 	var root, entry string
@@ -135,7 +135,7 @@ func run(target string, force bool) {
 			fatal(err)
 		}
 	}()
-	logf("servindo %s em 127.0.0.1:%d", root, port)
+	logf("serving %s at 127.0.0.1:%d", root, port)
 
 	go idleWatch()
 
@@ -187,12 +187,12 @@ func handler(root, defaultDoc string) http.Handler {
 		}
 
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
-			http.Error(w, "metodo nao suportado", http.StatusMethodNotAllowed)
+			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
 
 		if hasDotDot(r.URL.Path) {
-			http.Error(w, "acesso negado", http.StatusForbidden)
+			http.Error(w, "access denied", http.StatusForbidden)
 			return
 		}
 
@@ -201,7 +201,7 @@ func handler(root, defaultDoc string) http.Handler {
 		full := filepath.Join(root, filepath.FromSlash(rel))
 
 		if strings.Contains(rel, ":") || strings.ContainsRune(rel, 0) || !isInside(root, full) {
-			http.Error(w, "acesso negado", http.StatusForbidden)
+			http.Error(w, "access denied", http.StatusForbidden)
 			return
 		}
 
@@ -238,14 +238,14 @@ func handler(root, defaultDoc string) http.Handler {
 func serveFile(w http.ResponseWriter, r *http.Request, name string) {
 	f, err := os.Open(name)
 	if err != nil {
-		http.Error(w, "erro ao ler o arquivo", http.StatusInternalServerError)
+		http.Error(w, "could not read the file", http.StatusInternalServerError)
 		return
 	}
 	defer f.Close()
 
 	st, err := f.Stat()
 	if err != nil || st.IsDir() {
-		http.Error(w, "erro ao ler o arquivo", http.StatusInternalServerError)
+		http.Error(w, "could not read the file", http.StatusInternalServerError)
 		return
 	}
 
@@ -258,7 +258,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, name string) {
 func listDir(w http.ResponseWriter, dir, urlPath string) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		http.Error(w, "nao consegui listar", http.StatusInternalServerError)
+		http.Error(w, "could not list the directory", http.StatusInternalServerError)
 		return
 	}
 
@@ -292,7 +292,7 @@ func notFound(w http.ResponseWriter, target, root string) {
 	w.WriteHeader(http.StatusNotFound)
 	io.WriteString(w, "<!doctype html><meta charset=\"utf-8\"><title>404</title>"+
 		"<body style=\"font:15px/1.6 system-ui,sans-serif;background:#0f0f10;color:#e8e8ea;padding:40px\">"+
-		"<h1>404</h1><p>Nao encontrei <code>"+html.EscapeString(target)+"</code> em:</p>"+
+		"<h1>404</h1><p>Could not find <code>"+html.EscapeString(target)+"</code> at:</p>"+
 		"<p style=\"color:#8a8a90;word-break:break-all\">"+html.EscapeString(root)+"</p></body>")
 }
 
@@ -576,13 +576,13 @@ func setBrowser(name string) bool {
 		}
 	}
 	if !valid {
-		fmt.Fprintf(os.Stderr, "navegador desconhecido: %s\n", name)
+		fmt.Fprintf(os.Stderr, "unknown browser: %s\n", name)
 		return false
 	}
 
 	if name != "default" {
 		if _, ok := lookup(name); !ok {
-			fmt.Fprintf(os.Stderr, "nao encontrei %s instalado nesta maquina\n", name)
+			fmt.Fprintf(os.Stderr, "could not find %s installed on this machine\n", name)
 			return false
 		}
 	}
@@ -596,7 +596,7 @@ func setBrowser(name string) bool {
 		return false
 	}
 
-	fmt.Printf("navegador do Fenestra: %s\n", name)
+	fmt.Printf("Fenestra browser: %s\n", name)
 	return true
 }
 
@@ -605,17 +605,17 @@ func listBrowsers() {
 		if p, ok := lookup(b.key); ok {
 			fmt.Printf("%-9s %s\n", b.key, p)
 		} else {
-			fmt.Printf("%-9s nao encontrado\n", b.key)
+			fmt.Printf("%-9s not found\n", b.key)
 		}
 	}
-	fmt.Printf("\natual: %s\n", readBrowserPref())
+	fmt.Printf("\ncurrent: %s\n", readBrowserPref())
 }
 
 // launch opens target in the configured browser. Returns the process when it
 // was started by us (so the caller can exit when it closes).
 func launch(target string) *exec.Cmd {
 	if os.Getenv("FENESTRA_NO_OPEN") == "1" {
-		logf("FENESTRA_NO_OPEN=1, nao abrindo navegador")
+		logf("FENESTRA_NO_OPEN=1, not opening a browser")
 		return nil
 	}
 
@@ -624,7 +624,7 @@ func launch(target string) *exec.Cmd {
 		if bin, ok := lookup(name); ok {
 			cmd := exec.Command(bin, target)
 			if err := cmd.Start(); err == nil {
-				logf("abrindo %s %s", bin, target)
+				logf("opening %s %s", bin, target)
 				return cmd
 			}
 		}
@@ -635,7 +635,7 @@ func launch(target string) *exec.Cmd {
 		if bin, ok := lookup(b.key); ok {
 			cmd := exec.Command(bin, target)
 			if err := cmd.Start(); err == nil {
-				logf("abrindo %s %s", bin, target)
+				logf("opening %s %s", bin, target)
 				return cmd
 			}
 		}
@@ -643,11 +643,11 @@ func launch(target string) *exec.Cmd {
 
 	cmd := exec.Command("xdg-open", target)
 	if err := cmd.Start(); err == nil {
-		logf("abrindo xdg-open %s", target)
+		logf("opening xdg-open %s", target)
 		return cmd
 	}
 
-	fmt.Fprintf(os.Stderr, "nao consegui abrir o navegador para %s\n", target)
+	fmt.Fprintf(os.Stderr, "could not open a browser for %s\n", target)
 	return nil
 }
 
@@ -682,13 +682,13 @@ Categories=Development;
 	exec.Command("update-desktop-database", dir).Run()
 
 	if out, err := exec.Command("xdg-mime", "default", "fenestra.desktop", "text/html").CombinedOutput(); err != nil {
-		fmt.Fprintf(os.Stderr, "xdg-mime falhou: %v\n%s\n", err, out)
-		fmt.Println("Crie o .desktop manualmente ou rode: xdg-mime default fenestra.desktop text/html")
+		fmt.Fprintf(os.Stderr, "xdg-mime failed: %v\n%s\n", err, out)
+		fmt.Println("Create the .desktop entry manually, or run: xdg-mime default fenestra.desktop text/html")
 		return
 	}
 
-	fmt.Println("Fenestra registrado como manipulador de text/html.")
-	fmt.Println("Para desfazer: fenestra --uninstall")
+	fmt.Println("Fenestra registered as the text/html handler.")
+	fmt.Println("To undo: fenestra --uninstall")
 }
 
 func uninstall() {
@@ -696,7 +696,7 @@ func uninstall() {
 	if err := os.Remove(file); err != nil && !os.IsNotExist(err) {
 		fatal(err)
 	}
-	fmt.Println("Fenestra removido. Redefina o navegador padrao com:")
+	fmt.Println("Fenestra removed. Set your default browser back with:")
 	fmt.Println(`  xdg-mime default google-chrome.desktop text/html`)
 }
 
