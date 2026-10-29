@@ -98,6 +98,11 @@ try {
     }
     Check '--port binds the requested port' 'True' ([string]$bound)
     Check '--port serves the fixture' 'True' ([bool]((curl.exe -s "http://127.0.0.1:$portTest/") -like '*fixture*'))
+    $procB = Start-Process -FilePath $exe -ArgumentList ('"' + (Join-Path $tmp 'index.html') + '"') -PassThru
+    Start-Sleep -Seconds 3
+    Check 'second launch exits (single instance)' 'True' ([string]$procB.HasExited)
+    if (-not $procB.HasExited) { Stop-Process -Id $procB.Id -Force -ErrorAction SilentlyContinue }
+
     $proj = Join-Path $tmp 'proj'
     New-Item -ItemType Directory -Force (Join-Path $proj 'dist') | Out-Null
     Set-Content (Join-Path $proj 'index.html') '<script type="module" src="/src/main.tsx"></script>' -Encoding UTF8

@@ -1124,10 +1124,19 @@ namespace Fenestra
                         "GET /__fenestra/ping HTTP/1.0\r\nHost: 127.0.0.1\r\n\r\n");
                     ns.Write(request, 0, request.Length);
 
+                    StringBuilder response = new StringBuilder();
                     byte[] buffer = new byte[512];
-                    int n = ns.Read(buffer, 0, buffer.Length);
-                    string text = Encoding.ASCII.GetString(buffer, 0, n);
-                    return text.IndexOf("fenestra-ok", StringComparison.OrdinalIgnoreCase) >= 0;
+                    while (true)
+                    {
+                        int n = ns.Read(buffer, 0, buffer.Length);
+                        if (n <= 0) break;
+                        response.Append(Encoding.ASCII.GetString(buffer, 0, n));
+                        if (response.ToString().IndexOf("fenestra-ok", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
                 }
             }
             catch { return false; }
