@@ -25,6 +25,7 @@
       <nav class="nav">
         <a href="#how" data-i18n="nav.how">How it works</a>
         <a href="#compat" data-i18n="nav.compat">Compatibility</a>
+        <a href="#platforms" data-i18n="nav.plat">Platforms</a>
         <a href="#install" data-i18n="nav.install">Install</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
       </nav>
@@ -243,6 +244,54 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------- platforms -->
+    <section id="platforms">
+      <div class="wrap">
+        <p class="kicker" data-i18n="plat.kicker">Platforms</p>
+        <h2 data-i18n="plat.title">One idea, three systems</h2>
+        <p class="section-lead" data-i18n="plat.lead">
+          Same job everywhere: turn a folder into localhost and open it in your browser.
+          The packaging changes because each system has its own rules.
+        </p>
+
+        <div class="platforms">
+          <article class="platform">
+            <header><span class="os">Windows</span><span class="pill yes">.exe</span></header>
+            <p data-i18n="plat.win.desc">A single 51 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
+            <ul>
+              <li data-i18n-html="plat.win.run">Download <code>Fenestra.exe</code> and run it, or make it the <code>.html</code> handler.</li>
+              <li data-i18n-html="plat.win.build">Build with <code>build.ps1</code> using the <code>csc</code> that ships with Windows.</li>
+            </ul>
+            <a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/src/Fenestra.cs" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a>
+          </article>
+
+          <article class="platform">
+            <header><span class="os">Linux</span><span class="pill yes">static</span></header>
+            <p data-i18n="plat.linux.desc">One static binary, no runtime, for amd64 and arm64.</p>
+            <ul>
+              <li data-i18n-html="plat.linux.run"><code>chmod +x fenestra-linux-amd64</code> and run it, or use <code>--install</code> to register the handler.</li>
+              <li data-i18n-html="plat.linux.build">Build with <code>CGO_ENABLED=0 go build .</code> inside <code>linux/</code>.</li>
+            </ul>
+            <a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a>
+          </article>
+
+          <article class="platform">
+            <header><span class="os">macOS</span><span class="pill yes">build</span></header>
+            <p data-i18n="plat.macos.desc">No prebuilt binary, on purpose: Apple notarization costs US$ 99/year. You build it locally.</p>
+            <ul>
+              <li data-i18n-html="plat.macos.run"><code>cd macos &amp;&amp; ./build.command</code> builds the CLI and <code>Fenestra.app</code>.</li>
+              <li data-i18n-html="plat.macos.build">Go only — no Xcode, no Apple account, no quarantine after a clone.</li>
+            </ul>
+            <a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a>
+          </article>
+        </div>
+
+        <p class="side-note" data-i18n="plat.note">
+          Every release also ships the complete source as zip and tar.gz. Nothing here is closed.
+        </p>
       </div>
     </section>
 

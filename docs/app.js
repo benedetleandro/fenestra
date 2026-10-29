@@ -4,6 +4,7 @@
   var PT = {
     "nav.how": "Como funciona",
     "nav.compat": "Compatibilidade",
+    "nav.plat": "Plataformas",
     "nav.install": "Instalar",
     "nav.faq": "Dúvidas",
 
@@ -52,6 +53,21 @@
     "compat.c4": "Projeto fonte precisa do dev server dele para compilar.",
     "compat.c5": "O Fenestra serve arquivos. Não faz proxy, não roda serviços, não toca em banco.",
     "compat.c6": "A raiz é a pasta do arquivo, e o .. é bloqueado por segurança.",
+
+    "plat.kicker": "Plataformas",
+    "plat.title": "Uma ideia, três sistemas",
+    "plat.lead": "O mesmo trabalho em todo lugar: transformar uma pasta em localhost e abrir no seu navegador. A embalagem muda porque cada sistema tem suas regras.",
+    "plat.win.desc": "Um único executável de 51 KB. Sem instalador, sem runtime — o .NET Framework 4.8 já vem no Windows.",
+    "plat.win.run": "Baixe o <code>Fenestra.exe</code> e rode, ou torne-o o manipulador de <code>.html</code>.",
+    "plat.win.build": "Compile com o <code>build.ps1</code> usando o <code>csc</code> que já vem no Windows.",
+    "plat.linux.desc": "Um binário estático, sem runtime, para amd64 e arm64.",
+    "plat.linux.run": "<code>chmod +x fenestra-linux-amd64</code> e rode, ou use <code>--install</code> para registrar o manipulador.",
+    "plat.linux.build": "Compile com <code>CGO_ENABLED=0 go build .</code> dentro de <code>linux/</code>.",
+    "plat.macos.desc": "Sem binário pronto, de propósito: a notarização da Apple custa US$ 99/ano. Você compila localmente.",
+    "plat.macos.run": "<code>cd macos &amp;&amp; ./build.command</code> compila o CLI e o <code>Fenestra.app</code>.",
+    "plat.macos.build": "Só Go — sem Xcode, sem conta Apple, sem quarentena depois de um clone.",
+    "plat.audit": "Auditar o código →",
+    "plat.note": "Toda release também traz o código-fonte completo em zip e tar.gz. Nada aqui é fechado.",
 
     "install.kicker": "Instalação",
     "install.title": "Um executável. Sem instalador.",
