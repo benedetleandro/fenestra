@@ -1,6 +1,6 @@
 # Fenestra
 
-**Double-click a local `dist/index.html`. It opens in Edge like a website — because Fenestra served it.**
+**Double-click a local `dist/index.html`. It opens in your browser like a website — because Fenestra served it.**
 
 No terminal. No `npx serve`. No extension to enable. No custom browser window.
 
@@ -10,7 +10,7 @@ No terminal. No `npx serve`. No extension to enable. No custom browser window.
 
 [**Website →**](https://benedetleandro.github.io/fenestra/) · [Português](README.pt-BR.md)
 
-> **Status: alpha.** The HTTP server and the Edge integration work. The file
+> **Status: alpha.** The HTTP server and the browser integration work. The file
 > association requires a one-time confirmation from the user — Windows does not
 > allow an app to become the default handler on its own.
 
@@ -31,17 +31,16 @@ When you open an `.html` file:
 1. Fenestra reads the file and decides whether it needs an HTTP origin
    (ES modules, root-absolute paths, `fetch`, service worker, web manifest).
 2. **If it needs one**, it serves the containing folder on `127.0.0.1`, on a
-   stable port, and opens a normal Edge tab at that URL.
-3. **If it doesn't**, it opens the file directly in Edge via `file://`.
-   No server is started.
+   stable port, and opens a normal tab in your browser at that URL.
+3. **If it doesn't**, it opens the file directly via `file://`. No server is started.
 
 The server keeps the same port per folder, so `localStorage`, cookies and the
 service worker survive between sessions.
 
 ## Install
 
-Requirements: Windows 10/11. The .NET Framework 4.x and Microsoft Edge are
-already there.
+Requirements: Windows 10/11. The .NET Framework 4.x and Edge are already there —
+and any Chromium-based browser or Firefox works too.
 
 ```powershell
 git clone https://github.com/benedetleandro/fenestra.git
@@ -57,6 +56,9 @@ The binary is `bin\Fenestra.exe`. No SDK, no NuGet, no internet needed to build.
 Fenestra.exe "C:\projects\my-app\dist\index.html"
 Fenestra.exe "C:\projects\my-app\dist"
 Fenestra.exe --serve "C:\path\index.html"   # force the server, skip detection
+Fenestra.exe --browser chrome "C:\path\index.html"
+Fenestra.exe --browser firefox              # set the preferred browser
+Fenestra.exe --browsers                     # list detected browsers
 Fenestra.exe --install                      # register in the "Open with" list
 Fenestra.exe --uninstall                    # remove it
 ```
@@ -68,7 +70,21 @@ Fenestra.exe --uninstall                    # remove it
 3. Select **Fenestra** and check **Always use this app**.
 
 Windows allows exactly one handler per extension, so this confirmation cannot
-be automated. The handler is invisible; the window that opens is Edge.
+be automated. The handler is invisible; the window that opens is your browser.
+
+### Browsers
+
+**Edge is the default.** Chrome, Firefox, Brave, Vivaldi, Opera and Chromium are
+detected automatically.
+
+```powershell
+Fenestra.exe --browsers              # what is installed
+Fenestra.exe --browser chrome        # use Chrome from now on
+Fenestra.exe --browser default       # let Windows decide
+```
+
+The choice is stored in `%LOCALAPPDATA%\Fenestra\browser.txt` and applies to
+every double-click, so you do not need to pass a flag again.
 
 ### Headless (tests / CI)
 
@@ -99,9 +115,9 @@ One C# file, no dependencies, built with the `csc.exe` that ships with Windows.
   in a per-folder lock file and reused on the next run.
 - **SPA fallback**: extensionless 404s return `index.html`.
 - **Single instance**: a second double-click pings the running server and only
-  opens another Edge tab.
-- **Lifetime**: the server exits when the Edge process it started exits, or
-  after 4 idle hours if Edge was already running.
+  opens another browser tab.
+- **Lifetime**: the server exits when the browser process it started exits, or
+  after 4 idle hours if the browser was already running.
 
 ## Security
 
@@ -112,7 +128,8 @@ directory with secrets. See [SECURITY.md](SECURITY.md) for the full threat model
 ## Roadmap
 
 - [ ] `--root <folder>` for builds whose entry lives in a subfolder
-- [ ] Linux and macOS (the server is portable; the Edge/registry code is not)
+- [ ] Linux (the server is portable; the launcher and registry code are not)
+- [ ] macOS is **not** planned: it requires Apple Developer notarization
 - [ ] Code signing for releases, to remove the SmartScreen warning
 - [ ] Portable mode (no `%LOCALAPPDATA%`)
 - [ ] More tests: HEAD, ETag, range requests, UTF-8 paths

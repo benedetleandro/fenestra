@@ -7,10 +7,10 @@
     "nav.install": "Instalar",
     "nav.faq": "Dúvidas",
 
-    "hero.badge": "Windows 10/11 · Microsoft Edge · Sem dependências",
+    "hero.badge": "Windows 10/11 · Edge, Chrome, Firefox · Sem dependências",
     "hero.title": "Dois cliques.<br><span class=\"shine\">E roda.</span>",
-    "hero.lead": "O Fenestra é um servidor local minúsculo que transforma qualquer <code>dist/index.html</code> num site funcionando no Edge. Sem terminal, sem extensão, sem navegador próprio.",
-    "hero.download": "Baixar v0.1.0",
+    "hero.lead": "O Fenestra é um servidor local minúsculo que transforma qualquer <code>dist/index.html</code> num site funcionando no seu navegador. Sem terminal, sem extensão, sem navegador próprio.",
+    "hero.download": "Baixar v0.2.0",
     "hero.how": "Como funciona",
     "hero.meta1": "Licença MIT",
     "hero.meta2": "sem SDK .NET",
@@ -26,7 +26,7 @@
     "problem.goodLead": "O que acontece quando o Fenestra serve a mesma pasta:",
     "problem.good1": "Módulos carregam, igual em produção",
     "problem.good2": "Rotas de SPA sobrevivem ao F5",
-    "problem.good3": "Mesma aba, mesmo perfil, mesmo Edge",
+    "problem.good3": "Mesma aba, mesmo perfil, seu navegador",
 
     "how.kicker": "Como funciona",
     "how.title": "Três passos, nenhum deles seu",
@@ -35,7 +35,7 @@
     "how.s1d": "Dois cliques, arrastar a pasta sobre o executável, ou um caminho na linha de comando.",
     "how.s2t": "O Fenestra decide",
     "how.s2d": "Ele lê o HTML. Precisa de origem HTTP? Sobe um servidor numa porta estável. Não precisa? Abre o arquivo direto.",
-    "how.s3t": "O Edge mostra",
+    "how.s3t": "O seu navegador mostra",
     "how.s3d": "Uma aba normal, na sua janela, com seu perfil, suas extensões e sua barra de endereço.",
 
     "compat.kicker": "Compatibilidade",
@@ -55,10 +55,10 @@
 
     "install.kicker": "Instalação",
     "install.title": "Um executável. Sem instalador.",
-    "install.lead": "Windows 10 ou 11 e Microsoft Edge. É a lista de requisitos inteira — o .NET Framework usado para compilar já vem no Windows.",
+    "install.lead": "Windows 10 ou 11 e qualquer navegador moderno. É a lista de requisitos inteira — o .NET Framework usado para compilar já vem no Windows.",
     "install.dl": "Baixar",
     "install.dlText": "Pegue o Fenestra.exe na release mais recente e coloque onde quiser.",
-    "install.dlBtn": "Baixar v0.1.0",
+    "install.dlBtn": "Baixar v0.2.0",
     "install.signNote": "O binário ainda não tem assinatura de código, então o SmartScreen do Windows vai pedir confirmação uma vez. É esperado numa versão alfa.",
     "install.build": "Ou compile você mesmo",
     "install.defTitle": "Tornar padrão para .html",
@@ -100,8 +100,8 @@
     "faq.a3": "Porque o Windows permite exatamente um programa por extensão e não deixa um app reivindicar isso em silêncio. É proteção contra justamente o tipo de software que sequestra associações de arquivo.",
     "faq.q4": "Ele altera meus arquivos?",
     "faq.a4": "Não. Ele abre em modo leitura, serve e não escreve nada no projeto. O único estado que guarda é um número de porta por pasta, em %LOCALAPPDATA%.",
-    "faq.q5": "Por que o Edge e não um motor embutido?",
-    "faq.a5": "O Edge já está instalado e é atualizado pelo Windows. Usá-lo significa que o motor é responsabilidade da Microsoft, não do projeto — sem Chromium para corrigir, sem 150 MB extras.",
+    "faq.q5": "Quais navegadores ele suporta?",
+    "faq.a5": "Edge é o padrão. Chrome, Firefox, Brave, Vivaldi, Opera e Chromium são detectados automaticamente — troque com --browser. Ele abre uma aba normal no navegador que você já usa, então não há motor para corrigir nem 150 MB extras.",
     "faq.q6": "O Fenestra é um navegador?",
     "faq.a6": "Não. É um servidor que abre uma aba no seu navegador. Não tem barra de endereço própria, nem abas, nem motor de renderização. Essa é a ideia.",
     "faq.q7": "Roda no macOS ou Linux?",
@@ -117,12 +117,12 @@
 
   var META = {
     en: {
-      title: "Fenestra — double-click a local site, it opens in Edge",
-      desc: "Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in Microsoft Edge. No terminal, no extension, no custom browser."
+      title: "Fenestra — double-click a local site, it opens in your browser",
+      desc: "Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported."
     },
     pt: {
-      title: "Fenestra — dois cliques num site local, ele abre no Edge",
-      desc: "O Fenestra é um servidor local minúsculo para Windows que transforma qualquer dist/index.html num site funcionando no Microsoft Edge. Sem terminal, sem extensão, sem navegador próprio."
+      title: "Fenestra — dois cliques num site local, ele abre no seu navegador",
+      desc: "O Fenestra é um servidor local minúsculo para Windows que transforma qualquer dist/index.html num site funcionando no seu navegador. Edge por padrão; Chrome, Firefox, Brave, Vivaldi, Opera e Chromium também."
     }
   };
 

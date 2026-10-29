@@ -1,12 +1,12 @@
 # Fenestra
 
-**Dois cliques em qualquer `dist/index.html`. Ele abre no Edge como um site —
+**Dois cliques em qualquer `dist/index.html`. Ele abre no seu navegador como um site —
 porque o Fenestra serviu o arquivo em localhost.**
 
 Sem terminal. Sem `npx serve`. Sem extensão para ativar. Sem janela de navegador
 falsa.
 
-> **Status: alfa.** O servidor e a integração com o Edge funcionam. A associação
+> **Status: alfa.** O servidor e a integração com o navegador funcionam. A associação
 > do `.html` exige uma confirmação única do usuário — o Windows não permite que
 > um programa se torne o manipulador padrão sozinho.
 
@@ -30,16 +30,16 @@ Ao abrir um `.html`:
 1. Lê o arquivo e decide se ele precisa de origem HTTP (módulos ES, caminhos
    absolutos, `fetch`, service worker, manifest).
 2. **Se precisa**, serve a pasta que contém o arquivo em `127.0.0.1`, numa porta
-   estável, e abre uma aba normal do Edge nessa URL.
-3. **Se não precisa**, abre o arquivo direto no Edge via `file://`. Nenhum
-   servidor é criado.
+   estável, e abre uma aba normal no seu navegador nessa URL.
+3. **Se não precisa**, abre o arquivo direto via `file://`. Nenhum servidor é criado.
 
 A porta é a mesma para cada pasta, então `localStorage`, cookies e service
 worker sobrevivem entre sessões.
 
 ## Instalação
 
-Requisitos: Windows 10/11. O .NET Framework 4.x e o Edge já vêm com o sistema.
+Requisitos: Windows 10/11. O .NET Framework 4.x e o Edge já vêm com o sistema —
+e qualquer navegador Chromium ou o Firefox também funciona.
 
 ```powershell
 git clone https://github.com/benedetleandro/fenestra.git
@@ -55,6 +55,9 @@ O binário é `bin\Fenestra.exe`. Sem SDK, sem NuGet, sem internet para compilar
 Fenestra.exe "C:\projetos\app\dist\index.html"
 Fenestra.exe "C:\projetos\app\dist"
 Fenestra.exe --serve "C:\caminho\index.html"   # força o servidor
+Fenestra.exe --browser chrome "C:\caminho\index.html"
+Fenestra.exe --browser firefox                 # define o navegador preferido
+Fenestra.exe --browsers                        # lista os navegadores achados
 Fenestra.exe --install                          # registra em "Abrir com"
 Fenestra.exe --uninstall                        # remove o registro
 ```
@@ -66,7 +69,22 @@ Fenestra.exe --uninstall                        # remove o registro
 3. Selecione **Fenestra** e marque **Sempre usar este aplicativo**.
 
 O Windows permite apenas um programa por extensão, então essa confirmação não
-pode ser automatizada. O manipulador é invisível; a janela que abre é o Edge.
+pode ser automatizada. O manipulador é invisível; a janela que abre é o seu
+navegador.
+
+### Navegadores
+
+**Edge é o padrão.** Chrome, Firefox, Brave, Vivaldi, Opera e Chromium são
+detectados automaticamente.
+
+```powershell
+Fenestra.exe --browsers              # o que está instalado
+Fenestra.exe --browser chrome        # passa a usar o Chrome
+Fenestra.exe --browser default       # deixa o Windows decidir
+```
+
+A escolha fica em `%LOCALAPPDATA%\Fenestra\browser.txt` e vale para todos os
+duplo cliques seguintes — não precisa passar a flag de novo.
 
 ### Sem navegador (testes e CI)
 
@@ -98,8 +116,8 @@ Um arquivo C#, sem dependências, compilado com o `csc.exe` que já vem no Windo
 - **Fallback de SPA**: 404 sem extensão devolve `index.html`.
 - **Instância única**: um segundo duplo clique encontra o servidor ativo e só
   abre outra aba.
-- **Ciclo de vida**: encerra quando o Edge aberto por ele fecha, ou após 4 horas
-  ociosas se o Edge já estava aberto.
+- **Ciclo de vida**: encerra quando o navegador aberto por ele fecha, ou após 4 horas
+  ociosas se o navegador já estava aberto.
 
 ## Segurança
 
@@ -110,7 +128,8 @@ O modelo de ameaça completo está em [SECURITY.md](SECURITY.md).
 ## Roadmap
 
 - [ ] `--root <pasta>` para builds cuja entrada fica em subpasta
-- [ ] Linux e macOS (o servidor é portável; Edge e registro não são)
+- [ ] Linux (o servidor é portável; o lançador e o registro não são)
+- [ ] macOS **não** está no plano: exige notarização da Apple
 - [ ] Assinatura de código para remover o aviso do SmartScreen
 - [ ] Modo portátil (sem `%LOCALAPPDATA%`)
 - [ ] Mais testes: HEAD, ETag, range requests, caminhos UTF-8

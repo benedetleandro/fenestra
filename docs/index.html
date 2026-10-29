@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fenestra — double-click a local site, it opens in Edge</title>
-  <meta name="description" content="Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in Microsoft Edge. No terminal, no extension, no custom browser.">
+  <title>Fenestra — double-click a local site, it opens in your browser</title>
+  <meta name="description" content="Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported.">
   <meta name="theme-color" content="#08090c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
@@ -70,14 +70,14 @@
         <div>
           <div class="badge">
             <span class="dot"></span>
-            <span data-i18n="hero.badge">Windows 10/11 · Microsoft Edge · No dependencies</span>
+            <span data-i18n="hero.badge">Windows 10/11 · Edge, Chrome, Firefox · No dependencies</span>
           </div>
 
           <h1 data-i18n-html="hero.title">Double-click.<br><span class="shine">It just runs.</span></h1>
 
           <p class="lead" data-i18n-html="hero.lead">
             Fenestra is a tiny local server that turns any <code>dist/index.html</code>
-            into a working site in Edge. No terminal, no extension, no custom browser.
+            into a working site in your browser. No terminal, no extension, no custom browser.
           </p>
 
           <div class="cta">
@@ -85,7 +85,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/>
               </svg>
-              <span data-i18n="hero.download">Download v0.1.0</span>
+              <span data-i18n="hero.download">Download v0.2.0</span>
             </a>
             <a class="btn btn-ghost" href="#how" data-i18n="hero.how">How it works</a>
           </div>
@@ -154,7 +154,7 @@
             <ul>
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good1">Modules load, exactly like production</span></li>
               <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good2">SPA routes survive a refresh</span></li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good3">Same tab, same profile, same Edge</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good3">Same tab, same profile, your browser</span></li>
             </ul>
           </div>
         </div>
@@ -183,7 +183,7 @@
           </div>
           <div class="step reveal">
             <span class="num">03</span>
-            <h3 data-i18n="how.s3t">Edge shows it</h3>
+            <h3 data-i18n="how.s3t">Your browser shows it</h3>
             <p data-i18n="how.s3d">A normal tab, in your window, with your profile, your extensions and your address bar.</p>
           </div>
         </div>
@@ -252,7 +252,7 @@
         <p class="kicker" data-i18n="install.kicker">Install</p>
         <h2 data-i18n="install.title">One executable. No installer.</h2>
         <p class="section-lead" data-i18n="install.lead">
-          Windows 10 or 11 and Microsoft Edge. That is the whole requirement list — the .NET
+          Windows 10 or 11 and any modern browser. That is the whole requirement list — the .NET
           Framework used to build it already ships with Windows.
         </p>
 
@@ -261,7 +261,7 @@
             <h3 data-i18n="install.dl">Download</h3>
             <p class="muted" data-i18n="install.dlText">Grab Fenestra.exe from the latest release and put it anywhere you like.</p>
             <p><a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra/releases/latest">
-              <span data-i18n="install.dlBtn">Download v0.1.0</span>
+              <span data-i18n="install.dlBtn">Download v0.2.0</span>
             </a></p>
 
             <div class="side-note" data-i18n="install.signNote">
@@ -305,6 +305,10 @@
 
 <span class="cmt"># force the server, skip detection</span>
 <span class="cmd">Fenestra.exe --serve "C:\path\index.html"</span>
+
+<span class="cmt"># choose the browser (edge is the default)</span>
+<span class="cmd">Fenestra.exe --browser chrome</span>
+<span class="cmd">Fenestra.exe --browsers</span>
 
 <span class="cmt"># register / unregister the .html handler</span>
 <span class="cmd">Fenestra.exe --install</span>
@@ -374,8 +378,8 @@
             <p data-i18n="faq.a4">No. It opens them read-only, serves them, and writes nothing to the project. The only state it keeps is a port number per folder, under %LOCALAPPDATA%.</p>
           </details>
           <details>
-            <summary data-i18n="faq.q5">Why Edge and not a built-in engine?</summary>
-            <p data-i18n="faq.a5">Edge is already installed and updated by Windows. Using it means the browser engine is Microsoft's responsibility, not the project's — no Chromium to patch, no extra 150 MB.</p>
+            <summary data-i18n="faq.q5">Which browsers does it support?</summary>
+            <p data-i18n="faq.a5">Edge is the default. Chrome, Firefox, Brave, Vivaldi, Opera and Chromium are detected automatically — switch with --browser. It opens a normal tab in the browser you already use, so there is no engine to patch and no extra 150 MB.</p>
           </details>
           <details>
             <summary data-i18n="faq.q6">Is Fenestra a browser?</summary>

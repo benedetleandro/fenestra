@@ -33,7 +33,17 @@ namespace Fenestra
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
                 {
-                    MessageBox.Show("Fenestra 0.1.0", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Fenestra 0.2.0", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (Eq(a, "--browsers")) { ShowBrowsers(); return; }
+
+                if (Eq(a, "--browser"))
+                {
+                    if (args.Length < 2) { Usage(); return; }
+                    bool ok = SetBrowser(args[1], args.Length <= 2);
+                    if (ok && args.Length > 2) Serve(args[2], false);
                     return;
                 }
 
@@ -65,7 +75,7 @@ namespace Fenestra
             // fetch, service worker) passa pelo servidor.
             if (!force && File.Exists(full) && IsHtml(full) && !NeedsServer(full))
             {
-                OpenInEdgeFile(full);
+                OpenInBrowser(full);
                 return;
             }
 
@@ -105,7 +115,7 @@ namespace Fenestra
             int existing = ReadLockPort();
             if (existing > 0 && Ping(existing))
             {
-                OpenEdge(existing);
+                OpenBrowser(existing);
                 return;
             }
 
@@ -122,8 +132,8 @@ namespace Fenestra
 
             _idleTimer = new System.Threading.Timer(IdleCheck, null, 60000, 60000);
 
-            Process edge = OpenEdge(port);
-            WatchEdge(edge);
+            Process browser = OpenBrowser(port);
+            WatchBrowser(browser);
 
             while (true) Thread.Sleep(1000);
         }
@@ -163,22 +173,9 @@ namespace Fenestra
             catch { return true; }
         }
 
-        private static void OpenInEdgeFile(string file)
+        private static void OpenInBrowser(string file)
         {
-            string edge = FindEdge();
-            if (edge == null)
-            {
-                try { Process.Start(file); } catch { }
-                return;
-            }
-
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = edge;
-            psi.Arguments = "\"" + file + "\"";
-            psi.UseShellExecute = false;
-
-            Log("abrindo direto no Edge (file://): " + file);
-            try { Process.Start(psi); } catch { }
+            Launch(file);
         }
 
         private static string FindDefaultDoc(string root)
@@ -559,9 +556,9 @@ namespace Fenestra
             catch { }
         }
 
-        // ---------------------------------------------------------------- edge
+        // -------------------------------------------------------------- browser
 
-        private static Process OpenEdge(int port)
+        private static Process OpenBrowser(int port)
         {
             string url = "http://127.0.0.1:" + port + "/";
             if (_entry != null) url += UrlPath(_entry);
@@ -573,63 +570,240 @@ namespace Fenestra
                 return null;
             }
 
-            string edge = FindEdge();
-            if (edge == null)
+            return Launch(url);
+        }
+
+        private static Process Launch(string target)
+        {
+            string exe = ResolveBrowser();
+            if (exe == null)
             {
-                Log("Edge nao encontrado; abrindo navegador padrao");
-                try { Process.Start(url); } catch { }
+                Log("nenhum navegador conhecido; usando o padrao do sistema");
+                try { Process.Start(target); } catch { }
                 return null;
             }
 
-            // Abre uma aba normal no Edge do usuario: sem --app, sem perfil
-            // separado, sem janela propria. O Fenestra so abre a porta;
-            // quem abre e mostra o HTML e o Edge.
+            // Abre uma aba normal: sem --app, sem perfil separado, sem janela
+            // propria. O Fenestra so abre a porta; quem mostra o HTML e o
+            // navegador escolhido.
             ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = edge;
-            psi.Arguments = "\"" + url + "\"";
+            psi.FileName = exe;
+            psi.Arguments = "\"" + target + "\"";
             psi.UseShellExecute = false;
 
-            Log("abrindo " + edge + " " + url);
+            Log("abrindo " + exe + " " + target);
             return Process.Start(psi);
         }
 
-        private static string FindEdge()
+        private static string[] BrowserCandidates(string key)
         {
-            string x86 = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                "Microsoft", "Edge", "Application", "msedge.exe");
-            if (File.Exists(x86)) return x86;
+            string pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-            string x64 = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
-                "Microsoft", "Edge", "Application", "msedge.exe");
-            if (File.Exists(x64)) return x64;
-
-            string local = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Microsoft", "Edge", "Application", "msedge.exe");
-            if (File.Exists(local)) return local;
-
-            try
+            switch (key)
             {
-                using (RegistryKey k = Registry.LocalMachine.OpenSubKey(
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe"))
+                case "edge":
+                    return new string[] {
+                        Path.Combine(pf86, "Microsoft", "Edge", "Application", "msedge.exe"),
+                        Path.Combine(pf, "Microsoft", "Edge", "Application", "msedge.exe"),
+                        Path.Combine(local, "Microsoft", "Edge", "Application", "msedge.exe")
+                    };
+                case "chrome":
+                    return new string[] {
+                        Path.Combine(pf, "Google", "Chrome", "Application", "chrome.exe"),
+                        Path.Combine(pf86, "Google", "Chrome", "Application", "chrome.exe"),
+                        Path.Combine(local, "Google", "Chrome", "Application", "chrome.exe")
+                    };
+                case "firefox":
+                    return new string[] {
+                        Path.Combine(pf, "Mozilla Firefox", "firefox.exe"),
+                        Path.Combine(pf86, "Mozilla Firefox", "firefox.exe")
+                    };
+                case "brave":
+                    return new string[] {
+                        Path.Combine(pf, "BraveSoftware", "Brave-Browser", "Application", "brave.exe"),
+                        Path.Combine(pf86, "BraveSoftware", "Brave-Browser", "Application", "brave.exe"),
+                        Path.Combine(local, "BraveSoftware", "Brave-Browser", "Application", "brave.exe")
+                    };
+                case "vivaldi":
+                    return new string[] {
+                        Path.Combine(pf, "Vivaldi", "Application", "vivaldi.exe"),
+                        Path.Combine(local, "Vivaldi", "Application", "vivaldi.exe")
+                    };
+                case "opera":
+                    return new string[] {
+                        Path.Combine(local, "Programs", "Opera", "opera.exe"),
+                        Path.Combine(pf, "Opera", "opera.exe"),
+                        Path.Combine(pf86, "Opera", "opera.exe")
+                    };
+                case "chromium":
+                    return new string[] {
+                        Path.Combine(pf, "Chromium", "Application", "chrome.exe"),
+                        Path.Combine(local, "Chromium", "Application", "chrome.exe")
+                    };
+                default:
+                    return new string[0];
+            }
+        }
+
+        private static string BrowserExeName(string key)
+        {
+            if (key == "edge") return "msedge.exe";
+            if (key == "chromium") return "chrome.exe";
+            return key + ".exe";
+        }
+
+        private static string FindBrowser(string key)
+        {
+            string[] paths = BrowserCandidates(key);
+            for (int i = 0; i < paths.Length; i++)
+            {
+                if (File.Exists(paths[i])) return paths[i];
+            }
+
+            string exeName = BrowserExeName(key);
+
+            string[] roots = {
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\" + exeName,
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\App Paths\" + exeName
+            };
+
+            for (int r = 0; r < roots.Length; r++)
+            {
+                try
                 {
-                    if (k != null)
+                    using (RegistryKey k = Registry.LocalMachine.OpenSubKey(roots[r]))
                     {
-                        string value = k.GetValue("") as string;
-                        if (value != null && File.Exists(value)) return value;
+                        if (k != null)
+                        {
+                            string value = k.GetValue("") as string;
+                            if (value != null && File.Exists(value)) return value;
+                        }
                     }
                 }
+                catch { }
+
+                try
+                {
+                    using (RegistryKey k = Registry.CurrentUser.OpenSubKey(roots[r]))
+                    {
+                        if (k != null)
+                        {
+                            string value = k.GetValue("") as string;
+                            if (value != null && File.Exists(value)) return value;
+                        }
+                    }
+                }
+                catch { }
             }
-            catch { }
 
             return null;
         }
 
-        private static void WatchEdge(Process edge)
+        private static string BrowserPrefPath()
         {
-            if (edge == null) return;
+            string dir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fenestra");
+            Directory.CreateDirectory(dir);
+            return Path.Combine(dir, "browser.txt");
+        }
+
+        private static string ReadBrowserPref()
+        {
+            try
+            {
+                string path = BrowserPrefPath();
+                if (!File.Exists(path)) return "edge";
+                string value = File.ReadAllText(path).Trim().ToLowerInvariant();
+                return value.Length == 0 ? "edge" : value;
+            }
+            catch { return "edge"; }
+        }
+
+        private static string ResolveBrowser()
+        {
+            string pref = ReadBrowserPref();
+            if (pref == "default") return null;
+
+            string exe = FindBrowser(pref);
+            if (exe != null) return exe;
+
+            // Preferencia indisponivel: cai para o primeiro navegador achado.
+            string[] order = { "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
+            for (int i = 0; i < order.Length; i++)
+            {
+                if (order[i] == pref) continue;
+                string candidate = FindBrowser(order[i]);
+                if (candidate != null) return candidate;
+            }
+
+            return null;
+        }
+
+        private static bool SetBrowser(string name, bool showMessage)
+        {
+            name = (name ?? "").Trim().ToLowerInvariant();
+
+            string[] known = { "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium", "default" };
+            bool valid = false;
+            for (int i = 0; i < known.Length; i++) { if (known[i] == name) { valid = true; break; } }
+
+            if (!valid)
+            {
+                MessageBox.Show(
+                    "Navegador desconhecido: " + name + "\r\n\r\n" +
+                    "Opcoes: edge, chrome, firefox, brave, vivaldi, opera, chromium, default",
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (name != "default" && FindBrowser(name) == null)
+            {
+                MessageBox.Show("Nao encontrei " + name + " instalado nesta maquina.",
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            try { File.WriteAllText(BrowserPrefPath(), name); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Nao consegui salvar a preferencia: " + ex.Message,
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (showMessage)
+            {
+                MessageBox.Show(
+                    "Navegador do Fenestra: " + name + "\r\n\r\n" +
+                    "Vale para os proximos duplo cliques em .html.",
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            return true;
+        }
+
+        private static void ShowBrowsers()
+        {
+            string[] keys = { "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                string exe = FindBrowser(keys[i]);
+                sb.Append(keys[i]).Append(": ").Append(exe == null ? "nao encontrado" : exe).Append("\r\n");
+            }
+
+            sb.Append("\r\nAtual: ").Append(ReadBrowserPref()).Append("\r\n\r\n");
+            sb.Append("Trocar: Fenestra.exe --browser chrome");
+
+            MessageBox.Show(sb.ToString(), "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private static void WatchBrowser(Process browser)
+        {
+            if (browser == null) return;
 
             Thread t = new Thread(delegate()
             {
@@ -637,12 +811,12 @@ namespace Fenestra
                 {
                     // Se sair em menos de 6s, foi entrega para uma instancia ja aberta:
                     // nao derruba o servidor, deixa o timeout ocioso cuidar.
-                    if (edge.WaitForExit(6000)) return;
-                    edge.WaitForExit();
+                    if (browser.WaitForExit(6000)) return;
+                    browser.WaitForExit();
                 }
                 catch { }
 
-                Shutdown("edge fechado");
+                Shutdown("navegador fechado");
             });
             t.IsBackground = true;
             t.Start();
@@ -803,7 +977,12 @@ namespace Fenestra
                 "Uso:\r\n" +
                 "  Fenestra.exe \"C:\\caminho\\index.html\"\r\n" +
                 "  Fenestra.exe \"C:\\caminho\\pasta\"\r\n" +
-                "  Fenestra.exe --serve \"C:\\caminho\\index.html\"   forca o servidor\r\n\r\n" +
+                "  Fenestra.exe --serve \"C:\\caminho\\index.html\"   forca o servidor\r\n" +
+                "  Fenestra.exe --browser chrome \"C:\\caminho\\index.html\"\r\n" +
+                "  Fenestra.exe --browser chrome              troca o navegador padrao\r\n" +
+                "  Fenestra.exe --browsers                    lista os navegadores achados\r\n\r\n" +
+                "  Navegadores: edge (padrao), chrome, firefox, brave, vivaldi, opera,\r\n" +
+                "  chromium, default\r\n\r\n" +
                 "  --install [arquivo]   registra para abrir .html\r\n" +
                 "  --uninstall           remove o registro\r\n",
                 "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
