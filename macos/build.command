@@ -55,6 +55,16 @@ if command -v osacompile >/dev/null 2>&1; then
     /usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:1 string public.xhtml" "$PLIST" 2>/dev/null || true
     /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier dev.fenestra.app" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string dev.fenestra.app" "$PLIST" 2>/dev/null || true
 
+    # Editar o Info.plist invalida a assinatura que o osacompile criou.
+    # Sem re-assinar, o macOS recusa abrir o app ("assinatura invalida").
+    if command -v codesign >/dev/null 2>&1; then
+      if codesign --force --deep --sign - "Fenestra.app" 2>/tmp/fenestra-codesign.log; then
+        echo "assinatura ad-hoc refeita"
+      else
+        echo "aviso: codesign falhou; veja /tmp/fenestra-codesign.log"
+      fi
+    fi
+
     LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
     if [ -x "$LSREGISTER" ]; then
       "$LSREGISTER" -f "$(pwd)/Fenestra.app" >/dev/null 2>&1 || true

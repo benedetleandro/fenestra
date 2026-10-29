@@ -130,6 +130,12 @@ jobs:
           /usr/libexec/PlistBuddy -c "Print :CFBundleDocumentTypes:0:LSItemContentTypes:0" Fenestra.app/Contents/Info.plist
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' Fenestra.app/Contents/Info.plist)" = "dev.fenestra.app"
 
+      - name: Verify the code signature
+        working-directory: macos
+        run: |
+          codesign --verify --deep --strict --verbose=2 Fenestra.app
+          echo "assinatura valida"
+
       - name: Smoke test the binary on macOS
         run: |
           mkdir -p /tmp/fixture/assets
@@ -149,6 +155,18 @@ jobs:
         run: |
           codesign -dv --verbose=2 macos/fenestra 2>&1 || true
           codesign -dv --verbose=2 macos/Fenestra.app 2>&1 || true
+
+      - name: Droplet end-to-end (best effort)
+        continue-on-error: true
+        run: |
+          mkdir -p /tmp/fixture2
+          printf '<!doctype html><h1>droplet</h1>' > /tmp/fixture2/index.html
+          LOG="$HOME/Library/Application Support/Fenestra/fenestra.log"
+          open -a "$PWD/macos/Fenestra.app" /tmp/fixture2/index.html || true
+          sleep 6
+          echo "--- log ---"
+          tail -10 "$LOG" || true
+          grep -q "fixture2" "$LOG"
 
       - name: Upload the app bundle
         uses: actions/upload-artifact@v4
