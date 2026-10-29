@@ -137,7 +137,7 @@ bundle sem assinatura é bloqueado pelo Gatekeeper, e a notarização custa
 US$ 99/ano. [`macos/`](macos) é o kit: instale o Go (instalador oficial assinado,
 sem aviso), faça `git clone` e rode um comando. O `git clone` não marca os arquivos
 com quarentena. Sem git, baixe o ZIP e rode `bash build.command`. Veja
-[macos/README.md](macos/README.md).
+[macos/README.pt-BR.md](macos/README.pt-BR.md).
 
 O kit é compilado e exercitado num runner `macos-latest` real no CI: build,
 `codesign --verify`, o droplet recebendo um arquivo via `open -a` e o servidor

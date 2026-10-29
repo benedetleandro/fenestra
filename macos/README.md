@@ -1,33 +1,35 @@
-# Fenestra no macOS
+# Fenestra on macOS
 
-Esta pasta é o kit de montagem. Você compila na sua máquina — não existe binário
-pronto para baixar, e isso é de propósito: um app compilado localmente não passa
-pelo Gatekeeper.
+English · [Português](README.pt-BR.md)
 
-## Requisito: Go 1.21+
+This folder is the build kit. You compile on your machine — there is no prebuilt
+binary to download, and that is on purpose: an app built locally never goes
+through Gatekeeper.
 
-O instalador oficial em <https://go.dev/dl/> é assinado e notarizado pelo Google,
-então **não aparece aviso nenhum**. É a única coisa que você instala.
+## Requirement: Go 1.21+
 
-## Caminho A — sem git (Mac novo, sem Command Line Tools)
+The official installer at <https://go.dev/dl/> is signed and notarized by Google,
+so **no warning appears**. It is the only thing you install.
 
-Mac recém-formatado não tem `git`: o comando dispara a instalação das Command
-Line Tools (~1,5 GB). Dá para pular isso:
+## Path A — no git (new Mac, no Command Line Tools)
 
-1. Baixe o ZIP: <https://github.com/benedetleandro/fenestra/archive/refs/heads/main.zip>
-2. Extraia
-3. No Terminal:
+A freshly wiped Mac has no `git`: the command triggers the Command Line Tools
+install (~1.5 GB). You can skip that:
+
+1. Download the ZIP: <https://github.com/benedetleandro/fenestra/archive/refs/heads/main.zip>
+2. Extract it
+3. In Terminal:
 
 ```bash
 cd ~/Downloads/fenestra-main/macos
 bash build.command
 ```
 
-O `bash` é do sistema, e o script é **lido**, não executado pelo Finder — então o
-Gatekeeper não entra no caminho. O `fenestra` e o `Fenestra.app` nascem locais,
-sem quarentena.
+`bash` ships with the system, and the script is **read**, not executed by the
+Finder — so Gatekeeper is not involved. `fenestra` and `Fenestra.app` are born
+local, with no quarantine.
 
-## Caminho B — git clone (para quem já tem git)
+## Path B — git clone (if you already have git)
 
 ```bash
 git clone https://github.com/benedetleandro/fenestra.git
@@ -35,28 +37,28 @@ cd fenestra/macos
 ./build.command
 ```
 
-## Caminho C — duplo clique
+## Path C — double-click
 
-Só se você já tem Go e quer evitar o Terminal. O macOS pode pedir uma liberação
-uma vez: **Ajustes → Privacidade e Segurança → Abrir assim mesmo**.
+Only if you already have Go and want to avoid the Terminal. macOS may ask for
+permission once: **System Settings → Privacy & Security → Open Anyway**.
 
-## Usar
+## Use
 
 ```bash
-./fenestra ~/projetos/app/dist/index.html   # abre no navegador padrão
-./fenestra --browsers                       # o que está instalado
-./fenestra --browser firefox                # troca o navegador
-./fenestra --browser safari                 # Safari também está na lista
-./fenestra --install                        # instruções para o Finder
+./fenestra ~/projects/app/dist/index.html   # opens in the default browser
+./fenestra --browsers                       # what is installed
+./fenestra --browser firefox                # switch browsers
+./fenestra --browser safari                 # Safari is in the list too
+./fenestra --install                        # Finder instructions
 ```
 
-Para o Finder:
+For the Finder:
 
-1. Arraste `Fenestra.app` para `/Applications`.
-2. Botão direito num `index.html` → **Abrir com** → **Fenestra**.
-3. Marque **Sempre usar este aplicativo**.
+1. Drag `Fenestra.app` to `/Applications`.
+2. Right-click an `index.html` → **Open with** → **Fenestra**.
+3. Check **Always use this app**.
 
-## Homebrew (só o CLI)
+## Homebrew (CLI only)
 
 ```bash
 brew tap benedetleandro/fenestra
@@ -64,50 +66,49 @@ brew trust benedetleandro/fenestra
 brew install fenestra
 ```
 
-O `brew trust` é exigência do Homebrew para taps de terceiros — uma vez só. Isso
-instala apenas a linha de comando; o `Fenestra.app` continua vindo do
-`./build.command`.
+`brew trust` is a one-time requirement for third-party taps. This installs the
+command line only; `Fenestra.app` still comes from `./build.command`.
 
-## Como funciona o `.app`
+## How the `.app` works
 
-O `Fenestra.app` é um *droplet* em AppleScript (criado com `osacompile`, que já
-vem no macOS). Ele recebe os arquivos que o Finder entrega e chama o binário Go
-que está dentro do bundle. É isso que permite o "Abrir com" funcionar sem uma
-app Cocoa.
+`Fenestra.app` is an AppleScript *droplet* (built with `osacompile`, which ships
+with macOS). It receives the files the Finder hands it and calls the Go binary
+inside the bundle. That is what makes "Open with" work without a Cocoa app.
 
-## Se alguma coisa falhar
+## If something fails
 
-O script imprime `FALHOU na linha N`. Copie essa mensagem.
+The script prints `FAILED at line N`. Copy that message.
 
-Enquanto isso, o caminho manual mostra onde está o problema:
+Meanwhile, the manual path shows where the problem is:
 
 ```bash
 cd fenestra/macos
 go version
 go build -o fenestra .
-./fenestra ~/caminho/dist/index.html
+./fenestra ~/path/dist/index.html
 ```
 
-Se o `go build` funcionar e o `./fenestra` abrir a página, o problema está só
-no empacotamento do `.app` — e o programa já está utilizável.
+If `go build` works and `./fenestra` opens the page, the problem is only in the
+`.app` packaging — and the program is already usable.
 
-Se o `osacompile` falhar (ele pode pedir as Command Line Tools), o script avisa
-e mantém o binário. Nesse caso o Finder fica sem a associação, mas o Terminal
-funciona.
+If `osacompile` fails (it may ask for the Command Line Tools), the script warns
+and keeps the binary. In that case the Finder has no association, but the
+Terminal works.
 
-## Limitações honestas
+## Honest limitations
 
-- **Testado no CI, num `macos-latest` real**: build, `codesign --verify`, droplet
-  recebendo o arquivo via Finder (`open -a`) e o servidor respondendo HTTP.
-- **Não testado numa sessão gráfica**: o clique no Finder, o menu "Abrir com" e o
-  diálogo do Gatekeeper só existem numa tela — o runner é headless.
-- O `.app` é gerado pelo `osacompile`; se o seu macOS não tiver a ferramenta, o
-  script avisa e gera só o binário.
-- Cada pessoa compila o seu. Mandar o `.app` por AirDrop para outra máquina
-  adiciona quarentena e o Gatekeeper bloqueia de novo.
-- Sem assinatura de desenvolvedor, sem notarização, sem US$ 99/ano.
+- **Tested in CI, on a real `macos-latest`**: build, `codesign --verify`, the
+  droplet receiving a file through the Finder (`open -a`) and the server
+  answering HTTP.
+- **Not tested in a graphical session**: the Finder click, the "Open with" menu
+  and the Gatekeeper dialog only exist on a screen — the runner is headless.
+- The `.app` is generated by `osacompile`; if your macOS lacks the tool, the
+  script warns and builds only the binary.
+- Everyone compiles their own. Sending the `.app` over AirDrop to another machine
+  adds quarantine and Gatekeeper blocks it again.
+- No developer signature, no notarization, no US$ 99/year.
 
-## Desfazer
+## Undo
 
-Apague `Fenestra.app` e o `fenestra` desta pasta. Para o Finder, escolha outro
-app em **Abrir com → Sempre**.
+Delete `Fenestra.app` and `fenestra` from this folder. For the Finder, choose
+another app in **Open with → Always**.

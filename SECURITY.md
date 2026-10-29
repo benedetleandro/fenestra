@@ -1,5 +1,7 @@
 # Security Policy
 
+English · [Português](SECURITY.pt-BR.md)
+
 ## Supported versions
 
 Fenestra is an alpha project. Only the latest commit on `main` is supported.

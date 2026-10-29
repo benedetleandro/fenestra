@@ -1,5 +1,7 @@
 # Contributing
 
+English · [Português](CONTRIBUTING.pt-BR.md)
+
 Thanks for considering it. This is a small tool on purpose — keep it small.
 
 ## Build
@@ -43,8 +45,7 @@ temporary fixture and reports pass/fail with a non-zero exit code.
 ## Good first issues
 
 - `--root <folder>` to serve a folder different from the file's own.
-- Linux/macOS support (the server is portable; the Edge launcher and the
-  registry code are not).
+- Windows ARM64 support.
 - Code signing for the release binary (removes the SmartScreen warning).
 - Portable mode (`fenestra.ini` next to the exe, no `%LOCALAPPDATA%`).
 - More tests: HEAD, ETag, range requests, UTF-8 paths.
