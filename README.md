@@ -8,6 +8,8 @@ No terminal. No `npx serve`. No extension to enable. No custom browser window.
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)
 
+[**Website →**](https://benedetleandro.github.io/fenestra/) · [Português](README.pt-BR.md)
+
 > **Status: alpha.** The HTTP server and the Edge integration work. The file
 > association requires a one-time confirmation from the user — Windows does not
 > allow an app to become the default handler on its own.

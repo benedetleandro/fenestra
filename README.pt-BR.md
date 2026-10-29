@@ -10,6 +10,8 @@ falsa.
 > do `.html` exige uma confirmação única do usuário — o Windows não permite que
 > um programa se torne o manipulador padrão sozinho.
 
+[**Site →**](https://benedetleandro.github.io/fenestra/) · [English](README.md)
+
 ## O problema
 
 Um build moderno (Vite, React, Svelte, qualquer coisa com módulos ES) não roda

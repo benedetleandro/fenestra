@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fenestra — double-click a local site, it opens in Edge</title>
+  <meta name="description" content="Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in Microsoft Edge. No terminal, no extension, no custom browser.">
+  <meta name="theme-color" content="#08090c">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="Fenestra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+          <path d="M3 9h18M9.5 9v11"/>
+          <circle cx="6" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Fenestra</span>
+      </a>
+
+      <nav class="nav">
+        <a href="#how" data-i18n="nav.how">How it works</a>
+        <a href="#compat" data-i18n="nav.compat">Compatibility</a>
+        <a href="#install" data-i18n="nav.install">Install</a>
+        <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">
+            <svg viewBox="0 0 60 40" aria-hidden="true">
+              <rect width="60" height="40" fill="#012169"/>
+              <path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/>
+              <path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="4.5"/>
+              <path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="14"/>
+              <path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/>
+            </svg>
+            <span>EN</span>
+          </button>
+          <button type="button" data-lang="pt" aria-pressed="false">
+            <svg viewBox="0 0 60 42" aria-hidden="true">
+              <rect width="60" height="42" fill="#009C3B"/>
+              <path d="M30 5 55 21 30 37 5 21Z" fill="#FFDF00"/>
+              <circle cx="30" cy="21" r="9" fill="#002776"/>
+              <path d="M21.5 18.6q8.5-4.6 17 0" stroke="#fff" stroke-width="2.6" fill="none"/>
+            </svg>
+            <span>PT</span>
+          </button>
+        </div>
+
+        <a class="gh-link" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ------------------------------------------------------------- hero -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="badge">
+            <span class="dot"></span>
+            <span data-i18n="hero.badge">Windows 10/11 · Microsoft Edge · No dependencies</span>
+          </div>
+
+          <h1 data-i18n-html="hero.title">Double-click.<br><span class="shine">It just runs.</span></h1>
+
+          <p class="lead" data-i18n-html="hero.lead">
+            Fenestra is a tiny local server that turns any <code>dist/index.html</code>
+            into a working site in Edge. No terminal, no extension, no custom browser.
+          </p>
+
+          <div class="cta">
+            <a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra/releases/latest">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/>
+              </svg>
+              <span data-i18n="hero.download">Download v0.1.0</span>
+            </a>
+            <a class="btn btn-ghost" href="#how" data-i18n="hero.how">How it works</a>
+          </div>
+
+          <div class="hero-meta">
+            <span>47 KB</span>
+            <span data-i18n="hero.meta1">MIT license</span>
+            <span data-i18n="hero.meta2">no .NET SDK</span>
+            <span data-i18n="hero.meta3">one file, no installer</span>
+          </div>
+        </div>
+
+        <div class="browser" aria-hidden="true">
+          <div class="browser-top">
+            <div class="browser-dots"><i></i><i></i><i></i></div>
+            <div class="browser-tab"><b></b><span>Calendário</span></div>
+          </div>
+          <div class="browser-url">
+            <span class="lock"></span>
+            <span>http://127.0.0.1:53912/</span>
+          </div>
+          <div class="browser-body">
+            <div class="skel-head"></div>
+            <div class="skel-grid">
+              <div class="skel-card"><i></i><i></i></div>
+              <div class="skel-card"><i></i><i></i></div>
+              <div class="skel-card"><i></i><i></i></div>
+              <div class="skel-card"><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------- problem -->
+    <section id="problem">
+      <div class="wrap">
+        <p class="kicker" data-i18n="problem.kicker">The problem</p>
+        <h2 data-i18n="problem.title">The problem is the origin, not the file</h2>
+        <p class="section-lead" data-i18n-html="problem.lead">
+          Modern builds use ES modules. Under <code>file://</code> the browser treats the page as an
+          opaque origin: modules are blocked by CORS, <code>/assets/...</code> resolves to the root
+          of the drive, and service workers do not exist. The file is fine. The origin is not.
+        </p>
+
+        <div class="split">
+          <div class="card bad">
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              <span class="tag">file://</span>
+            </h3>
+            <p data-i18n="problem.badLead">What happens when you double-click a build today:</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i18n="problem.bad1">Module scripts blocked by CORS</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i18n="problem.bad2">Absolute paths point at the drive root</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i18n="problem.bad3">No service worker, no manifest, blank page</span></li>
+            </ul>
+          </div>
+
+          <div class="card good">
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="tag">http://127.0.0.1</span>
+            </h3>
+            <p data-i18n="problem.goodLead">What happens when Fenestra serves the same folder:</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good1">Modules load, exactly like production</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good2">SPA routes survive a refresh</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good3">Same tab, same profile, same Edge</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------------- how -->
+    <section id="how">
+      <div class="wrap">
+        <p class="kicker" data-i18n="how.kicker">How it works</p>
+        <h2 data-i18n="how.title">Three steps, none of them yours</h2>
+        <p class="section-lead" data-i18n="how.lead">
+          Fenestra attaches itself to the double-click and decides what the file needs.
+        </p>
+
+        <div class="steps">
+          <div class="step reveal">
+            <span class="num">01</span>
+            <h3 data-i18n="how.s1t">You open the file</h3>
+            <p data-i18n="how.s1d">Double-click it, drag the folder onto the executable, or pass a path on the command line.</p>
+          </div>
+          <div class="step reveal">
+            <span class="num">02</span>
+            <h3 data-i18n="how.s2t">Fenestra decides</h3>
+            <p data-i18n="how.s2d">It reads the HTML. Needs an HTTP origin? It starts a server on a stable port. Does not? It opens the file directly.</p>
+          </div>
+          <div class="step reveal">
+            <span class="num">03</span>
+            <h3 data-i18n="how.s3t">Edge shows it</h3>
+            <p data-i18n="how.s3d">A normal tab, in your window, with your profile, your extensions and your address bar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- compat -->
+    <section id="compat">
+      <div class="wrap">
+        <p class="kicker" data-i18n="compat.kicker">Compatibility</p>
+        <h2 data-i18n="compat.title">What works, what does not</h2>
+        <p class="section-lead" data-i18n="compat.lead">
+          If the folder works on any static host, it works here. If it needs a build step or a
+          backend, it does not — and Fenestra says so instead of failing silently.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="compat.h1">Case</th>
+                <th data-i18n="compat.h2">Works?</th>
+                <th data-i18n="compat.h3">Why</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>dist/ · build/ · out/</td>
+                <td><span class="pill yes" data-i18n="compat.yes">Yes</span></td>
+                <td class="why" data-i18n="compat.c1">Plain HTML, CSS and JS served from the folder.</td>
+              </tr>
+              <tr>
+                <td>SPA routes</td>
+                <td><span class="pill yes" data-i18n="compat.yes">Yes</span></td>
+                <td class="why" data-i18n="compat.c2">Extensionless paths fall back to index.html, so refresh works.</td>
+              </tr>
+              <tr>
+                <td>index.html (single file)</td>
+                <td><span class="pill yes" data-i18n="compat.yes">Yes</span></td>
+                <td class="why" data-i18n="compat.c3">Opened directly by Edge through file://, with no server at all.</td>
+              </tr>
+              <tr>
+                <td>/src/main.tsx</td>
+                <td><span class="pill no" data-i18n="compat.no">No</span></td>
+                <td class="why" data-i18n="compat.c4">Source projects need their own dev server to compile.</td>
+              </tr>
+              <tr>
+                <td>API · backend</td>
+                <td><span class="pill no" data-i18n="compat.no">No</span></td>
+                <td class="why" data-i18n="compat.c5">Fenestra serves files. It does not proxy, run services or touch a database.</td>
+              </tr>
+              <tr>
+                <td>pages/index.html with ../</td>
+                <td><span class="pill no" data-i18n="compat.no">No</span></td>
+                <td class="why" data-i18n="compat.c6">The root is the file's folder, and .. is confined for safety.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------- install -->
+    <section id="install">
+      <div class="wrap">
+        <p class="kicker" data-i18n="install.kicker">Install</p>
+        <h2 data-i18n="install.title">One executable. No installer.</h2>
+        <p class="section-lead" data-i18n="install.lead">
+          Windows 10 or 11 and Microsoft Edge. That is the whole requirement list — the .NET
+          Framework used to build it already ships with Windows.
+        </p>
+
+        <div class="two-col">
+          <div>
+            <h3 data-i18n="install.dl">Download</h3>
+            <p class="muted" data-i18n="install.dlText">Grab Fenestra.exe from the latest release and put it anywhere you like.</p>
+            <p><a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra/releases/latest">
+              <span data-i18n="install.dlBtn">Download v0.1.0</span>
+            </a></p>
+
+            <div class="side-note" data-i18n="install.signNote">
+              The binary is not code-signed yet, so Windows SmartScreen will ask for confirmation
+              once. That is expected for an alpha build.
+            </div>
+          </div>
+
+          <div>
+            <h3 data-i18n="install.build">Or build it yourself</h3>
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># requires only the csc.exe that ships with Windows</span>
+<span class="cmd">git clone https://github.com/benedetleandro/fenestra.git</span>
+<span class="cmd">cd fenestra</span>
+<span class="cmd">powershell -ExecutionPolicy Bypass -File .\build.ps1</span></pre>
+            </div>
+
+            <h3 data-i18n="install.defTitle">Make it the default for .html</h3>
+            <p class="muted" data-i18n="install.defText">One time, three clicks. Windows does not let an app do this alone.</p>
+            <ol class="def-list">
+              <li data-i18n-html="install.def1">Right-click any index.html and choose <b>Open with → Choose another app</b>.</li>
+              <li data-i18n-html="install.def2">Select <b>Fenestra</b>.</li>
+              <li data-i18n-html="install.def3">Check <b>Always use this app</b> and confirm.</li>
+            </ol>
+            <div class="side-note" data-i18n="install.note">
+              Windows allows exactly one handler per extension. The handler is invisible; the window
+              that opens is Edge.
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:56px" data-i18n="install.usage">Usage</h3>
+        <div class="code-block">
+          <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+          <pre><span class="cmt"># open a build</span>
+<span class="cmd">Fenestra.exe "C:\projects\app\dist\index.html"</span>
+
+<span class="cmt"># open a folder</span>
+<span class="cmd">Fenestra.exe "C:\projects\app\dist"</span>
+
+<span class="cmt"># force the server, skip detection</span>
+<span class="cmd">Fenestra.exe --serve "C:\path\index.html"</span>
+
+<span class="cmt"># register / unregister the .html handler</span>
+<span class="cmd">Fenestra.exe --install</span>
+<span class="cmd">Fenestra.exe --uninstall</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------- under -->
+    <section id="under">
+      <div class="wrap">
+        <p class="kicker" data-i18n="under.kicker">Under the hood</p>
+        <h2 data-i18n="under.title">Small on purpose</h2>
+        <p class="section-lead" data-i18n="under.lead">
+          One C# file, no dependencies, built by the compiler that ships with Windows. The whole
+          thing is under a thousand lines — small enough to audit in an afternoon.
+        </p>
+
+        <div class="points">
+          <div class="point"><b data-i18n="under.p1b">Server</b><span data-i18n="under.p1s">HTTP/1.1 on a TcpListener, bound to 127.0.0.1 only. Never 0.0.0.0.</span></div>
+          <div class="point"><b data-i18n="under.p2b">Paths</b><span data-i18n="under.p2s">Normalized and confined to the served root. .. , : and ::$DATA are rejected.</span></div>
+          <div class="point"><b data-i18n="under.p3b">Ports</b><span data-i18n="under.p3s">FNV-1a hash of the folder maps to a port that is stored and reused, so localStorage survives.</span></div>
+          <div class="point"><b data-i18n="under.p4b">SPA fallback</b><span data-i18n="under.p4s">Extensionless requests return index.html; missing assets still return 404.</span></div>
+          <div class="point"><b data-i18n="under.p5b">Single instance</b><span data-i18n="under.p5s">A second double-click pings the running server and just opens another tab.</span></div>
+          <div class="point"><b data-i18n="under.p6b">Lifetime</b><span data-i18n="under.p6s">Exits when the Edge it started closes, or after four idle hours.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ security -->
+    <section id="security">
+      <div class="wrap">
+        <p class="kicker" data-i18n="sec.kicker">Security</p>
+        <h2 data-i18n="sec.title">Local means local</h2>
+        <p class="section-lead" data-i18n="sec.lead">
+          Loopback only, no telemetry, no accounts, no remote code. It serves the folder you opened
+          and nothing else — but every file under that folder is reachable, including dotfiles.
+        </p>
+        <div class="side-note" data-i18n="sec.note">
+          Do not point Fenestra at a directory that contains secrets. The full threat model is in
+          SECURITY.md in the repository.
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------- faq -->
+    <section id="faq">
+      <div class="wrap">
+        <p class="kicker" data-i18n="faq.kicker">FAQ</p>
+        <h2 data-i18n="faq.title">Questions people actually ask</h2>
+
+        <div class="faq-list">
+          <details>
+            <summary data-i18n="faq.q1">Does it work with any static site?</summary>
+            <p data-i18n="faq.a1">Yes. Any folder with an index.html is served as-is. Each folder gets its own stable port, so two apps can be open at the same time without fighting.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q2">Do I need Node.js or any runtime?</summary>
+            <p data-i18n="faq.a2">No. Fenestra is a single 47 KB executable built against the .NET Framework that ships with Windows. Nothing to install, nothing to keep updated.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q3">Why does Windows ask me to confirm the .html handler?</summary>
+            <p data-i18n="faq.a3">Because Windows allows exactly one program per extension and does not let an app claim it silently. That is protection against exactly the kind of software that hijacks file associations.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q4">Does it change my files?</summary>
+            <p data-i18n="faq.a4">No. It opens them read-only, serves them, and writes nothing to the project. The only state it keeps is a port number per folder, under %LOCALAPPDATA%.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q5">Why Edge and not a built-in engine?</summary>
+            <p data-i18n="faq.a5">Edge is already installed and updated by Windows. Using it means the browser engine is Microsoft's responsibility, not the project's — no Chromium to patch, no extra 150 MB.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q6">Is Fenestra a browser?</summary>
+            <p data-i18n="faq.a6">No. It is a server that opens a tab in your browser. There is no address bar of its own, no tabs, no rendering engine. That is the point.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q7">Will it run on macOS or Linux?</summary>
+            <p data-i18n="faq.a7">Not yet. The server itself is portable, but the Edge launcher and the registry integration are Windows-specific. It is on the roadmap.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+          <path d="M3 9h18M9.5 9v11"/>
+        </svg>
+        <span data-i18n="footer.tag">Fenestra · made for the double-click</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/benedetleandro/fenestra/releases/latest" target="_blank" rel="noopener" data-i18n="footer.release">Release</a>
+        <a href="https://github.com/benedetleandro/fenestra/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">MIT License</a>
+        <a href="https://github.com/benedetleandro/fenestra/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.security">Security</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
