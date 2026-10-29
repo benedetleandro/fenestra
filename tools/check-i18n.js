@@ -7,7 +7,7 @@ const js = fs.readFileSync(path.join(root, "docs", "app.js"), "utf8");
 
 const keys = [
   ...new Set(
-    [...html.matchAll(/data-i18n(?:-html)?="([^"]+)"/g)].map((m) => m[1])
+    [...html.matchAll(/data-i18n(?:-html|-aria)?="([^"]+)"/g)].map((m) => m[1])
   )
 ];
 

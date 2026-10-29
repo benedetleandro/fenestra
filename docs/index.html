@@ -4,12 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fenestra — double-click a local site, it opens in your browser</title>
-  <meta name="description" content="Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported.">
+  <meta name="description" content="Fenestra is a tiny local server for Windows, Linux and macOS that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported.">
   <meta name="theme-color" content="#08090c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body id="top">
+
+  <div class="progress" id="progress"></div>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -32,7 +34,7 @@
       </nav>
 
       <div class="header-right">
-        <div class="lang" role="group" aria-label="Language">
+        <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang.label">
           <button type="button" data-lang="en" aria-pressed="true">
             <svg viewBox="0 0 60 40" aria-hidden="true">
               <rect width="60" height="40" fill="#012169"/>
@@ -54,6 +56,8 @@
           </button>
         </div>
 
+        <a class="header-cta" href="https://github.com/benedetleandro/fenestra/releases/latest" data-i18n="nav.download">Download</a>
+
         <a class="gh-link" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
           <svg viewBox="0 0 16 16" aria-hidden="true">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
@@ -72,7 +76,7 @@
         <div>
           <div class="badge">
             <span class="dot"></span>
-            <span data-i18n="hero.badge">Windows &amp; Linux · Edge, Chrome, Firefox · No dependencies</span>
+            <span data-i18n="hero.badge">Windows · Linux · macOS · Edge, Chrome, Firefox</span>
           </div>
 
           <h1 data-i18n-html="hero.title">Double-click.<br><span class="shine">It just runs.</span></h1>
@@ -105,7 +109,7 @@
         <div class="browser" aria-hidden="true">
           <div class="browser-top">
             <div class="browser-dots"><i></i><i></i><i></i></div>
-            <div class="browser-tab"><b></b><span>Calendário</span></div>
+            <div class="browser-tab"><b></b><span data-i18n="mock.tab">My app</span></div>
           </div>
           <div class="browser-url">
             <span class="lock"></span>
@@ -215,32 +219,32 @@
             </thead>
             <tbody>
               <tr>
-                <td>dist/ · build/ · out/</td>
+                <td data-i18n="compat.case1">dist/ · build/ · out/</td>
                 <td><span class="pill yes" data-i18n="compat.yes">Yes</span></td>
                 <td class="why" data-i18n="compat.c1">Plain HTML, CSS and JS served from the folder.</td>
               </tr>
               <tr>
-                <td>SPA routes</td>
+                <td data-i18n="compat.case2">SPA routes</td>
                 <td><span class="pill yes" data-i18n="compat.yes">Yes</span></td>
                 <td class="why" data-i18n="compat.c2">Extensionless paths fall back to index.html, so refresh works.</td>
               </tr>
               <tr>
-                <td>index.html (single file)</td>
+                <td data-i18n="compat.case3">index.html (single file)</td>
                 <td><span class="pill yes" data-i18n="compat.yes">Yes</span></td>
                 <td class="why" data-i18n="compat.c3">Opened directly by Edge through file://, with no server at all.</td>
               </tr>
               <tr>
-                <td>/src/main.tsx</td>
+                <td data-i18n="compat.case4">/src/main.tsx</td>
                 <td><span class="pill no" data-i18n="compat.no">No</span></td>
                 <td class="why" data-i18n="compat.c4">Source projects need their own dev server to compile.</td>
               </tr>
               <tr>
-                <td>API · backend</td>
+                <td data-i18n="compat.case5">API · backend</td>
                 <td><span class="pill no" data-i18n="compat.no">No</span></td>
                 <td class="why" data-i18n="compat.c5">Fenestra serves files. It does not proxy, run services or touch a database.</td>
               </tr>
               <tr>
-                <td>pages/index.html with ../</td>
+                <td data-i18n="compat.case6">pages/index.html with ../</td>
                 <td><span class="pill no" data-i18n="compat.no">No</span></td>
                 <td class="why" data-i18n="compat.c6">The root is the file's folder, and .. is confined for safety.</td>
               </tr>
@@ -262,7 +266,10 @@
 
         <div class="platforms">
           <article class="platform">
-            <header><span class="os">Windows</span><span class="pill yes">.exe</span></header>
+            <header>
+              <span class="os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</span>
+              <span class="pill yes" data-i18n="plat.win.tag">.exe</span>
+            </header>
             <p data-i18n="plat.win.desc">A single 51 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
             <ul>
               <li data-i18n-html="plat.win.run">Download <code>Fenestra.exe</code> and run it, or make it the <code>.html</code> handler.</li>
@@ -272,7 +279,10 @@
           </article>
 
           <article class="platform">
-            <header><span class="os">Linux</span><span class="pill yes">static</span></header>
+            <header>
+              <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</span>
+              <span class="pill yes" data-i18n="plat.linux.tag">static</span>
+            </header>
             <p data-i18n="plat.linux.desc">One static binary, no runtime, for amd64 and arm64.</p>
             <ul>
               <li data-i18n-html="plat.linux.run"><code>chmod +x fenestra-linux-amd64</code> and run it, or use <code>--install</code> to register the handler.</li>
@@ -282,7 +292,10 @@
           </article>
 
           <article class="platform">
-            <header><span class="os">macOS</span><span class="pill yes">build</span></header>
+            <header>
+              <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</span>
+              <span class="pill yes" data-i18n="plat.macos.tag">build</span>
+            </header>
             <p data-i18n="plat.macos.desc">No prebuilt binary, on purpose: Apple notarization costs US$ 99/year. You build it locally.</p>
             <ul>
               <li data-i18n-html="plat.macos.run"><code>cd macos &amp;&amp; ./build.command</code> builds the CLI and <code>Fenestra.app</code>.</li>
@@ -304,8 +317,8 @@
         <p class="kicker" data-i18n="install.kicker">Install</p>
         <h2 data-i18n="install.title">One executable. No installer.</h2>
         <p class="section-lead" data-i18n="install.lead">
-          Windows 10/11 or Linux, and any modern browser. That is the whole requirement list — the .NET
-          Framework used to build it already ships with Windows.
+          Windows 10/11, Linux, and macOS (built from source). Any modern browser. That is the whole
+          requirement list — the .NET Framework used to build it already ships with Windows.
         </p>
 
         <div class="two-col">
@@ -494,7 +507,7 @@
           </details>
           <details>
             <summary data-i18n="faq.q7">Will it run on macOS or Linux?</summary>
-            <p data-i18n="faq.a7">Not yet. The server itself is portable, but the Edge launcher and the registry integration are Windows-specific. It is on the roadmap.</p>
+            <p data-i18n="faq.a7">Yes. Linux has static binaries (amd64 and arm64) with a --install flag. macOS has no prebuilt binary: the macos/ kit builds on your machine, with no Apple account and no US$ 99/year notarization.</p>
           </details>
         </div>
       </div>
@@ -516,6 +529,7 @@
         <a href="https://github.com/benedetleandro/fenestra/releases/latest" target="_blank" rel="noopener" data-i18n="footer.release">Release</a>
         <a href="https://github.com/benedetleandro/fenestra/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">MIT License</a>
         <a href="https://github.com/benedetleandro/fenestra/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.security">Security</a>
+        <a href="#top" data-i18n="footer.top">Back to top ↑</a>
       </div>
     </div>
   </footer>

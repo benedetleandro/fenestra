@@ -7,9 +7,11 @@
     "nav.plat": "Plataformas",
     "nav.install": "Instalar",
     "nav.macos": "macOS",
+    "nav.download": "Baixar",
+    "lang.label": "Idioma",
     "nav.faq": "Dúvidas",
 
-    "hero.badge": "Windows & Linux · Edge, Chrome, Firefox · Sem dependências",
+    "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
     "hero.title": "Dois cliques.<br><span class=\"shine\">E roda.</span>",
     "hero.lead": "O Fenestra é um servidor local minúsculo que transforma qualquer <code>dist/index.html</code> num site funcionando no seu navegador. Sem terminal, sem extensão, sem navegador próprio.",
     "hero.download": "Baixar v0.4.0",
@@ -18,6 +20,7 @@
     "hero.meta2": "sem SDK .NET",
     "hero.meta3": "um arquivo, sem instalador",
     "hero.macos": "No macOS? Compile você mesmo →",
+    "mock.tab": "Meu app",
 
     "problem.kicker": "O problema",
     "problem.title": "O problema é a origem, não o arquivo",
@@ -55,6 +58,12 @@
     "compat.c4": "Projeto fonte precisa do dev server dele para compilar.",
     "compat.c5": "O Fenestra serve arquivos. Não faz proxy, não roda serviços, não toca em banco.",
     "compat.c6": "A raiz é a pasta do arquivo, e o .. é bloqueado por segurança.",
+    "compat.case1": "dist/ · build/ · out/",
+    "compat.case2": "rotas SPA",
+    "compat.case3": "index.html (arquivo único)",
+    "compat.case4": "/src/main.tsx",
+    "compat.case5": "API · backend",
+    "compat.case6": "pages/index.html com ../",
 
     "plat.kicker": "Plataformas",
     "plat.title": "Uma ideia, três sistemas",
@@ -70,6 +79,9 @@
     "plat.macos.build": "Só Go — sem Xcode, sem conta Apple, sem quarentena depois de um clone.",
     "plat.audit": "Auditar o código →",
     "plat.note": "Toda release também traz o código-fonte completo em zip e tar.gz. Nada aqui é fechado.",
+    "plat.win.tag": ".exe",
+    "plat.linux.tag": "estático",
+    "plat.macos.tag": "build",
 
     "mac.title": "Compile você mesmo — essa é a ideia",
     "mac.lead": "Não existe binário notarizado. A Apple cobra US$ 99/ano por isso, e um download sem assinatura é bloqueado pelo Gatekeeper. Então você compila localmente, a partir de um código que pode ler.",
@@ -87,7 +99,7 @@
 
     "install.kicker": "Instalação",
     "install.title": "Um executável. Sem instalador.",
-    "install.lead": "Windows 10/11 ou Linux, e qualquer navegador moderno. É a lista de requisitos inteira — o .NET Framework usado para compilar já vem no Windows.",
+    "install.lead": "Windows 10/11, Linux e macOS (compilado do código). Qualquer navegador moderno. É a lista de requisitos inteira — o .NET Framework usado para compilar já vem no Windows.",
     "install.linux": "No Linux existe uma build nativa: um binário estático, sem Wine e sem runtime. Baixe <code>fenestra-linux-amd64</code> na release e rode com <code>chmod +x</code>.",
     "install.macos": "No macOS não existe binário pronto: a notarização da Apple custa US$ 99/ano. A pasta <code>macos/</code> é um kit de montagem — instale o Go e rode um comando.",
     "install.dl": "Baixar",
@@ -139,12 +151,13 @@
     "faq.q6": "O Fenestra é um navegador?",
     "faq.a6": "Não. É um servidor que abre uma aba no seu navegador. Não tem barra de endereço própria, nem abas, nem motor de renderização. Essa é a ideia.",
     "faq.q7": "Roda no macOS ou Linux?",
-    "faq.a7": "Ainda não. O servidor é portável, mas o lançador do Edge e a integração com o registro são específicos do Windows. Está no roadmap.",
+    "faq.a7": "Sim. No Linux há binários estáticos (amd64 e arm64) com instalação via --install. No macOS não há binário pronto: o kit em macos/ compila na sua máquina, sem conta Apple e sem os US$ 99/ano da notarização.",
 
     "footer.tag": "Fenestra · feito para o duplo clique",
     "footer.release": "Release",
     "footer.license": "Licença MIT",
     "footer.security": "Segurança",
+    "footer.top": "Voltar ao topo ↑",
 
     "code.copy": "Copiar"
   };
@@ -152,24 +165,29 @@
   var META = {
     en: {
       title: "Fenestra — double-click a local site, it opens in your browser",
-      desc: "Fenestra is a tiny local server for Windows that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported."
+      desc: "Fenestra is a tiny local server for Windows, Linux and macOS that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported."
     },
     pt: {
       title: "Fenestra — dois cliques num site local, ele abre no seu navegador",
-      desc: "O Fenestra é um servidor local minúsculo para Windows que transforma qualquer dist/index.html num site funcionando no seu navegador. Edge por padrão; Chrome, Firefox, Brave, Vivaldi, Opera e Chromium também."
+      desc: "O Fenestra é um servidor local minúsculo para Windows, Linux e macOS que transforma qualquer dist/index.html num site funcionando no seu navegador. Edge por padrão; Chrome, Firefox, Brave, Vivaldi, Opera e Chromium também."
     }
   };
 
   var textNodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));
   var htmlNodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n-html]"));
+  var ariaNodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n-aria]"));
   var EN = {};
   var EN_HTML = {};
+  var EN_ARIA = {};
 
   textNodes.forEach(function (el) {
     EN[el.getAttribute("data-i18n")] = el.textContent;
   });
   htmlNodes.forEach(function (el) {
     EN_HTML[el.getAttribute("data-i18n-html")] = el.innerHTML;
+  });
+  ariaNodes.forEach(function (el) {
+    EN_ARIA[el.getAttribute("data-i18n-aria")] = el.getAttribute("aria-label");
   });
 
   function apply(lang) {
@@ -183,6 +201,11 @@
     htmlNodes.forEach(function (el) {
       var key = el.getAttribute("data-i18n-html");
       el.innerHTML = pt && PT[key] != null ? PT[key] : EN_HTML[key];
+    });
+
+    ariaNodes.forEach(function (el) {
+      var key = el.getAttribute("data-i18n-aria");
+      el.setAttribute("aria-label", pt && PT[key] != null ? PT[key] : EN_ARIA[key]);
     });
 
     document.documentElement.lang = pt ? "pt-BR" : "en";
@@ -257,7 +280,28 @@
     });
   });
 
+  /* --------------------------------------------------------- progress */
+
+  var progress = document.getElementById("progress");
+
+  function paintProgress() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var ratio = max > 0 ? doc.scrollTop / max : 0;
+    if (progress) progress.style.width = (ratio * 100).toFixed(2) + "%";
+  }
+
+  window.addEventListener("scroll", paintProgress, { passive: true });
+  window.addEventListener("resize", paintProgress);
+  paintProgress();
+
   /* ---------------------------------------------------------- reveal */
+
+  [".split", ".table-wrap", ".platforms", ".points", ".faq-list", ".two-col"].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      el.classList.add("reveal");
+    });
+  });
 
   var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
 
