@@ -41,6 +41,6 @@ $cscArgs.Add((Join-Path $root 'src\Fenestra.cs'))
 $cscArgs.Add($buildInfo)
 
 & $csc $cscArgs.ToArray()
-if ($LASTEXITCODE -ne 0) { throw "csc falhou: $LASTEXITCODE" }
+if ($LASTEXITCODE -ne 0) { throw "csc failed: $LASTEXITCODE" }
 
 Get-Item $out | Select-Object FullName, Length

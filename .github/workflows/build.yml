@@ -53,7 +53,7 @@ jobs:
 
       - name: Test
         working-directory: linux
-        run: go test ./...
+        run: go test -race ./...
 
       - name: Build amd64
         working-directory: linux

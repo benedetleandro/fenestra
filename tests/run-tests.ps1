@@ -24,6 +24,14 @@ Set-Content -Path (Join-Path $tmp 'index.html') -Value $index -Encoding UTF8
 Set-Content -Path (Join-Path $tmp 'assets\app.js') -Value 'console.log("ok")' -Encoding UTF8
 Set-Content -Path (Join-Path $tmp 'assets\app.css') -Value 'body{background:#000}' -Encoding UTF8
 Set-Content -Path (Join-Path $tmp 'data.json') -Value '{"ok":true}' -Encoding UTF8
+Set-Content -Path (Join-Path $tmp '.env') -Value 'SECRET=1' -Encoding UTF8
+New-Item -ItemType Directory -Force -Path (Join-Path $tmp '.git') | Out-Null
+Set-Content -Path (Join-Path $tmp '.git\config') -Value 'secret' -Encoding UTF8
+New-Item -ItemType Directory -Force -Path (Join-Path $tmp '.well-known') | Out-Null
+Set-Content -Path (Join-Path $tmp '.well-known\ok.txt') -Value 'ok' -Encoding UTF8
+New-Item -ItemType Directory -Force -Path (Join-Path $tmp 'listing') | Out-Null
+Set-Content -Path (Join-Path $tmp 'listing\visible.txt') -Value 'v' -Encoding UTF8
+Set-Content -Path (Join-Path $tmp 'listing\.hidden') -Value 'h' -Encoding UTF8
 
 $script:fail = 0
 
@@ -74,6 +82,10 @@ try {
     Check 'traversal returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' --path-as-is "$base/../SECRET/")
     Check 'encoded traversal returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' --path-as-is "$base/%2e%2e/SECRET/")
     Check 'alternate data stream returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' --path-as-is "$base/index.html::`$DATA")
+    Check '.env returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' "$base/.env")
+    Check '.git/config returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' "$base/.git/config")
+    Check '.well-known still works' '200' (curl.exe -s -o NUL -w '%{http_code}' "$base/.well-known/ok.txt")
+    Check 'listing hides dotfiles' 'False' ([bool]((curl.exe -s "$base/listing/") -match '\.hidden'))
 
     $r = Invoke-WebRequest -Uri "$base/" -UseBasicParsing
     $etag = [string]$r.Headers['ETag']

@@ -144,8 +144,9 @@ func run(target string, force bool) {
 			fatal(fmt.Errorf("port %d is not available: %v", forcedPort, err))
 		}
 		port = forcedPort
+		writeLock(lock, port)
 	} else {
-		if p, ok := readLock(lock); ok && ping(p) {
+		if p, ok := readLock(lock); ok && ping(p, root) {
 			launch(fmt.Sprintf("http://127.0.0.1:%d/%s", p, urlPath(entry)))
 			return
 		}
@@ -228,7 +229,7 @@ func handler(root, defaultDoc string) http.Handler {
 		}
 
 		if r.URL.Path == "/__fenestra/ping" {
-			io.WriteString(w, "fenestra-ok")
+			io.WriteString(w, "fenestra-ok\n"+root)
 			return
 		}
 
@@ -245,6 +246,11 @@ func handler(root, defaultDoc string) http.Handler {
 		clean := path.Clean("/" + r.URL.Path)
 		rel := strings.TrimPrefix(clean, "/")
 		full := filepath.Join(root, filepath.FromSlash(rel))
+
+		if isHidden(rel) {
+			http.Error(w, "access denied", http.StatusForbidden)
+			return
+		}
 
 		if strings.Contains(rel, ":") || strings.ContainsRune(rel, 0) || !isInside(root, full) {
 			http.Error(w, "access denied", http.StatusForbidden)
@@ -327,6 +333,9 @@ func listDir(w http.ResponseWriter, dir, urlPath string) {
 
 	for _, e := range entries {
 		name := e.Name()
+		if strings.HasPrefix(name, ".") {
+			continue
+		}
 		if e.IsDir() {
 			b.WriteString("<li><a href=\"" + urlPathEscape(name) + "/\">" + html.EscapeString(name) + "/</a></li>")
 		} else {
@@ -397,6 +406,16 @@ func needsServer(file string) bool {
 func hasDotDot(p string) bool {
 	for _, part := range strings.Split(p, "/") {
 		if part == ".." {
+			return true
+		}
+	}
+	return false
+}
+
+// isHidden blocks dotfiles and dot-directories, except .well-known.
+func isHidden(rel string) bool {
+	for _, part := range strings.Split(rel, "/") {
+		if strings.HasPrefix(part, ".") && part != ".well-known" {
 			return true
 		}
 	}
@@ -558,20 +577,34 @@ func mimeFor(name string) string {
 
 func hash32(s string) uint32 {
 	h := uint32(2166136261)
-	for _, c := range strings.ToLower(s) {
+	for _, c := range s {
 		h ^= uint32(c)
 		h *= 16777619
 	}
 	return h
 }
 
+// hashForPath lowercases only where the file system is case-insensitive.
+func hashForPath(s string) uint32 {
+	if runtime.GOOS == "linux" {
+		return hash32(s)
+	}
+	return hash32(strings.ToLower(s))
+}
+
+const (
+	portMin   = 51000
+	portSpan  = 12000
+	portTries = 400
+)
+
+func candidatePort(root string, i int) int {
+	return portMin + int((hashForPath(root)+uint32(i))%portSpan)
+}
+
 func listen(root string) (net.Listener, int) {
-	base := 51000 + int(hash32(root)%12000)
-	for i := 0; i < 400; i++ {
-		p := base + i
-		if p > 65000 {
-			p = 51000 + (p % 12000)
-		}
+	for i := 0; i < portTries; i++ {
+		p := candidatePort(root, i)
 		if ln, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", p)); err == nil {
 			return ln, p
 		}
@@ -580,11 +613,13 @@ func listen(root string) (net.Listener, int) {
 	if err != nil {
 		fatal(err)
 	}
-	return ln, ln.Addr().(*net.TCPAddr).Port
+	port := ln.Addr().(*net.TCPAddr).Port
+	logf("no stable port available; using ephemeral port %d (the origin changes)", port)
+	return ln, port
 }
 
 func lockPath(root string) string {
-	return filepath.Join(dataDir(), "sessions", fmt.Sprintf("%08x.txt", hash32(root)))
+	return filepath.Join(dataDir(), "sessions", fmt.Sprintf("%08x.txt", hashForPath(root)))
 }
 
 func readLock(file string) (int, bool) {
@@ -608,15 +643,15 @@ func writeLock(file string, port int) {
 	os.WriteFile(file, []byte(fmt.Sprintf("%d|%d", port, os.Getpid())), 0o644)
 }
 
-func ping(port int) bool {
+func ping(port int, root string) bool {
 	client := http.Client{Timeout: 900 * time.Millisecond}
 	resp, err := client.Get(fmt.Sprintf("http://127.0.0.1:%d/__fenestra/ping", port))
 	if err != nil {
 		return false
 	}
 	defer resp.Body.Close()
-	body, err := io.ReadAll(io.LimitReader(resp.Body, 64))
-	return err == nil && strings.Contains(string(body), "fenestra-ok")
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 4096))
+	return err == nil && string(body) == "fenestra-ok\n"+root
 }
 
 // ---------------------------------------------------------------- browser

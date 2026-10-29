@@ -34,7 +34,8 @@ O que **não** é protegido, por design:
 - Todo arquivo sob a raiz servida é legível por qualquer coisa que alcance a
   porta, inclusive outros processos locais. Aponte o Fenestra para uma pasta,
   não para o seu diretório home.
-- Dotfiles (`.env`, `.git`) são servidos se estiverem sob a raiz.
+- Arquivos e pastas ocultos (`.env`, `.git/`) retornam 403 e ficam fora das
+  listagens; `.well-known/` é a exceção.
 - Não há autenticação: um processo local pode pedir qualquer arquivo da raiz.
 - Os cabeçalhos `Referer`/`Origin` não são validados, então uma página maliciosa
   pode sondar a porta local (DNS rebinding é parcialmente mitigado pelo binding

@@ -164,11 +164,12 @@ namespace Fenestra
                     throw new InvalidOperationException("Port " + _forcedPort + " is not available.");
                 }
                 port = _forcedPort;
+                WriteLock(port);
             }
             else
             {
                 int existing = ReadLockPort();
-                if (existing > 0 && Ping(existing))
+                if (existing > 0 && Ping(existing, _root))
                 {
                     OpenBrowser(existing);
                     return;
@@ -266,6 +267,15 @@ namespace Fenestra
             return null;
         }
 
+        private const int PortMin = 51000;
+        private const int PortSpan = 12000;
+        private const int PortTries = 400;
+
+        private static int CandidatePort(int i)
+        {
+            return PortMin + (int)((Hash32(_root) + (uint)i) % PortSpan);
+        }
+
         private static TcpListener StartListener(int preferred)
         {
             // The previous port is reused: a stable origin preserves
@@ -276,17 +286,16 @@ namespace Fenestra
                 if (reuse != null) return reuse;
             }
 
-            int basePort = 51000 + (int)(Hash32(_root) % 12000);
-            for (int i = 0; i < 400; i++)
+            for (int i = 0; i < PortTries; i++)
             {
-                int port = basePort + i;
-                if (port > 65000) port = 51000 + (port % 12000);
-                TcpListener l = TryBind(port);
+                TcpListener l = TryBind(CandidatePort(i));
                 if (l != null) return l;
             }
 
             TcpListener fallback = new TcpListener(IPAddress.Loopback, 0);
             fallback.Start();
+            int port = ((IPEndPoint)fallback.LocalEndpoint).Port;
+            Log("no stable port available; using ephemeral port " + port + " (the origin changes)");
             return fallback;
         }
 
@@ -365,12 +374,12 @@ namespace Fenestra
                     if (target == "/__fenestra/ping")
                     {
                         Respond(ns, 200, "text/plain; charset=utf-8",
-                            Encoding.ASCII.GetBytes("fenestra-ok"), head);
+                            Encoding.ASCII.GetBytes("fenestra-ok\n" + _root), head);
                         return;
                     }
 
                     string rel = PercentDecode(target);
-                    if (rel.IndexOf('\0') >= 0 || rel.IndexOf(':') >= 0)
+                    if (rel.IndexOf('\0') >= 0 || rel.IndexOf(':') >= 0 || IsHidden(rel))
                     {
                         SendText(ns, 403, "Access denied");
                         return;
@@ -586,6 +595,15 @@ namespace Fenestra
             return host == "127.0.0.1" || string.Equals(host, "localhost", StringComparison.OrdinalIgnoreCase);
         }
 
+        private static bool IsHidden(string rel)
+        {
+            foreach (string part in rel.Split('/', '\\'))
+            {
+                if (part.StartsWith(".") && part != ".well-known") return true;
+            }
+            return false;
+        }
+
         private static bool HasReparsePoint(string root, string full)
         {
             if (!full.StartsWith(root, StringComparison.OrdinalIgnoreCase)) return true;
@@ -599,7 +617,9 @@ namespace Fenestra
                 {
                     if ((File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0) return true;
                 }
-                catch { return false; }
+                catch (FileNotFoundException) { return false; }
+                catch (DirectoryNotFoundException) { return false; }
+                catch { return true; }
             }
             return false;
         }
@@ -659,8 +679,16 @@ namespace Fenestra
 
             try
             {
-                foreach (string d in Directory.GetDirectories(dir)) dirs.Add(Path.GetFileName(d));
-                foreach (string f in Directory.GetFiles(dir)) files.Add(Path.GetFileName(f));
+                foreach (string d in Directory.GetDirectories(dir))
+                {
+                    string name = Path.GetFileName(d);
+                    if (!name.StartsWith(".")) dirs.Add(name);
+                }
+                foreach (string f in Directory.GetFiles(dir))
+                {
+                    string name = Path.GetFileName(f);
+                    if (!name.StartsWith(".")) files.Add(name);
+                }
             }
             catch { }
 
@@ -1105,11 +1133,11 @@ namespace Fenestra
 
         private static void Shutdown(string reason)
         {
-            Log("encerrando: " + reason);
+            Log("stopping: " + reason);
             Environment.Exit(0);
         }
 
-        private static bool Ping(int port)
+        private static bool Ping(int port, string root)
         {
             try
             {
@@ -1131,12 +1159,13 @@ namespace Fenestra
                         int n = ns.Read(buffer, 0, buffer.Length);
                         if (n <= 0) break;
                         response.Append(Encoding.ASCII.GetString(buffer, 0, n));
-                        if (response.ToString().IndexOf("fenestra-ok", StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            return true;
-                        }
                     }
-                    return false;
+
+                    string raw = response.ToString();
+                    int split = raw.IndexOf("\r\n\r\n", StringComparison.Ordinal);
+                    if (split < 0) return false;
+                    string body = raw.Substring(split + 4).TrimEnd('\r', '\n');
+                    return body == "fenestra-ok\n" + root;
                 }
             }
             catch { return false; }

@@ -4,8 +4,11 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -134,6 +137,15 @@ func TestHandler(t *testing.T) {
 	write(t, filepath.Join(root, "assets", "app.css"), "body{}")
 	write(t, filepath.Join(root, "data.json"), `{"ok":true}`)
 	write(t, filepath.Join(base, "secret.txt"), "SECRET")
+	write(t, filepath.Join(root, ".env"), "SECRET=1")
+	if err := os.MkdirAll(filepath.Join(root, ".git"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	write(t, filepath.Join(root, ".git", "config"), "secret")
+	if err := os.MkdirAll(filepath.Join(root, ".well-known"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	write(t, filepath.Join(root, ".well-known", "ok.txt"), "ok")
 
 	srv := httptest.NewServer(handler(root, "index.html"))
 	defer srv.Close()
@@ -182,6 +194,19 @@ func TestHandler(t *testing.T) {
 		t.Errorf("missing file = %d", resp.StatusCode)
 	}
 
+	resp, _ = get("/.env")
+	if resp.StatusCode != 403 {
+		t.Errorf(".env = %d, want 403", resp.StatusCode)
+	}
+	resp, _ = get("/.git/config")
+	if resp.StatusCode != 403 {
+		t.Errorf(".git/config = %d, want 403", resp.StatusCode)
+	}
+	resp, body = get("/.well-known/ok.txt")
+	if resp.StatusCode != 200 || body != "ok" {
+		t.Errorf(".well-known = %d %q", resp.StatusCode, body)
+	}
+
 	// Traversal: the handler gets the raw path, without the client cleaning it.
 	req := httptest.NewRequest("GET", "/", nil)
 	req.URL.Path = "/../secret.txt"
@@ -215,6 +240,93 @@ func TestSourceEntry(t *testing.T) {
 	got, ok := buildForSource(src)
 	if !ok || got != filepath.Join(dir, "dist") {
 		t.Errorf("buildForSource = %q, %v", got, ok)
+	}
+}
+
+func TestIsHidden(t *testing.T) {
+	cases := map[string]bool{
+		"index.html":       false,
+		".env":             true,
+		".git/config":      true,
+		"a/.b/c":           true,
+		".well-known/acme": false,
+		"a.b/c":            false,
+	}
+	for in, want := range cases {
+		if got := isHidden(in); got != want {
+			t.Errorf("isHidden(%q) = %v, want %v", in, got, want)
+		}
+	}
+}
+
+func TestCandidatePort(t *testing.T) {
+	for i := 0; i < 500; i++ {
+		p := candidatePort("/tmp/app", i)
+		if p < portMin || p >= portMin+portSpan {
+			t.Fatalf("port %d out of range", p)
+		}
+	}
+	if candidatePort("/tmp/app", 0) != candidatePort("/tmp/app", 0) {
+		t.Error("candidatePort is not deterministic")
+	}
+}
+
+func TestHashForPathCase(t *testing.T) {
+	same := hashForPath("/tmp/App") == hashForPath("/tmp/app")
+	if runtime.GOOS == "linux" && same {
+		t.Error("linux paths are case-sensitive, hashes should differ")
+	}
+	if runtime.GOOS != "linux" && !same {
+		t.Error("case-insensitive systems should hash the same")
+	}
+}
+
+func TestLockRoundTrip(t *testing.T) {
+	file := filepath.Join(t.TempDir(), "session.txt")
+	writeLock(file, 51234)
+	port, ok := readLock(file)
+	if !ok || port != 51234 {
+		t.Fatalf("readLock = %d, %v", port, ok)
+	}
+	if _, ok := readLock(filepath.Join(t.TempDir(), "missing.txt")); ok {
+		t.Error("a missing lock should not be ok")
+	}
+}
+
+func TestExtractPort(t *testing.T) {
+	forcedPort = 0
+	rest := extractPort([]string{"--port", "8080", "index.html"})
+	got := forcedPort
+	forcedPort = 0
+	if len(rest) != 1 || rest[0] != "index.html" {
+		t.Errorf("rest = %v", rest)
+	}
+	if got != 8080 {
+		t.Errorf("forcedPort = %d, want 8080", got)
+	}
+}
+
+func TestPingRoot(t *testing.T) {
+	root := "/tmp/app"
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "fenestra-ok\n"+root)
+	}))
+	defer srv.Close()
+
+	u, err := url.Parse(srv.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	port, err := strconv.Atoi(u.Port())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !ping(port, root) {
+		t.Error("the same root should pass")
+	}
+	if ping(port, "/tmp/other") {
+		t.Error("a different root should fail")
 	}
 }
 

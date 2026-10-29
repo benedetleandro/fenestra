@@ -1,7 +1,9 @@
 # build output
 bin/
+dist/
 *.exe
 *.pdb
+*.test
 src/BuildInfo.cs
 
 # local test scratch

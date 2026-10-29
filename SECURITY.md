@@ -33,7 +33,8 @@ What is **not** protected, by design:
 - Every file under the served root is readable by anything that can reach the
   port, including other local processes. Point Fenestra at a folder, not at
   your home directory.
-- Dotfiles (`.env`, `.git`) are served if they live under the root.
+- Hidden files and directories (`.env`, `.git/`) return 403 and are omitted from
+  listings; `.well-known/` is the exception.
 - There is no authentication: a local process can request any file in the root.
 - The `Referer`/`Origin` headers are not validated, so a malicious page could
   probe the local port (DNS rebinding is partially mitigated by binding to
