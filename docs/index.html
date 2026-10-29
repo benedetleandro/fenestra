@@ -7,7 +7,7 @@
   <meta name="description" content="Fenestra is a tiny local server for Windows, Linux and macOS that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported.">
   <meta name="theme-color" content="#08090c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=0.4.1">
 </head>
 <body id="top">
 
@@ -456,7 +456,16 @@
 
             <p class="side-note" data-i18n-html="mac.nogit">No git? Download the ZIP, extract, and run <code>bash build.command</code> — the shell reads the script, so Gatekeeper is not involved.</p>
 
-            <p class="side-note" data-i18n-html="mac.brew">Prefer Homebrew? <code>brew install benedetleandro/fenestra/fenestra</code> installs the CLI (run <code>brew trust</code> once). The Finder app still needs the local build.</p>
+            <h3 data-i18n="mac.brewTitle">Homebrew — CLI only</h3>
+
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmd">brew tap benedetleandro/fenestra</span>
+<span class="cmd">brew trust benedetleandro/fenestra</span>
+<span class="cmd">brew install fenestra</span></pre>
+            </div>
+
+            <p class="side-note" data-i18n="mac.brewNote">Installs the prebuilt CLI for arm64 and Intel. The Finder app still needs the build above.</p>
           </div>
         </div>
       </div>
@@ -559,6 +568,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=0.4.1"></script>
 </body>
 </html>
