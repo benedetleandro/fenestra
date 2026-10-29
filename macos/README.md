@@ -56,6 +56,26 @@ vem no macOS). Ele recebe os arquivos que o Finder entrega e chama o binário Go
 que está dentro do bundle. É isso que permite o "Abrir com" funcionar sem uma
 app Cocoa.
 
+## Se alguma coisa falhar
+
+O script imprime `FALHOU na linha N`. Copie essa mensagem.
+
+Enquanto isso, o caminho manual mostra onde está o problema:
+
+```bash
+cd fenestra/macos
+go version
+go build -o fenestra .
+./fenestra ~/caminho/dist/index.html
+```
+
+Se o `go build` funcionar e o `./fenestra` abrir a página, o problema está só
+no empacotamento do `.app` — e o programa já está utilizável.
+
+Se o `osacompile` falhar (ele pode pedir as Command Line Tools), o script avisa
+e mantém o binário. Nesse caso o Finder fica sem a associação, mas o Terminal
+funciona.
+
 ## Limitações honestas
 
 - **Não testado num Mac real** por quem escreveu esta pasta. O código é o mesmo
