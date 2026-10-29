@@ -108,3 +108,50 @@ jobs:
           name: fenestra-macos
           path: bin/fenestra-darwin-*
           if-no-files-found: error
+
+  macos-native:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Run the user-facing build kit
+        working-directory: macos
+        run: |
+          bash build.command
+          test -x fenestra
+          test -d Fenestra.app
+          file fenestra | grep -q "Mach-O"
+          file Fenestra.app/Contents/Resources/fenestra | grep -q "Mach-O"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleDocumentTypes:0:LSItemContentTypes:0" Fenestra.app/Contents/Info.plist
+
+      - name: Smoke test the binary on macOS
+        run: |
+          mkdir -p /tmp/fixture/assets
+          printf '<!doctype html><script type="module" src="/assets/app.js"></script><h1>ok</h1>' > /tmp/fixture/index.html
+          printf 'console.log(1)' > /tmp/fixture/assets/app.js
+          FENESTRA_NO_OPEN=1 ./macos/fenestra /tmp/fixture/index.html &
+          sleep 2
+          PORT=$(cat "$HOME/Library/Application Support/Fenestra/sessions/"*.txt | head -1 | cut -d'|' -f1)
+          echo "porta $PORT"
+          curl -fsS "http://127.0.0.1:$PORT/" | grep -q ok
+          curl -fsS -o /dev/null "http://127.0.0.1:$PORT/assets/app.js"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT/nao-existe.png")" = "404"
+          test "$(curl -s -o /dev/null -w '%{http_code}' --path-as-is "http://127.0.0.1:$PORT/../secret/")" = "403"
+          echo "macos smoke ok"
+
+      - name: Check signature of the built binary
+        run: |
+          codesign -dv --verbose=2 macos/fenestra 2>&1 || true
+          codesign -dv --verbose=2 macos/Fenestra.app 2>&1 || true
+
+      - name: Upload the app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Fenestra-app-macos
+          path: macos/Fenestra.app
+          if-no-files-found: error
