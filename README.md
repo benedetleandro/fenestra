@@ -130,8 +130,9 @@ Gatekeeper.
 
 Instead, [`macos/`](macos) is a build kit: install Go (official signed installer,
 no warning), then `git clone` and run one command. Cloning with git does not add
-the quarantine attribute, so the macOS never asks for permission. See
-[macos/README.md](macos/README.md).
+the quarantine attribute, so the macOS never asks for permission. Without git,
+download the ZIP and run `bash build.command` — the shell reads the script, so
+Gatekeeper is not involved either. See [macos/README.md](macos/README.md).
 
 The kit is built and exercised on a real `macos-latest` runner in CI: build,
 `codesign --verify`, the droplet receiving a file through `open -a`, and the

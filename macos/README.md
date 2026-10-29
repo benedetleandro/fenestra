@@ -4,15 +4,30 @@ Esta pasta é o kit de montagem. Você compila na sua máquina — não existe b
 pronto para baixar, e isso é de propósito: um app compilado localmente não passa
 pelo Gatekeeper.
 
-## Requisito: Go
+## Requisito: Go 1.21+
 
 O instalador oficial em <https://go.dev/dl/> é assinado e notarizado pelo Google,
 então **não aparece aviso nenhum**. É a única coisa que você instala.
 
-## Caminho A — git clone (zero avisos)
+## Caminho A — sem git (Mac novo, sem Command Line Tools)
 
-`git clone` não marca os arquivos com quarentena. Então este é o caminho em que o
-macOS não pede nada:
+Mac recém-formatado não tem `git`: o comando dispara a instalação das Command
+Line Tools (~1,5 GB). Dá para pular isso:
+
+1. Baixe o ZIP: <https://github.com/benedetleandro/fenestra/archive/refs/heads/main.zip>
+2. Extraia
+3. No Terminal:
+
+```bash
+cd ~/Downloads/fenestra-main/macos
+bash build.command
+```
+
+O `bash` é do sistema, e o script é **lido**, não executado pelo Finder — então o
+Gatekeeper não entra no caminho. O `fenestra` e o `Fenestra.app` nascem locais,
+sem quarentena.
+
+## Caminho B — git clone (para quem já tem git)
 
 ```bash
 git clone https://github.com/benedetleandro/fenestra.git
@@ -20,19 +35,10 @@ cd fenestra/macos
 ./build.command
 ```
 
-O script compila `fenestra` e monta `Fenestra.app`.
+## Caminho C — duplo clique
 
-> Baixar o ZIP do GitHub é diferente: o ZIP e tudo que sai dele ganham
-> quarentena, e aí o macOS vai pedir uma liberação. Prefira `git clone`.
-
-## Caminho B — sem Terminal nenhum
-
-Se você já tem Go, ainda dá para usar só o Finder:
-
-1. Duplo clique em `build.command`.
-2. Na primeira vez o macOS pode bloquear: **Ajustes → Privacidade e Segurança →
-   Abrir assim mesmo**.
-3. O script compila e monta `Fenestra.app`.
+Só se você já tem Go e quer evitar o Terminal. O macOS pode pedir uma liberação
+uma vez: **Ajustes → Privacidade e Segurança → Abrir assim mesmo**.
 
 ## Usar
 

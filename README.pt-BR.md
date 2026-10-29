@@ -128,7 +128,8 @@ notarização da Apple (US$ 99/ano); sem ela, o download é bloqueado pelo Gatek
 Em vez disso, [`macos/`](macos) é um kit de montagem: instale o Go (instalador
 oficial assinado, sem aviso), faça `git clone` e rode um comando. O `git clone`
 não marca os arquivos com quarentena, então o macOS não pede permissão nenhuma.
-Veja [macos/README.md](macos/README.md).
+Sem git, baixe o ZIP e rode `bash build.command` — o shell lê o script, então o
+Gatekeeper também não entra. Veja [macos/README.md](macos/README.md).
 
 O kit é compilado e exercitado num runner `macos-latest` real no CI: build,
 `codesign --verify`, o droplet recebendo um arquivo via `open -a` e o servidor
