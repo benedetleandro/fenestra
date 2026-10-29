@@ -1,0 +1,13 @@
+# build output
+bin/
+*.exe
+*.pdb
+
+# local test scratch
+tests/tmp/
+*.log
+
+# editor
+.vs/
+.vscode/
+*.user
