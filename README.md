@@ -133,8 +133,10 @@ no warning), then `git clone` and run one command. Cloning with git does not add
 the quarantine attribute, so the macOS never asks for permission. See
 [macos/README.md](macos/README.md).
 
-macOS is not covered by CI on a real Mac; the code is the same as the Linux
-build, which is.
+The kit is built and exercised on a real `macos-latest` runner in CI: build,
+`codesign --verify`, the droplet receiving a file through `open -a`, and the
+server answering HTTP. Only the Finder UI itself is untested (runners are
+headless).
 
 ## When it works
 

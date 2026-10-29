@@ -78,9 +78,10 @@ funciona.
 
 ## Limitações honestas
 
-- **Não testado num Mac real** por quem escreveu esta pasta. O código é o mesmo
-  da build Linux, que roda em CI; o que muda é o `open -a`, os caminhos em
-  `~/Library/Application Support` e o droplet.
+- **Testado no CI, num `macos-latest` real**: build, `codesign --verify`, droplet
+  recebendo o arquivo via Finder (`open -a`) e o servidor respondendo HTTP.
+- **Não testado numa sessão gráfica**: o clique no Finder, o menu "Abrir com" e o
+  diálogo do Gatekeeper só existem numa tela — o runner é headless.
 - O `.app` é gerado pelo `osacompile`; se o seu macOS não tiver a ferramenta, o
   script avisa e gera só o binário.
 - Cada pessoa compila o seu. Mandar o `.app` por AirDrop para outra máquina

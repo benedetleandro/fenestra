@@ -156,17 +156,18 @@ jobs:
           codesign -dv --verbose=2 macos/fenestra 2>&1 || true
           codesign -dv --verbose=2 macos/Fenestra.app 2>&1 || true
 
-      - name: Droplet end-to-end (best effort)
-        continue-on-error: true
+      - name: Droplet end-to-end
         run: |
           mkdir -p /tmp/fixture2
           printf '<!doctype html><h1>droplet</h1>' > /tmp/fixture2/index.html
           LOG="$HOME/Library/Application Support/Fenestra/fenestra.log"
-          open -a "$PWD/macos/Fenestra.app" /tmp/fixture2/index.html || true
+          open -a "$PWD/macos/Fenestra.app" /tmp/fixture2/index.html
           sleep 6
-          echo "--- log ---"
-          tail -10 "$LOG" || true
           grep -q "fixture2" "$LOG"
+          PORT=$(grep "servindo /private/tmp/fixture2" "$LOG" | tail -1 | sed 's/.*://')
+          echo "porta do droplet: $PORT"
+          curl -fsS "http://127.0.0.1:$PORT/" | grep -q droplet
+          echo "droplet ok"
 
       - name: Upload the app bundle
         uses: actions/upload-artifact@v4

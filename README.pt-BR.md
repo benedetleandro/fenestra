@@ -130,7 +130,9 @@ oficial assinado, sem aviso), faça `git clone` e rode um comando. O `git clone`
 não marca os arquivos com quarentena, então o macOS não pede permissão nenhuma.
 Veja [macos/README.md](macos/README.md).
 
-O macOS não é coberto por CI num Mac real; o código é o mesmo da build Linux, que é.
+O kit é compilado e exercitado num runner `macos-latest` real no CI: build,
+`codesign --verify`, o droplet recebendo um arquivo via `open -a` e o servidor
+respondendo HTTP. Só a interface do Finder fica sem teste (runner é headless).
 
 ## Quando funciona
 
