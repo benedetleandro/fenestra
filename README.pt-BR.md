@@ -91,6 +91,35 @@ duplo cliques seguintes — não precisa passar a flag de novo.
 Defina `FENESTRA_NO_OPEN=1` e o servidor sobe sem abrir navegador. A porta fica
 em `%LOCALAPPDATA%\Fenestra\sessions\<hash>.txt`.
 
+## Linux
+
+Existe uma build nativa separada em [`linux/`](linux): um binário estático, sem
+runtime e sem Wine. Escrito em Go e compilado para `linux/amd64` e `linux/arm64`.
+
+```bash
+chmod +x fenestra-linux-amd64
+./fenestra-linux-amd64 ~/projetos/app/dist/index.html
+```
+
+O comportamento é o mesmo da build Windows: porta estável por pasta, fallback de
+SPA, confinamento de caminho e escolha de navegador.
+
+```bash
+./fenestra-linux-amd64 --browsers
+./fenestra-linux-amd64 --browser firefox
+./fenestra-linux-amd64 --install      # .desktop + xdg-mime
+```
+
+O `--install` grava `~/.local/share/applications/fenestra.desktop` e chama
+`xdg-mime default`. Precisa de `xdg-utils`, que a maioria dos desktops já tem.
+
+Compilar do código:
+
+```bash
+cd linux
+CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fenestra .
+```
+
 ## Quando funciona
 
 | Caso | Funciona? | Por quê |
@@ -128,7 +157,7 @@ O modelo de ameaça completo está em [SECURITY.md](SECURITY.md).
 ## Roadmap
 
 - [ ] `--root <pasta>` para builds cuja entrada fica em subpasta
-- [ ] Linux (o servidor é portável; o lançador e o registro não são)
+- [x] Linux: build nativa em Go em [`linux/`](linux), amd64 e arm64
 - [ ] macOS **não** está no plano: exige notarização da Apple
 - [ ] Assinatura de código para remover o aviso do SmartScreen
 - [ ] Modo portátil (sem `%LOCALAPPDATA%`)

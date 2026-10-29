@@ -27,3 +27,49 @@ jobs:
           name: Fenestra-win-x64
           path: bin/Fenestra.exe
           if-no-files-found: error
+
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Test
+        working-directory: linux
+        run: go test ./...
+
+      - name: Build amd64
+        working-directory: linux
+        run: CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o ../bin/fenestra-linux-amd64 .
+
+      - name: Build arm64
+        working-directory: linux
+        run: CGO_ENABLED=0 GOARCH=arm64 go build -trimpath -ldflags "-s -w" -o ../bin/fenestra-linux-arm64 .
+
+      - name: Smoke test the binary
+        run: |
+          mkdir -p /tmp/fixture/assets
+          printf '<!doctype html><script type="module" src="/assets/app.js"></script><h1>ok</h1>' > /tmp/fixture/index.html
+          printf 'console.log(1)' > /tmp/fixture/assets/app.js
+          FENESTRA_NO_OPEN=1 ./bin/fenestra-linux-amd64 /tmp/fixture/index.html &
+          sleep 2
+          PORT=$(cat ~/.local/share/fenestra/sessions/*.txt | head -1 | cut -d'|' -f1)
+          echo "porta $PORT"
+          curl -fsS "http://127.0.0.1:$PORT/" | grep -q "ok"
+          curl -fsS -o /dev/null "http://127.0.0.1:$PORT/assets/app.js"
+          test "$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT/nao-existe.png")" = "404"
+          test "$(curl -s -o /dev/null -w '%{http_code}' --path-as-is "http://127.0.0.1:$PORT/../secret/")" = "403"
+          echo "linux smoke ok"
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: fenestra-linux
+          path: |
+            bin/fenestra-linux-amd64
+            bin/fenestra-linux-arm64
+          if-no-files-found: error

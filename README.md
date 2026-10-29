@@ -40,7 +40,8 @@ service worker survive between sessions.
 ## Install
 
 Requirements: Windows 10/11. The .NET Framework 4.x and Edge are already there —
-and any Chromium-based browser or Firefox works too.
+and any Chromium-based browser or Firefox works too. On Linux there is a separate
+native build, see [Linux](#linux).
 
 ```powershell
 git clone https://github.com/benedetleandro/fenestra.git
@@ -91,6 +92,36 @@ every double-click, so you do not need to pass a flag again.
 Set `FENESTRA_NO_OPEN=1` and the server starts without opening a browser.
 The port is written to `%LOCALAPPDATA%\Fenestra\sessions\<hash>.txt`.
 
+## Linux
+
+A separate, native build lives in [`linux/`](linux): one static binary, no
+runtime, no Wine. Written in Go and cross-compiled to `linux/amd64` and
+`linux/arm64`.
+
+```bash
+chmod +x fenestra-linux-amd64
+./fenestra-linux-amd64 ~/projects/app/dist/index.html
+```
+
+Same behavior as the Windows build: stable port per folder, SPA fallback, path
+confinement and browser choice.
+
+```bash
+./fenestra-linux-amd64 --browsers
+./fenestra-linux-amd64 --browser firefox
+./fenestra-linux-amd64 --install      # .desktop + xdg-mime
+```
+
+`--install` writes `~/.local/share/applications/fenestra.desktop` and calls
+`xdg-mime default`. It needs `xdg-utils`, which most desktops already have.
+
+Build from source:
+
+```bash
+cd linux
+CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fenestra .
+```
+
 ## When it works
 
 | Case | Works? | Why |
@@ -128,7 +159,7 @@ directory with secrets. See [SECURITY.md](SECURITY.md) for the full threat model
 ## Roadmap
 
 - [ ] `--root <folder>` for builds whose entry lives in a subfolder
-- [ ] Linux (the server is portable; the launcher and registry code are not)
+- [x] Linux: native Go build in [`linux/`](linux), amd64 and arm64
 - [ ] macOS is **not** planned: it requires Apple Developer notarization
 - [ ] Code signing for releases, to remove the SmartScreen warning
 - [ ] Portable mode (no `%LOCALAPPDATA%`)
