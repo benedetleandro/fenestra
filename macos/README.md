@@ -56,6 +56,18 @@ Para o Finder:
 2. Botão direito num `index.html` → **Abrir com** → **Fenestra**.
 3. Marque **Sempre usar este aplicativo**.
 
+## Homebrew (só o CLI)
+
+```bash
+brew tap benedetleandro/fenestra
+brew trust benedetleandro/fenestra
+brew install fenestra
+```
+
+O `brew trust` é exigência do Homebrew para taps de terceiros — uma vez só. Isso
+instala apenas a linha de comando; o `Fenestra.app` continua vindo do
+`./build.command`.
+
 ## Como funciona o `.app`
 
 O `Fenestra.app` é um *droplet* em AppleScript (criado com `osacompile`, que já

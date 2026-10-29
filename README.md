@@ -124,15 +124,22 @@ CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fenestra .
 
 ## macOS
 
-There is **no prebuilt macOS binary**, on purpose. Distributing one would require
-Apple notarization (US$ 99/year); without it, the download is blocked by
-Gatekeeper.
+The **CLI** is available as a prebuilt binary through Homebrew:
 
-Instead, [`macos/`](macos) is a build kit: install Go (official signed installer,
-no warning), then `git clone` and run one command. Cloning with git does not add
-the quarantine attribute, so the macOS never asks for permission. Without git,
-download the ZIP and run `bash build.command` — the shell reads the script, so
-Gatekeeper is not involved either. See [macos/README.md](macos/README.md).
+```bash
+brew tap benedetleandro/fenestra
+brew trust benedetleandro/fenestra
+brew install fenestra
+```
+
+`brew trust` is a one-time confirmation that Homebrew requires for third-party taps.
+
+The **Finder app** (`Fenestra.app`) has no prebuilt binary on purpose: an unsigned
+bundle is blocked by Gatekeeper, and notarization costs US$ 99/year. [`macos/`](macos)
+is the build kit: install Go (official signed installer, no warning), then `git clone`
+and run one command. Cloning with git does not add the quarantine attribute, so the
+macOS never asks for permission. Without git, download the ZIP and run `bash build.command`.
+See [macos/README.md](macos/README.md).
 
 The kit is built and exercised on a real `macos-latest` runner in CI: build,
 `codesign --verify`, the droplet receiving a file through `open -a`, and the

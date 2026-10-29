@@ -96,6 +96,7 @@
     "mac.note": "Sem Xcode, sem conta Apple, sem US$ 99. Testado num runner macOS real no CI (arm64); no Intel o build é nativo.",
     "mac.readme": "Instruções completas do macOS →",
     "mac.nogit": "Sem git? Baixe o ZIP, extraia e rode <code>bash build.command</code> — o shell lê o script, então o Gatekeeper não entra.",
+    "mac.brew": "Prefere Homebrew? <code>brew install benedetleandro/fenestra/fenestra</code> instala o CLI (rode <code>brew trust</code> uma vez). O app do Finder continua precisando do build local.",
 
     "install.kicker": "Instalação",
     "install.title": "Um executável. Sem instalador.",
