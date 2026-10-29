@@ -129,6 +129,8 @@ jobs:
           file Fenestra.app/Contents/Resources/fenestra | grep -q "Mach-O"
           /usr/libexec/PlistBuddy -c "Print :CFBundleDocumentTypes:0:LSItemContentTypes:0" Fenestra.app/Contents/Info.plist
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' Fenestra.app/Contents/Info.plist)" = "dev.fenestra.app"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Fenestra.app/Contents/Info.plist)" != ""
+          test -f Fenestra.app/Contents/Resources/droplet.icns
 
       - name: Verify the code signature
         working-directory: macos
