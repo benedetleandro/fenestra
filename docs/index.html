@@ -27,6 +27,7 @@
         <a href="#compat" data-i18n="nav.compat">Compatibility</a>
         <a href="#platforms" data-i18n="nav.plat">Platforms</a>
         <a href="#install" data-i18n="nav.install">Install</a>
+        <a href="#macos" data-i18n="nav.macos">macOS</a>
         <a href="#faq" data-i18n="nav.faq">FAQ</a>
       </nav>
 
@@ -97,6 +98,8 @@
             <span data-i18n="hero.meta2">no .NET SDK</span>
             <span data-i18n="hero.meta3">one file, no installer</span>
           </div>
+
+          <p class="hero-macos"><a href="#macos" data-i18n="hero.macos">On macOS? Build it yourself →</a></p>
         </div>
 
         <div class="browser" aria-hidden="true">
@@ -372,6 +375,51 @@
 <span class="cmt"># register / unregister the .html handler</span>
 <span class="cmd">Fenestra.exe --install</span>
 <span class="cmd">Fenestra.exe --uninstall</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ macos -->
+    <section id="macos">
+      <div class="wrap">
+        <p class="kicker">macOS</p>
+        <h2 data-i18n="mac.title">Build it yourself — that is the point</h2>
+        <p class="section-lead" data-i18n="mac.lead">
+          There is no notarized binary. Apple charges US$ 99/year for that, and an unsigned
+          download is blocked by Gatekeeper. So you build it locally, from source you can read.
+        </p>
+
+        <div class="two-col">
+          <div>
+            <ol class="def-list">
+              <li><b data-i18n="mac.s1t">Install Go</b><br><span data-i18n="mac.s1d">The official installer is signed by Google, so macOS shows no warning. It is the only thing you install.</span></li>
+              <li><b data-i18n="mac.s2t">Get the source</b><br><span data-i18n="mac.s2d">git clone, or download the ZIP if you do not have git.</span></li>
+              <li><b data-i18n="mac.s3t">Run the build</b><br><span data-i18n="mac.s3d">The script builds the CLI and Fenestra.app, then re-signs the app after editing the bundle.</span></li>
+              <li><b data-i18n="mac.s4t">Use it from the Finder</b><br><span data-i18n="mac.s4d">Drag Fenestra.app to /Applications, right-click an index.html, Open with → Fenestra → Always.</span></li>
+            </ol>
+
+            <p class="side-note" data-i18n="mac.note">No Xcode, no Apple account, no US$ 99. Tested on a real macOS runner in CI (arm64); on Intel the build is native.</p>
+
+            <p><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/README.md" target="_blank" rel="noopener" data-i18n="mac.readme">Full macOS instructions →</a></p>
+          </div>
+
+          <div>
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># 1. install Go from https://go.dev/dl/</span>
+<span class="cmt"># 2. get the source</span>
+<span class="cmd">git clone https://github.com/benedetleandro/fenestra.git</span>
+<span class="cmd">cd fenestra/macos</span>
+
+<span class="cmt"># 3. build (CLI + Fenestra.app)</span>
+<span class="cmd">./build.command</span>
+
+<span class="cmt"># 4. run</span>
+<span class="cmd">./fenestra ~/projetos/app/dist/index.html</span></pre>
+            </div>
+
+            <p class="side-note" data-i18n-html="mac.nogit">No git? Download the ZIP, extract, and run <code>bash build.command</code> — the shell reads the script, so Gatekeeper is not involved.</p>
+          </div>
         </div>
       </div>
     </section>

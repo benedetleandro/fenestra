@@ -6,6 +6,7 @@
     "nav.compat": "Compatibilidade",
     "nav.plat": "Plataformas",
     "nav.install": "Instalar",
+    "nav.macos": "macOS",
     "nav.faq": "Dúvidas",
 
     "hero.badge": "Windows & Linux · Edge, Chrome, Firefox · Sem dependências",
@@ -16,6 +17,7 @@
     "hero.meta1": "Licença MIT",
     "hero.meta2": "sem SDK .NET",
     "hero.meta3": "um arquivo, sem instalador",
+    "hero.macos": "No macOS? Compile você mesmo →",
 
     "problem.kicker": "O problema",
     "problem.title": "O problema é a origem, não o arquivo",
@@ -68,6 +70,20 @@
     "plat.macos.build": "Só Go — sem Xcode, sem conta Apple, sem quarentena depois de um clone.",
     "plat.audit": "Auditar o código →",
     "plat.note": "Toda release também traz o código-fonte completo em zip e tar.gz. Nada aqui é fechado.",
+
+    "mac.title": "Compile você mesmo — essa é a ideia",
+    "mac.lead": "Não existe binário notarizado. A Apple cobra US$ 99/ano por isso, e um download sem assinatura é bloqueado pelo Gatekeeper. Então você compila localmente, a partir de um código que pode ler.",
+    "mac.s1t": "Instale o Go",
+    "mac.s1d": "O instalador oficial é assinado pelo Google, então o macOS não mostra aviso. É a única coisa que você instala.",
+    "mac.s2t": "Pegue o código",
+    "mac.s2d": "git clone, ou baixe o ZIP se você não tem git.",
+    "mac.s3t": "Rode o build",
+    "mac.s3d": "O script compila o CLI e o Fenestra.app, e re-assina o app depois de editar o bundle.",
+    "mac.s4t": "Use pelo Finder",
+    "mac.s4d": "Arraste o Fenestra.app para /Applications, botão direito num index.html, Abrir com → Fenestra → Sempre.",
+    "mac.note": "Sem Xcode, sem conta Apple, sem US$ 99. Testado num runner macOS real no CI (arm64); no Intel o build é nativo.",
+    "mac.readme": "Instruções completas do macOS →",
+    "mac.nogit": "Sem git? Baixe o ZIP, extraia e rode <code>bash build.command</code> — o shell lê o script, então o Gatekeeper não entra.",
 
     "install.kicker": "Instalação",
     "install.title": "Um executável. Sem instalador.",

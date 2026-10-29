@@ -258,6 +258,13 @@ h1 .shine {
 }
 .hero-meta span { display: inline-flex; align-items: center; gap: 7px; }
 
+.hero-macos {
+  margin: 18px 0 0;
+  font-size: 13.5px;
+}
+.hero-macos a { color: #9cc4ff; }
+.hero-macos a:hover { text-decoration: underline; }
+
 /* --------------------------------------------------------------- browser */
 
 .browser {
