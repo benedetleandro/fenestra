@@ -39,6 +39,13 @@ fenestra --browsers                       # what is installed
 - Responses carry `ETag` and `Last-Modified`, revalidate with `304`, and support
   `Range` for large media.
 
+## Source entries
+
+If the HTML references `/src/` (a Vite or similar dev entry), Fenestra does not
+serve it: it looks for `dist/`, `build/` or `out/` next to it and serves that
+build instead. When there is no build, it stops with a message telling you to
+run the build first.
+
 ## Register the `.html` handler
 
 ```bash

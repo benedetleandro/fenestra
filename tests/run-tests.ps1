@@ -98,6 +98,20 @@ try {
     }
     Check '--port binds the requested port' 'True' ([string]$bound)
     Check '--port serves the fixture' 'True' ([bool]((curl.exe -s "http://127.0.0.1:$portTest/") -like '*fixture*'))
+    $proj = Join-Path $tmp 'proj'
+    New-Item -ItemType Directory -Force (Join-Path $proj 'dist') | Out-Null
+    Set-Content (Join-Path $proj 'index.html') '<script type="module" src="/src/main.tsx"></script>' -Encoding UTF8
+    Set-Content (Join-Path $proj 'dist\index.html') '<!doctype html><h1>built-app</h1>' -Encoding UTF8
+    $portSrc = Get-Random -Minimum 55000 -Maximum 60000
+    $procSrc = Start-Process -FilePath $exe -ArgumentList @('--serve', '--port', "$portSrc", "`"$proj\index.html`"") -PassThru
+    $boundSrc = $false
+    for ($i = 0; $i -lt 40; $i++) {
+        Start-Sleep -Milliseconds 200
+        if (Get-NetTCPConnection -OwningProcess $procSrc.Id -State Listen -ErrorAction SilentlyContinue) { $boundSrc = $true; break }
+    }
+    Check 'source entry starts a server' 'True' ([string]$boundSrc)
+    Check 'source entry serves the dist build' 'True' ([bool]((curl.exe -s "http://127.0.0.1:$portSrc/") -like '*built-app*'))
+
     $secret = Join-Path ([System.IO.Path]::GetTempPath()) ('fenestra-secret-' + [guid]::NewGuid().ToString('N') + '.txt')
     Set-Content -Path $secret -Value 'top secret' -Encoding UTF8
     try {
@@ -114,6 +128,7 @@ try {
 finally {
     Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
     if ($proc2) { Stop-Process -Id $proc2.Id -Force -ErrorAction SilentlyContinue }
+    if ($procSrc) { Stop-Process -Id $procSrc.Id -Force -ErrorAction SilentlyContinue }
     Remove-Item Env:\FENESTRA_NO_OPEN -ErrorAction SilentlyContinue
     Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
 }

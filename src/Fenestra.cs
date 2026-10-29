@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -93,6 +94,22 @@ namespace Fenestra
         private static void Serve(string target, bool force)
         {
             string full = Path.GetFullPath(target);
+
+            if (File.Exists(full) && IsHtml(full) && LooksLikeSourceEntry(full))
+            {
+                string build = FindBuild(full);
+                if (build != null)
+                {
+                    Log("source entry detected; using " + build);
+                    full = build;
+                }
+                else
+                {
+                    throw new FileNotFoundException(
+                        "This looks like a source entry (it references /src/).\r\n\r\n" +
+                        "Build the project first (for example: npm run build) or open dist/index.html.");
+                }
+            }
 
             // Plain HTML opens directly in the browser through file://, no server.
             // Only files that need an HTTP origin (ES modules, absolute paths,
@@ -181,6 +198,28 @@ namespace Fenestra
         {
             string ext = Path.GetExtension(path).ToLowerInvariant();
             return ext == ".html" || ext == ".htm" || ext == ".xhtml";
+        }
+
+        private static bool LooksLikeSourceEntry(string path)
+        {
+            try
+            {
+                string text = File.ReadAllText(path);
+                return Regex.IsMatch(text, @"<script[^>]+src\s*=\s*[""'](?:\./|/)?src/", RegexOptions.IgnoreCase);
+            }
+            catch { return false; }
+        }
+
+        private static string FindBuild(string sourceFile)
+        {
+            string dir = Path.GetDirectoryName(sourceFile);
+            string[] names = { "dist", "build", "out" };
+            for (int i = 0; i < names.Length; i++)
+            {
+                string candidate = Path.Combine(Path.Combine(dir, names[i]), "index.html");
+                if (File.Exists(candidate)) return candidate;
+            }
+            return null;
         }
 
         // Decides whether the file needs an HTTP origin. If it does not,

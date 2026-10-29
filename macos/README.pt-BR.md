@@ -59,6 +59,9 @@ Para o Finder:
 2. Botão direito num `index.html` → **Abrir com** → **Fenestra**.
 3. Marque **Sempre usar este aplicativo**.
 
+Se o HTML referencia `/src/` (entrada de dev), o Fenestra usa o `dist/`, `build/`
+ou `out/` ao lado, e explica o que fazer quando não existe build.
+
 ## Homebrew (só o CLI)
 
 ```bash

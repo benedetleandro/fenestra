@@ -60,6 +60,9 @@ For the Finder:
 2. Right-click an `index.html` → **Open with** → **Fenestra**.
 3. Check **Always use this app**.
 
+If the HTML references `/src/` (a dev entry), Fenestra uses the sibling `dist/`,
+`build/` or `out/` build instead, and explains what to do when there is none.
+
 ## Homebrew (CLI only)
 
 ```bash

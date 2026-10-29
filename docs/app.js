@@ -15,7 +15,7 @@
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
     "hero.title": "Dois cliques.<br><span class=\"shine\">E roda.</span>",
     "hero.lead": "O Fenestra é um servidor local minúsculo que transforma qualquer <code>dist/index.html</code> num site funcionando no seu navegador. Sem terminal, sem extensão, sem navegador próprio.",
-    "hero.download": "Baixar v0.5.0",
+    "hero.download": "Baixar v0.5.1",
     "hero.how": "Como funciona",
     "hero.meta1": "Licença MIT",
     "hero.meta2": "sem SDK .NET",

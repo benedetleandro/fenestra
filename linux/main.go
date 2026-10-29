@@ -16,6 +16,7 @@ import (
 	"os/signal"
 	"path"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -109,6 +110,17 @@ func run(target string, force bool) {
 		entry = filepath.Base(abs)
 	}
 	root = filepath.Clean(root)
+
+	if entry != "" && isHTML(entry) {
+		sourceFile := filepath.Join(root, entry)
+		if buildDir, ok := buildForSource(sourceFile); ok {
+			root = buildDir
+			entry = "index.html"
+			logf("source entry detected; using %s", buildDir)
+		} else if looksLikeSourceEntry(sourceFile) {
+			fatal(fmt.Errorf("%s looks like a source entry (it references /src/); run the build first or open dist/index.html", target))
+		}
+	}
 
 	defaultDoc := findDefaultDoc(root)
 	if entry == defaultDoc {
@@ -390,6 +402,30 @@ func hasDotDot(p string) bool {
 		}
 	}
 	return false
+}
+
+var sourceEntryRe = regexp.MustCompile(`(?i)<script[^>]+src\s*=\s*["'](?:\./|/)?src/`)
+
+func looksLikeSourceEntry(file string) bool {
+	data, err := os.ReadFile(file)
+	if err != nil {
+		return false
+	}
+	return sourceEntryRe.Match(data)
+}
+
+func buildForSource(file string) (string, bool) {
+	if !looksLikeSourceEntry(file) {
+		return "", false
+	}
+	dir := filepath.Dir(file)
+	for _, name := range []string{"dist", "build", "out"} {
+		candidate := filepath.Join(dir, name)
+		if fi, err := os.Stat(filepath.Join(candidate, "index.html")); err == nil && !fi.IsDir() {
+			return candidate, true
+		}
+	}
+	return "", false
 }
 
 func isInside(root, full string) bool {

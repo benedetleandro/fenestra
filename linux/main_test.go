@@ -192,6 +192,32 @@ func TestHandler(t *testing.T) {
 	}
 }
 
+func TestSourceEntry(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "index.html")
+	write(t, src, `<script type="module" src="/src/main.tsx"></script>`)
+	if !looksLikeSourceEntry(src) {
+		t.Error("Vite entry should be detected")
+	}
+	if _, ok := buildForSource(src); ok {
+		t.Error("no build exists yet")
+	}
+
+	if err := os.MkdirAll(filepath.Join(dir, "dist"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	build := filepath.Join(dir, "dist", "index.html")
+	write(t, build, `<script type="module" src="/assets/index.js"></script>`)
+	if looksLikeSourceEntry(build) {
+		t.Error("a built index should not look like a source entry")
+	}
+
+	got, ok := buildForSource(src)
+	if !ok || got != filepath.Join(dir, "dist") {
+		t.Errorf("buildForSource = %q, %v", got, ok)
+	}
+}
+
 func TestHTTPFeatures(t *testing.T) {
 	root := t.TempDir()
 	write(t, filepath.Join(root, "index.html"), "<h1>fixture</h1>")

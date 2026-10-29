@@ -39,6 +39,13 @@ fenestra --browsers                       # o que está instalado
 - As respostas carregam `ETag` e `Last-Modified`, revalidam com `304` e suportam
   `Range` para mídia grande.
 
+## Entradas de fonte
+
+Se o HTML referencia `/src/` (entrada de dev do Vite ou parecido), o Fenestra não
+serve esse arquivo: ele procura `dist/`, `build/` ou `out/` ao lado e serve o
+build. Quando não existe build, ele para com uma mensagem pedindo para compilar
+primeiro.
+
 ## Registrar o handler de `.html`
 
 ```bash
