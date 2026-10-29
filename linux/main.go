@@ -24,12 +24,13 @@ import (
 	"time"
 )
 
-const version = "0.4.2"
+var version = "0.0.0-dev"
 
 var lastRequest int64 = time.Now().UnixNano()
+var forcedPort int
 
 func main() {
-	args := os.Args[1:]
+	args := extractPort(os.Args[1:])
 	if len(args) == 0 {
 		usage()
 		os.Exit(1)
@@ -75,6 +76,7 @@ Usage:
   fenestra "~/projects/app/dist/index.html"
   fenestra "~/projects/app/dist"
   fenestra --serve "~/index.html"          force the server
+  fenestra --port 8080 "~/index.html"      use a specific port
   fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
   fenestra --browsers                      list detected browsers
@@ -121,13 +123,24 @@ func run(target string, force bool) {
 
 	lock := lockPath(root)
 
-	if port, ok := readLock(lock); ok && ping(port) {
-		launch(fmt.Sprintf("http://127.0.0.1:%d/%s", port, urlPath(entry)))
-		return
-	}
+	var ln net.Listener
+	var port int
 
-	ln, port := listen(root)
-	writeLock(lock, port)
+	if forcedPort != 0 {
+		var err error
+		ln, err = net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", forcedPort))
+		if err != nil {
+			fatal(fmt.Errorf("port %d is not available: %v", forcedPort, err))
+		}
+		port = forcedPort
+	} else {
+		if p, ok := readLock(lock); ok && ping(p) {
+			launch(fmt.Sprintf("http://127.0.0.1:%d/%s", p, urlPath(entry)))
+			return
+		}
+		ln, port = listen(root)
+		writeLock(lock, port)
+	}
 
 	srv := &http.Server{Handler: handler(root, defaultDoc)}
 	go func() {
@@ -159,6 +172,23 @@ func run(target string, force bool) {
 	waitSignal()
 }
 
+func extractPort(args []string) []string {
+	out := make([]string, 0, len(args))
+	for i := 0; i < len(args); i++ {
+		if args[i] == "--port" && i+1 < len(args) {
+			n, err := strconv.Atoi(args[i+1])
+			if err != nil || n < 1 || n > 65535 {
+				fatal(fmt.Errorf("invalid port: %s", args[i+1]))
+			}
+			forcedPort = n
+			i++
+			continue
+		}
+		out = append(out, args[i])
+	}
+	return out
+}
+
 func waitSignal() {
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt, syscall.SIGTERM)
@@ -181,6 +211,11 @@ func handler(root, defaultDoc string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		atomic.StoreInt64(&lastRequest, time.Now().UnixNano())
 
+		if !hostAllowed(r.Host) {
+			http.Error(w, "access denied", http.StatusForbidden)
+			return
+		}
+
 		if r.URL.Path == "/__fenestra/ping" {
 			io.WriteString(w, "fenestra-ok")
 			return
@@ -201,6 +236,11 @@ func handler(root, defaultDoc string) http.Handler {
 		full := filepath.Join(root, filepath.FromSlash(rel))
 
 		if strings.Contains(rel, ":") || strings.ContainsRune(rel, 0) || !isInside(root, full) {
+			http.Error(w, "access denied", http.StatusForbidden)
+			return
+		}
+
+		if !resolvesInside(root, full) {
 			http.Error(w, "access denied", http.StatusForbidden)
 			return
 		}
@@ -250,7 +290,8 @@ func serveFile(w http.ResponseWriter, r *http.Request, name string) {
 	}
 
 	w.Header().Set("Content-Type", mimeFor(name))
-	w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("ETag", fmt.Sprintf("\"%x-%x\"", st.Size(), st.ModTime().UnixNano()))
 	w.Header().Set("X-Fenestra", version)
 	http.ServeContent(w, r, st.Name(), st.ModTime(), f)
 }
@@ -263,7 +304,7 @@ func listDir(w http.ResponseWriter, dir, urlPath string) {
 	}
 
 	var b strings.Builder
-	b.WriteString("<!doctype html><html lang=\"pt-BR\"><meta charset=\"utf-8\"><title>Fenestra</title>")
+	b.WriteString("<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Fenestra</title>")
 	b.WriteString("<style>body{font:15px/1.6 system-ui,sans-serif;background:#0f0f10;color:#e8e8ea;padding:36px;max-width:960px;margin:auto}")
 	b.WriteString("a{color:#9cc4ff;text-decoration:none}a:hover{text-decoration:underline}li{margin:5px 0}")
 	b.WriteString("h1{font-weight:600}p{color:#8a8a90;word-break:break-all}</style>")
@@ -358,6 +399,29 @@ func isInside(root, full string) bool {
 		return true
 	}
 	return strings.HasPrefix(f, r+string(os.PathSeparator))
+}
+
+// hostAllowed rejects DNS-rebinding attempts: only loopback hostnames pass.
+func hostAllowed(h string) bool {
+	host := h
+	if i := strings.LastIndex(h, ":"); i >= 0 {
+		host = h[:i]
+	}
+	host = strings.Trim(host, "[]")
+	return host == "127.0.0.1" || host == "localhost"
+}
+
+// resolvesInside rejects symlinks that point outside the served root.
+func resolvesInside(root, full string) bool {
+	realRoot, err := filepath.EvalSymlinks(root)
+	if err != nil {
+		realRoot = root
+	}
+	realFull, err := filepath.EvalSymlinks(full)
+	if err != nil {
+		return true // does not exist: let the normal 404 flow handle it
+	}
+	return isInside(realRoot, realFull)
 }
 
 func urlPath(entry string) string {

@@ -1,0 +1,95 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: pwsh
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File ./build.ps1
+
+      - name: Test
+        shell: pwsh
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File ./tests/run-tests.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: win
+          path: bin/Fenestra.exe
+          if-no-files-found: error
+
+  unix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Test
+        working-directory: linux
+        run: go test ./...
+
+      - name: Build every target
+        run: |
+          V=$(cat VERSION)
+          mkdir -p dist
+          cd linux
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "-s -w -X main.version=$V" -o ../dist/fenestra-linux-amd64 .
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags "-s -w -X main.version=$V" -o ../dist/fenestra-linux-arm64 .
+          cd ../macos
+          CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags "-s -w -X main.version=$V" -o ../dist/fenestra-darwin-arm64 .
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags "-s -w -X main.version=$V" -o ../dist/fenestra-darwin-amd64 .
+          cd ../dist
+          mkdir -p arm64 amd64
+          cp fenestra-darwin-arm64 arm64/fenestra
+          cp fenestra-darwin-amd64 amd64/fenestra
+          tar -czf fenestra-darwin-arm64.tar.gz -C arm64 fenestra
+          tar -czf fenestra-darwin-amd64.tar.gz -C amd64 fenestra
+          rm -rf arm64 amd64
+          ls -l
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unix
+          path: dist/*
+          if-no-files-found: error
+
+  publish:
+    needs: [windows, unix]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Check the tag matches VERSION
+        run: |
+          test "$(cat VERSION)" = "${GITHUB_REF_NAME#v}"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p out
+          cp artifacts/win/Fenestra.exe out/
+          cp artifacts/unix/* out/
+          ls -l out
+          gh release create "$GITHUB_REF_NAME" out/* \
+            --title "Fenestra ${GITHUB_REF_NAME#v}" \
+            --generate-notes

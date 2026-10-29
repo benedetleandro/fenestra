@@ -4,8 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-VERSION=$(sed -n 's/^const version = "\([^"]*\)".*/\1/p' main.go)
-[ -n "$VERSION" ] || VERSION="0.0.0"
+VERSION=$(cat ../VERSION 2>/dev/null || echo 0.0.0-dev)
 
 trap 'echo; echo "FAILED at line $LINENO. Copy the message above and send it."; exit 1' ERR
 
@@ -31,7 +30,7 @@ echo "Go: $(go version)"
 echo
 
 echo "building fenestra..."
-CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fenestra .
+CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o fenestra .
 chmod +x fenestra
 echo "ok: $(pwd)/fenestra"
 echo

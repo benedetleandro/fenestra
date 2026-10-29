@@ -38,43 +38,87 @@ func TestNeedsServer(t *testing.T) {
 	dir := t.TempDir()
 
 	simple := filepath.Join(dir, "simple.html")
-	write(t, simple, "<!doctype html><h1>oi</h1><img src=\"./a.png\">")
+	write(t, simple, "<!doctype html><h1>hi</h1><img src=\"./a.png\">")
 	if needsServer(simple) {
-		t.Error("HTML simples nao deveria precisar de servidor")
+		t.Error("plain HTML should not need a server")
 	}
 
 	app := filepath.Join(dir, "app.html")
 	write(t, app, `<script type="module" src="/assets/app.js"></script>`)
 	if !needsServer(app) {
-		t.Error("modulo ES deveria precisar de servidor")
+		t.Error("an ES module should need a server")
 	}
 
 	fetch := filepath.Join(dir, "fetch.html")
 	write(t, fetch, "<script>fetch('./data.json')</script>")
 	if !needsServer(fetch) {
-		t.Error("fetch deveria precisar de servidor")
+		t.Error("fetch should need a server")
 	}
 }
 
 func TestIsInside(t *testing.T) {
 	root := filepath.Join("C:", "root")
 	if !isInside(root, filepath.Join(root, "a", "b")) {
-		t.Error("filho deveria estar dentro")
+		t.Error("a child should be inside")
 	}
-	if isInside(root, filepath.Join(root, "..", "fora")) {
-		t.Error(".. nao deveria estar dentro")
+	if isInside(root, filepath.Join(root, "..", "outside")) {
+		t.Error(".. should not be inside")
+	}
+}
+
+func TestHostAllowed(t *testing.T) {
+	allowed := []string{"127.0.0.1", "127.0.0.1:8080", "localhost", "localhost:51000"}
+	for _, h := range allowed {
+		if !hostAllowed(h) {
+			t.Errorf("hostAllowed(%q) = false, want true", h)
+		}
+	}
+
+	blocked := []string{"evil.example", "evil.example:80", "127.0.0.1.evil.com", "", "0.0.0.0:80"}
+	for _, h := range blocked {
+		if hostAllowed(h) {
+			t.Errorf("hostAllowed(%q) = true, want false", h)
+		}
+	}
+}
+
+func TestResolvesInside(t *testing.T) {
+	base := t.TempDir()
+	root := filepath.Join(base, "root")
+	if err := os.MkdirAll(root, 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	outside := filepath.Join(base, "secret.txt")
+	write(t, outside, "SECRET")
+	inside := filepath.Join(root, "ok.txt")
+	write(t, inside, "ok")
+
+	if !resolvesInside(root, inside) {
+		t.Error("a regular file inside the root should pass")
+	}
+	if resolvesInside(root, outside) {
+		t.Error("a file outside the root should be rejected")
+	}
+
+	link := filepath.Join(root, "leak.txt")
+	if err := os.Symlink(outside, link); err != nil {
+		t.Skipf("symlink not available: %v", err)
+	}
+	if resolvesInside(root, link) {
+		t.Error("a symlink pointing outside the root should be rejected")
 	}
 }
 
 func TestURLPath(t *testing.T) {
 	if got := urlPath(""); got != "" {
-		t.Errorf("urlPath(vazio) = %q", got)
+		t.Errorf("urlPath(empty) = %q", got)
 	}
 	if got := urlPath("index.html"); got != "index.html" {
 		t.Errorf("urlPath(index.html) = %q", got)
 	}
-	if got := urlPath(`pasta com espaço/a.html`); !strings.Contains(got, "%20") {
-		t.Errorf("urlPath deveria escapar espaco, veio %q", got)
+	if got := urlPath(`folder with space/a.html`); !strings.Contains(got, "%20") {
+		t.Errorf("urlPath should escape spaces, got %q", got)
 	}
 }
 
@@ -128,22 +172,97 @@ func TestHandler(t *testing.T) {
 		t.Errorf("json content-type = %q", ct)
 	}
 
-	resp, _ = get("/rota/qualquer")
+	resp, _ = get("/route/anything")
 	if resp.StatusCode != 200 {
 		t.Errorf("SPA fallback = %d", resp.StatusCode)
 	}
 
-	resp, _ = get("/nada.png")
+	resp, _ = get("/nothing.png")
 	if resp.StatusCode != 404 {
-		t.Errorf("arquivo ausente = %d", resp.StatusCode)
+		t.Errorf("missing file = %d", resp.StatusCode)
 	}
 
-	// Traversal: o handler recebe o caminho cru, sem o cliente limpar.
+	// Traversal: the handler gets the raw path, without the client cleaning it.
 	req := httptest.NewRequest("GET", "/", nil)
 	req.URL.Path = "/../secret.txt"
 	rec := httptest.NewRecorder()
 	handler(root, "index.html").ServeHTTP(rec, req)
 	if strings.Contains(rec.Body.String(), "SECRET") {
-		t.Fatal("traversal serviu um arquivo fora da raiz")
+		t.Fatal("traversal served a file outside the root")
+	}
+}
+
+func TestHTTPFeatures(t *testing.T) {
+	root := t.TempDir()
+	write(t, filepath.Join(root, "index.html"), "<h1>fixture</h1>")
+	write(t, filepath.Join(root, "a.js"), "console.log(1)")
+
+	srv := httptest.NewServer(handler(root, "index.html"))
+	defer srv.Close()
+	client := srv.Client()
+
+	resp, err := client.Get(srv.URL + "/a.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+
+	etag := resp.Header.Get("ETag")
+	if etag == "" {
+		t.Fatal("missing ETag")
+	}
+	if got := resp.Header.Get("Accept-Ranges"); got != "bytes" {
+		t.Errorf("Accept-Ranges = %q, want bytes", got)
+	}
+
+	req, _ := http.NewRequest("GET", srv.URL+"/a.js", nil)
+	req.Header.Set("If-None-Match", etag)
+	resp, err = client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusNotModified {
+		t.Errorf("If-None-Match = %d, want 304", resp.StatusCode)
+	}
+
+	req, _ = http.NewRequest("GET", srv.URL+"/a.js", nil)
+	req.Header.Set("Range", "bytes=0-3")
+	resp, err = client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, _ := io.ReadAll(resp.Body)
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusPartialContent {
+		t.Errorf("Range = %d, want 206", resp.StatusCode)
+	}
+	if string(body) != "cons" {
+		t.Errorf("Range body = %q, want %q", body, "cons")
+	}
+	if cr := resp.Header.Get("Content-Range"); cr != "bytes 0-3/14" {
+		t.Errorf("Content-Range = %q, want bytes 0-3/14", cr)
+	}
+
+	req, _ = http.NewRequest("GET", srv.URL+"/a.js", nil)
+	req.Header.Set("Range", "bytes=999-")
+	resp, err = client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusRequestedRangeNotSatisfiable {
+		t.Errorf("unsatisfiable Range = %d, want 416", resp.StatusCode)
+	}
+
+	req, _ = http.NewRequest("GET", srv.URL+"/", nil)
+	req.Host = "evil.example"
+	resp, err = client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusForbidden {
+		t.Errorf("host tampering = %d, want 403", resp.StatusCode)
 	}
 }

@@ -74,9 +74,46 @@ try {
     Check 'traversal returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' --path-as-is "$base/../SECRET/")
     Check 'encoded traversal returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' --path-as-is "$base/%2e%2e/SECRET/")
     Check 'alternate data stream returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' --path-as-is "$base/index.html::`$DATA")
+
+    $r = Invoke-WebRequest -Uri "$base/" -UseBasicParsing
+    $etag = [string]$r.Headers['ETag']
+    $lastModified = [string]$r.Headers['Last-Modified']
+    Check 'ETag is present' 'True' ([bool]$etag)
+    Check 'Last-Modified is present' 'True' ([bool]$lastModified)
+    Check 'If-None-Match returns 304' '304' (curl.exe -s -o NUL -w '%{http_code}' -H "If-None-Match: $etag" "$base/")
+    Check 'If-Modified-Since returns 304' '304' (curl.exe -s -o NUL -w '%{http_code}' -H "If-Modified-Since: $lastModified" "$base/")
+    Check 'Host tampering returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' -H 'Host: evil.example' "$base/")
+
+    Check 'Range returns 206' '206' (curl.exe -s -o NUL -w '%{http_code}' -H 'Range: bytes=0-9' "$base/assets/app.js")
+    Check 'Range has Content-Range' 'True' ([bool]((curl.exe -s -D - -o NUL -H 'Range: bytes=0-9' "$base/assets/app.js") -match 'Content-Range: bytes 0-9/'))
+    Check 'open-ended Range returns 206' '206' (curl.exe -s -o NUL -w '%{http_code}' -H 'Range: bytes=5-' "$base/assets/app.js")
+    Check 'unsatisfiable Range returns 416' '416' (curl.exe -s -o NUL -w '%{http_code}' -H 'Range: bytes=99999-' "$base/assets/app.js")
+
+    $portTest = Get-Random -Minimum 55000 -Maximum 60000
+    $proc2 = Start-Process -FilePath $exe -ArgumentList @('--port', "$portTest", ('"' + (Join-Path $tmp 'index.html') + '"')) -PassThru
+    $bound = $false
+    for ($i = 0; $i -lt 40; $i++) {
+        Start-Sleep -Milliseconds 200
+        if (Get-NetTCPConnection -OwningProcess $proc2.Id -State Listen -ErrorAction SilentlyContinue) { $bound = $true; break }
+    }
+    Check '--port binds the requested port' 'True' ([string]$bound)
+    Check '--port serves the fixture' 'True' ([bool]((curl.exe -s "http://127.0.0.1:$portTest/") -like '*fixture*'))
+    $secret = Join-Path ([System.IO.Path]::GetTempPath()) ('fenestra-secret-' + [guid]::NewGuid().ToString('N') + '.txt')
+    Set-Content -Path $secret -Value 'top secret' -Encoding UTF8
+    try {
+        New-Item -ItemType SymbolicLink -Path (Join-Path $tmp 'leak.txt') -Target $secret -ErrorAction Stop | Out-Null
+        Check 'symlink escaping root returns 403' '403' (curl.exe -s -o NUL -w '%{http_code}' "$base/leak.txt")
+    }
+    catch {
+        Write-Host '  skip symlink test (no privilege to create one)' -ForegroundColor Yellow
+    }
+    finally {
+        Remove-Item $secret -Force -ErrorAction SilentlyContinue
+    }
 }
 finally {
     Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+    if ($proc2) { Stop-Process -Id $proc2.Id -Force -ErrorAction SilentlyContinue }
     Remove-Item Env:\FENESTRA_NO_OPEN -ErrorAction SilentlyContinue
     Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
 }

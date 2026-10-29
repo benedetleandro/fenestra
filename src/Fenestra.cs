@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -19,6 +20,7 @@ namespace Fenestra
         private static string _defaultDoc;
         private static string _lockFile;
         private static long _lastRequest = DateTime.UtcNow.Ticks;
+        private static int _forcedPort;
         private static System.Threading.Timer _idleTimer;
 
         [STAThread]
@@ -26,6 +28,7 @@ namespace Fenestra
         {
             try
             {
+                args = ExtractPort(args);
                 if (args.Length == 0) { Usage(); return; }
 
                 string a = args[0];
@@ -33,7 +36,7 @@ namespace Fenestra
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
                 {
-                    MessageBox.Show("Fenestra 0.4.2", "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Fenestra " + BuildInfo.Version, "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -65,6 +68,27 @@ namespace Fenestra
         }
 
         // ---------------------------------------------------------------- serve
+
+        private static string[] ExtractPort(string[] args)
+        {
+            List<string> rest = new List<string>();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (Eq(args[i], "--port") && i + 1 < args.Length)
+                {
+                    int port;
+                    if (!int.TryParse(args[i + 1], out port) || port < 1 || port > 65535)
+                    {
+                        throw new ArgumentException("Invalid port: " + args[i + 1]);
+                    }
+                    _forcedPort = port;
+                    i++;
+                    continue;
+                }
+                rest.Add(args[i]);
+            }
+            return rest.ToArray();
+        }
 
         private static void Serve(string target, bool force)
         {
@@ -112,17 +136,32 @@ namespace Fenestra
             string key = Hash(_root);
             _lockFile = Path.Combine(dataDir, "sessions", key + ".txt");
 
-            int existing = ReadLockPort();
-            if (existing > 0 && Ping(existing))
+            TcpListener listener;
+            int port;
+
+            if (_forcedPort != 0)
             {
-                OpenBrowser(existing);
-                return;
+                listener = TryBind(_forcedPort);
+                if (listener == null)
+                {
+                    throw new InvalidOperationException("Port " + _forcedPort + " is not available.");
+                }
+                port = _forcedPort;
             }
+            else
+            {
+                int existing = ReadLockPort();
+                if (existing > 0 && Ping(existing))
+                {
+                    OpenBrowser(existing);
+                    return;
+                }
 
-            TcpListener listener = StartListener(existing);
-            int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+                listener = StartListener(existing);
+                port = ((IPEndPoint)listener.LocalEndpoint).Port;
 
-            WriteLock(port);
+                WriteLock(port);
+            }
 
             Thread accept = new Thread(delegate() { AcceptLoop(listener); });
             accept.IsBackground = true;
@@ -250,14 +289,28 @@ namespace Fenestra
                     string line = reader.ReadLine();
                     if (string.IsNullOrEmpty(line)) return;
 
+                    Dictionary<string, string> headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                     int guard = 0;
                     string header;
                     while ((header = reader.ReadLine()) != null && header.Length > 0)
                     {
                         if (++guard > 200) break;
+                        int colon = header.IndexOf(':');
+                        if (colon > 0)
+                        {
+                            string key = header.Substring(0, colon).Trim();
+                            if (!headers.ContainsKey(key)) headers[key] = header.Substring(colon + 1).Trim();
+                        }
                     }
 
                     _lastRequest = DateTime.UtcNow.Ticks;
+
+                    string hostHeader;
+                    if (!headers.TryGetValue("Host", out hostHeader) || !HostAllowed(hostHeader))
+                    {
+                        SendText(ns, 403, "Access denied");
+                        return;
+                    }
 
                     string[] parts = line.Split(' ');
                     if (parts.Length < 2) { SendText(ns, 400, "Bad request"); return; }
@@ -296,12 +349,18 @@ namespace Fenestra
                         return;
                     }
 
+                    if (HasReparsePoint(_root, full))
+                    {
+                        SendText(ns, 403, "Access denied");
+                        return;
+                    }
+
                     if (Directory.Exists(full))
                     {
                         if (_defaultDoc != null)
                         {
                             string index = Path.Combine(full, _defaultDoc);
-                            if (File.Exists(index)) { ServeFile(ns, index, head); return; }
+                            if (File.Exists(index)) { ServeFile(ns, index, head, headers); return; }
                         }
 
                         byte[] listing = Encoding.UTF8.GetBytes(BuildListing(full, target));
@@ -309,13 +368,13 @@ namespace Fenestra
                         return;
                     }
 
-                    if (File.Exists(full)) { ServeFile(ns, full, head); return; }
+                    if (File.Exists(full)) { ServeFile(ns, full, head, headers); return; }
 
                     // SPA: extensionless routes fall back to index.html
                     if (Path.GetExtension(full).Length == 0 && _defaultDoc != null)
                     {
                         string index = Path.Combine(_root, _defaultDoc);
-                        if (File.Exists(index)) { ServeFile(ns, index, head); return; }
+                        if (File.Exists(index)) { ServeFile(ns, index, head, headers); return; }
                     }
 
                     Send404(ns, target, head);
@@ -324,12 +383,99 @@ namespace Fenestra
             catch { }
         }
 
-        private static void ServeFile(NetworkStream ns, string path, bool head)
+        private static void ServeFile(NetworkStream ns, string path, bool head, Dictionary<string, string> headers)
         {
             try
             {
-                byte[] body = File.ReadAllBytes(path);
-                Respond(ns, 200, Mime(path), body, head);
+                FileInfo fi = new FileInfo(path);
+                if (!fi.Exists) { SendText(ns, 404, "Not found"); return; }
+
+                long length = fi.Length;
+                DateTime lastWrite = fi.LastWriteTimeUtc;
+                string etag = "\"" + length.ToString("x") + "-" + lastWrite.Ticks.ToString("x") + "\"";
+                string lastModified = lastWrite.ToString("R", CultureInfo.InvariantCulture);
+
+                string ifNoneMatch;
+                if (headers != null && headers.TryGetValue("If-None-Match", out ifNoneMatch))
+                {
+                    string candidate = ifNoneMatch.Trim();
+                    if (candidate.StartsWith("W/", StringComparison.OrdinalIgnoreCase)) candidate = candidate.Substring(2);
+                    candidate = candidate.Trim('"');
+                    if (candidate == "*" || candidate == etag.Trim('"'))
+                    {
+                        SendNotModified(ns, etag, lastModified);
+                        return;
+                    }
+                }
+
+                string ifModifiedSince;
+                if (headers != null && headers.TryGetValue("If-Modified-Since", out ifModifiedSince))
+                {
+                    DateTime since;
+                    DateTime lastWriteSecond = new DateTime(
+                        lastWrite.Ticks - (lastWrite.Ticks % TimeSpan.TicksPerSecond), DateTimeKind.Utc);
+                    if (DateTime.TryParse(ifModifiedSince, CultureInfo.InvariantCulture,
+                            DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out since) &&
+                        lastWriteSecond <= since)
+                    {
+                        SendNotModified(ns, etag, lastModified);
+                        return;
+                    }
+                }
+
+                long start = 0;
+                long end = length - 1;
+                bool partial = false;
+
+                string range;
+                if (headers != null && headers.TryGetValue("Range", out range) &&
+                    range.StartsWith("bytes=", StringComparison.OrdinalIgnoreCase) &&
+                    range.IndexOf(',') < 0)
+                {
+                    long rs, re;
+                    if (TryParseRange(range, length, out rs, out re))
+                    {
+                        start = rs;
+                        end = re;
+                        partial = true;
+                    }
+                    else
+                    {
+                        SendRangeNotSatisfiable(ns, length, etag, lastModified);
+                        return;
+                    }
+                }
+
+                long count = end - start + 1;
+                if (count < 0) count = 0;
+                if (count > int.MaxValue) { SendText(ns, 500, "File too large"); return; }
+
+                int size = (int)count;
+                byte[] body = new byte[size];
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    fs.Seek(start, SeekOrigin.Begin);
+                    int read = 0;
+                    while (read < body.Length)
+                    {
+                        int n = fs.Read(body, read, body.Length - read);
+                        if (n <= 0) break;
+                        read += n;
+                    }
+                    if (read != body.Length) Array.Resize(ref body, read);
+                }
+
+                StringBuilder extra = new StringBuilder();
+                extra.Append("ETag: ").Append(etag).Append("\r\n");
+                extra.Append("Last-Modified: ").Append(lastModified).Append("\r\n");
+                extra.Append("Accept-Ranges: bytes\r\n");
+                if (partial)
+                {
+                    extra.Append("Content-Range: bytes ").Append(start).Append('-').Append(end)
+                         .Append('/').Append(length).Append("\r\n");
+                }
+
+                Respond(ns, partial ? 206 : 200, Mime(path), body, head, extra.ToString());
             }
             catch (Exception ex)
             {
@@ -337,29 +483,114 @@ namespace Fenestra
             }
         }
 
-        private static void Respond(NetworkStream ns, int status, string contentType, byte[] body, bool head)
+        private static void Respond(NetworkStream ns, int status, string contentType, byte[] body, bool head, string extra = "")
         {
             string reason;
             if (status == 200) reason = "OK";
+            else if (status == 206) reason = "Partial Content";
+            else if (status == 304) reason = "Not Modified";
             else if (status == 403) reason = "Forbidden";
             else if (status == 404) reason = "Not Found";
             else if (status == 405) reason = "Method Not Allowed";
             else if (status == 400) reason = "Bad Request";
+            else if (status == 416) reason = "Range Not Satisfiable";
             else reason = "Internal Server Error";
 
             StringBuilder sb = new StringBuilder();
             sb.Append("HTTP/1.1 ").Append(status).Append(' ').Append(reason).Append("\r\n");
             sb.Append("Content-Type: ").Append(contentType).Append("\r\n");
             sb.Append("Content-Length: ").Append(body.Length).Append("\r\n");
-            sb.Append("Cache-Control: no-store, no-cache, must-revalidate\r\n");
-            sb.Append("Pragma: no-cache\r\n");
+            sb.Append("Cache-Control: no-cache\r\n");
             sb.Append("X-Fenestra: 1\r\n");
+            if (extra.Length > 0) sb.Append(extra);
             sb.Append("Connection: close\r\n\r\n");
 
             byte[] headBytes = Encoding.ASCII.GetBytes(sb.ToString());
             ns.Write(headBytes, 0, headBytes.Length);
             if (!head && body.Length > 0) ns.Write(body, 0, body.Length);
             ns.Flush();
+        }
+
+        private static void SendNotModified(NetworkStream ns, string etag, string lastModified)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("HTTP/1.1 304 Not Modified\r\n");
+            sb.Append("ETag: ").Append(etag).Append("\r\n");
+            sb.Append("Last-Modified: ").Append(lastModified).Append("\r\n");
+            sb.Append("Cache-Control: no-cache\r\n");
+            sb.Append("Connection: close\r\n\r\n");
+            byte[] bytes = Encoding.ASCII.GetBytes(sb.ToString());
+            ns.Write(bytes, 0, bytes.Length);
+            ns.Flush();
+        }
+
+        private static void SendRangeNotSatisfiable(NetworkStream ns, long length, string etag, string lastModified)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("HTTP/1.1 416 Range Not Satisfiable\r\n");
+            sb.Append("Content-Range: bytes */").Append(length).Append("\r\n");
+            sb.Append("Content-Length: 0\r\n");
+            sb.Append("ETag: ").Append(etag).Append("\r\n");
+            sb.Append("Last-Modified: ").Append(lastModified).Append("\r\n");
+            sb.Append("Connection: close\r\n\r\n");
+            byte[] bytes = Encoding.ASCII.GetBytes(sb.ToString());
+            ns.Write(bytes, 0, bytes.Length);
+            ns.Flush();
+        }
+
+        private static bool HostAllowed(string value)
+        {
+            string host = value;
+            int colon = host.LastIndexOf(':');
+            if (colon >= 0) host = host.Substring(0, colon);
+            host = host.Trim('[', ']');
+            return host == "127.0.0.1" || string.Equals(host, "localhost", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool HasReparsePoint(string root, string full)
+        {
+            if (!full.StartsWith(root, StringComparison.OrdinalIgnoreCase)) return true;
+            string rel = full.Substring(root.Length).TrimStart(Path.DirectorySeparatorChar);
+            string current = root;
+            foreach (string part in rel.Split(Path.DirectorySeparatorChar))
+            {
+                if (part.Length == 0) continue;
+                current = Path.Combine(current, part);
+                try
+                {
+                    if ((File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0) return true;
+                }
+                catch { return false; }
+            }
+            return false;
+        }
+
+        private static bool TryParseRange(string header, long length, out long start, out long end)
+        {
+            start = 0;
+            end = 0;
+            string spec = header.Substring(6).Trim();
+            int dash = spec.IndexOf('-');
+            if (dash < 0) return false;
+            string first = spec.Substring(0, dash).Trim();
+            string second = spec.Substring(dash + 1).Trim();
+
+            if (first.Length == 0)
+            {
+                long suffix;
+                if (!long.TryParse(second, out suffix) || suffix <= 0) return false;
+                if (suffix > length) suffix = length;
+                start = length - suffix;
+                end = length - 1;
+            }
+            else
+            {
+                if (!long.TryParse(first, out start) || start < 0 || start >= length) return false;
+                if (second.Length == 0) end = length - 1;
+                else if (!long.TryParse(second, out end) || end < start) return false;
+                if (end >= length) end = length - 1;
+            }
+            return true;
         }
 
         private static void SendText(NetworkStream ns, int status, string message)
@@ -973,11 +1204,12 @@ namespace Fenestra
         private static void Usage()
         {
             MessageBox.Show(
-                "Fenestra 0.4.2\r\n\r\n" +
+                "Fenestra " + BuildInfo.Version + "\r\n\r\n" +
                 "Usage:\r\n" +
                 "  Fenestra.exe \"C:\\path\\index.html\"\r\n" +
                 "  Fenestra.exe \"C:\\path\\folder\"\r\n" +
                 "  Fenestra.exe --serve \"C:\\path\\index.html\"   force the server\r\n" +
+                "  Fenestra.exe --port 8080 \"C:\\path\\index.html\" use a specific port\r\n" +
                 "  Fenestra.exe --browser chrome \"C:\\path\\index.html\"\r\n" +
                 "  Fenestra.exe --browser chrome              set the preferred browser\r\n" +
                 "  Fenestra.exe --browsers                    list detected browsers\r\n\r\n" +

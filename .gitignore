@@ -2,6 +2,7 @@
 bin/
 *.exe
 *.pdb
+src/BuildInfo.cs
 
 # local test scratch
 tests/tmp/
