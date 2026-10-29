@@ -95,6 +95,7 @@ em `%LOCALAPPDATA%\Fenestra\sessions\<hash>.txt`.
 
 Existe uma build nativa separada em [`linux/`](linux): um binário estático, sem
 runtime e sem Wine. Escrito em Go e compilado para `linux/amd64` e `linux/arm64`.
+Guia completo: [linux/README.pt-BR.md](linux/README.pt-BR.md).
 
 ```bash
 chmod +x fenestra-linux-amd64

@@ -96,7 +96,7 @@ The port is written to `%LOCALAPPDATA%\Fenestra\sessions\<hash>.txt`.
 
 A separate, native build lives in [`linux/`](linux): one static binary, no
 runtime, no Wine. Written in Go and cross-compiled to `linux/amd64` and
-`linux/arm64`.
+`linux/arm64`. Full guide: [linux/README.md](linux/README.md).
 
 ```bash
 chmod +x fenestra-linux-amd64
