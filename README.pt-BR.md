@@ -75,7 +75,7 @@ navegador.
 ### Navegadores
 
 **Edge é o padrão.** Chrome, Firefox, Brave, Vivaldi, Opera e Chromium são
-detectados automaticamente.
+detectados automaticamente. No macOS, o **Safari** também está na lista.
 
 ```powershell
 Fenestra.exe --browsers              # o que está instalado

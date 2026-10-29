@@ -80,7 +80,7 @@ Uso:
   fenestra --install                       instrucoes para o Finder
   fenestra --uninstall                     instrucoes para desfazer
 
-Navegadores: edge, chrome, chromium, firefox, brave, vivaldi, opera, default
+Navegadores: edge, chrome, chromium, firefox, brave, vivaldi, opera, safari, default
 (edge e o padrao; "default" entrega para o navegador do sistema)
 `)
 }
@@ -535,6 +535,7 @@ func browserList() []browser {
 		{"brave", "Brave Browser"},
 		{"vivaldi", "Vivaldi"},
 		{"opera", "Opera"},
+		{"safari", "Safari"},
 	}
 }
 

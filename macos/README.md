@@ -46,6 +46,7 @@ uma vez: **Ajustes → Privacidade e Segurança → Abrir assim mesmo**.
 ./fenestra ~/projetos/app/dist/index.html   # abre no navegador padrão
 ./fenestra --browsers                       # o que está instalado
 ./fenestra --browser firefox                # troca o navegador
+./fenestra --browser safari                 # Safari também está na lista
 ./fenestra --install                        # instruções para o Finder
 ```
 
