@@ -167,7 +167,7 @@ jobs:
           open -a "$PWD/macos/Fenestra.app" /tmp/fixture2/index.html
           sleep 6
           grep -q "fixture2" "$LOG"
-          PORT=$(grep "servindo /private/tmp/fixture2" "$LOG" | tail -1 | sed 's/.*://')
+          PORT=$(grep "serving /private/tmp/fixture2" "$LOG" | tail -1 | sed 's/.*://')
           echo "porta do droplet: $PORT"
           curl -fsS "http://127.0.0.1:$PORT/" | grep -q droplet
           echo "droplet ok"
