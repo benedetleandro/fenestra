@@ -26,9 +26,18 @@ Garanta que `~/.local/bin` está no `PATH`.
 fenestra ~/projetos/app/dist/index.html   # abre um build
 fenestra ~/projetos/app/dist              # abre uma pasta
 fenestra --serve ~/index.html             # força o servidor
+fenestra --port 8080 ~/index.html         # escolhe a porta
 fenestra --browser firefox ~/app/index.html
 fenestra --browsers                       # o que está instalado
 ```
+
+## Endurecimento
+
+- Só headers `Host` de loopback são aceitos (`127.0.0.1`, `localhost`), o que
+  bloqueia DNS rebinding.
+- Symlinks que resolvem para fora da raiz servida são rejeitados.
+- As respostas carregam `ETag` e `Last-Modified`, revalidam com `304` e suportam
+  `Range` para mídia grande.
 
 ## Registrar o handler de `.html`
 

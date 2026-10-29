@@ -47,6 +47,8 @@ permission once: **System Settings → Privacy & Security → Open Anyway**.
 ```bash
 ./fenestra ~/projects/app/dist/index.html   # opens in the default browser
 ./fenestra --browsers                       # what is installed
+./fenestra --serve ~/index.html             # force the server
+./fenestra --port 8080 ~/index.html         # pick the port
 ./fenestra --browser firefox                # switch browsers
 ./fenestra --browser safari                 # Safari is in the list too
 ./fenestra --install                        # Finder instructions

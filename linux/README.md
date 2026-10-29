@@ -26,9 +26,18 @@ Make sure `~/.local/bin` is on your `PATH`.
 fenestra ~/projects/app/dist/index.html   # open a build
 fenestra ~/projects/app/dist              # open a folder
 fenestra --serve ~/index.html             # force the server
+fenestra --port 8080 ~/index.html         # pick the port
 fenestra --browser firefox ~/app/index.html
 fenestra --browsers                       # what is installed
 ```
+
+## Hardening
+
+- Only loopback `Host` headers are accepted (`127.0.0.1`, `localhost`), which
+  blocks DNS rebinding.
+- Symlinks that resolve outside the served root are rejected.
+- Responses carry `ETag` and `Last-Modified`, revalidate with `304`, and support
+  `Range` for large media.
 
 ## Register the `.html` handler
 
