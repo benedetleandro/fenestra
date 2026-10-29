@@ -70,9 +70,9 @@ namespace Fenestra
         {
             string full = Path.GetFullPath(target);
 
-            // HTML simples abre direto no Edge por file://, sem servidor.
-            // So quem precisa de origem HTTP (modulos ES, caminhos absolutos,
-            // fetch, service worker) passa pelo servidor.
+            // Plain HTML opens directly in the browser through file://, no server.
+            // Only files that need an HTTP origin (ES modules, absolute paths,
+            // fetch, service worker) go through the server.
             if (!force && File.Exists(full) && IsHtml(full) && !NeedsServer(full))
             {
                 OpenInBrowser(full);
@@ -97,8 +97,8 @@ namespace Fenestra
             _root = _root.TrimEnd('\\');
             _defaultDoc = FindDefaultDoc(_root);
 
-            // Abrir o index pela raiz, nao por /index.html: routers de SPA
-            // costumam tratar /index.html como rota inexistente.
+            // Open index from the root, not /index.html: SPA routers
+            // usually treat /index.html as a missing route.
             if (_defaultDoc != null && _entry != null &&
                 string.Equals(_entry, _defaultDoc, StringComparison.OrdinalIgnoreCase))
             {
@@ -144,8 +144,8 @@ namespace Fenestra
             return ext == ".html" || ext == ".htm" || ext == ".xhtml";
         }
 
-        // Decide se o arquivo precisa de origem HTTP. Se nao precisar,
-        // o Edge abre o proprio arquivo e o Fenestra nem sobe servidor.
+        // Decides whether the file needs an HTTP origin. If it does not,
+        // the browser opens the file itself and Fenestra never starts a server.
         private static bool NeedsServer(string file)
         {
             try
@@ -190,8 +190,8 @@ namespace Fenestra
 
         private static TcpListener StartListener(int preferred)
         {
-            // A porta anterior e reaproveitada: origem estavel preserva
-            // localStorage, cookies e service worker entre sessoes.
+            // The previous port is reused: a stable origin preserves
+            // localStorage, cookies and the service worker across sessions.
             if (preferred > 0)
             {
                 TcpListener reuse = TryBind(preferred);
@@ -311,7 +311,7 @@ namespace Fenestra
 
                     if (File.Exists(full)) { ServeFile(ns, full, head); return; }
 
-                    // SPA: rota sem extensao cai no index.html
+                    // SPA: extensionless routes fall back to index.html
                     if (Path.GetExtension(full).Length == 0 && _defaultDoc != null)
                     {
                         string index = Path.Combine(_root, _defaultDoc);
@@ -563,7 +563,7 @@ namespace Fenestra
             string url = "http://127.0.0.1:" + port + "/";
             if (_entry != null) url += UrlPath(_entry);
 
-            // Usado pelos testes e pelo CI: sobe o servidor sem abrir navegador.
+            // Used by tests and CI: starts the server without opening a browser.
             if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1")
             {
                 Log("FENESTRA_NO_OPEN=1, headless server at " + url);
@@ -583,9 +583,9 @@ namespace Fenestra
                 return null;
             }
 
-            // Abre uma aba normal: sem --app, sem perfil separado, sem janela
-            // propria. O Fenestra so abre a porta; quem mostra o HTML e o
-            // navegador escolhido.
+            // Opens a normal tab: no --app, no separate profile, no custom
+            // window. Fenestra only opens the port; the chosen browser shows
+            // the HTML.
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = exe;
             psi.Arguments = "\"" + target + "\"";
@@ -729,7 +729,7 @@ namespace Fenestra
             string exe = FindBrowser(pref);
             if (exe != null) return exe;
 
-            // Preferencia indisponivel: cai para o primeiro navegador achado.
+            // Preference unavailable: fall back to the first browser found.
             string[] order = { "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
             for (int i = 0; i < order.Length; i++)
             {
@@ -809,8 +809,8 @@ namespace Fenestra
             {
                 try
                 {
-                    // Se sair em menos de 6s, foi entrega para uma instancia ja aberta:
-                    // nao derruba o servidor, deixa o timeout ocioso cuidar.
+                    // If it exits in under 6s, it handed off to a running instance:
+                    // do not stop the server, let the idle timeout handle it.
                     if (browser.WaitForExit(6000)) return;
                     browser.WaitForExit();
                 }

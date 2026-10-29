@@ -113,7 +113,7 @@ func run(target string, force bool) {
 		entry = ""
 	}
 
-	// HTML simples abre direto no navegador, sem servidor.
+	// Plain HTML opens directly in the browser, no server.
 	if !force && entry != "" && isHTML(entry) && !needsServer(filepath.Join(root, entry)) {
 		launch(abs)
 		return
@@ -147,7 +147,7 @@ func run(target string, force bool) {
 			go func() { done <- cmd.Wait() }()
 			select {
 			case <-done:
-				// Saiu em menos de 6s: foi entrega para uma instancia aberta.
+				// Exited in under 6s: it handed off to a running instance.
 				return
 			case <-time.After(6 * time.Second):
 				<-done
@@ -222,7 +222,7 @@ func handler(root, defaultDoc string) http.Handler {
 			return
 		}
 
-		// SPA: rota sem extensao cai no index.html.
+		// SPA: extensionless routes fall back to index.html.
 		if filepath.Ext(full) == "" && defaultDoc != "" {
 			idx := filepath.Join(root, defaultDoc)
 			if fi, err := os.Stat(idx); err == nil && !fi.IsDir() {
@@ -315,7 +315,7 @@ func isHTML(name string) bool {
 	return false
 }
 
-// needsServer decide se o arquivo precisa de origem HTTP.
+// needsServer decides whether the file needs an HTTP origin.
 func needsServer(file string) bool {
 	st, err := os.Stat(file)
 	if err != nil || st.Size() > 4*1024*1024 {
@@ -630,7 +630,7 @@ func launch(target string) *exec.Cmd {
 		}
 	}
 
-	// Fallback: primeiro navegador conhecido, depois o xdg-open.
+	// Fallback: first known browser, then xdg-open.
 	for _, b := range browserList() {
 		if bin, ok := lookup(b.key); ok {
 			cmd := exec.Command(bin, target)
