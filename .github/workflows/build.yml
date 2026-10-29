@@ -128,6 +128,7 @@ jobs:
           file fenestra | grep -q "Mach-O"
           file Fenestra.app/Contents/Resources/fenestra | grep -q "Mach-O"
           /usr/libexec/PlistBuddy -c "Print :CFBundleDocumentTypes:0:LSItemContentTypes:0" Fenestra.app/Contents/Info.plist
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' Fenestra.app/Contents/Info.plist)" = "dev.fenestra.app"
 
       - name: Smoke test the binary on macOS
         run: |

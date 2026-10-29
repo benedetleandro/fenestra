@@ -53,6 +53,7 @@ if command -v osacompile >/dev/null 2>&1; then
     /usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes array" "$PLIST" 2>/dev/null || true
     /usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:0 string public.html" "$PLIST" 2>/dev/null || true
     /usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes:0:LSItemContentTypes:1 string public.xhtml" "$PLIST" 2>/dev/null || true
+    /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier dev.fenestra.app" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string dev.fenestra.app" "$PLIST" 2>/dev/null || true
 
     LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
     if [ -x "$LSREGISTER" ]; then
