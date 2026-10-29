@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+
+- First run asks which browser to use and saves the answer: a native dialog on
+  Windows, a terminal menu on Linux and macOS, and an `osascript` dialog when the
+  macOS app is opened from the Finder.
+- With no preference and no way to ask (headless, CI, no TTY), the system browser
+  is used; `--browser` still wins and a missing browser falls back to the system.
+- The site documents the first-run picker and where the preference lives.
+
 ## 0.5.3
 
 - Hidden files and directories (`.env`, `.git/`) return 403 and are omitted from

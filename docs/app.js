@@ -15,7 +15,7 @@
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
     "hero.title": "Dois cliques.<br><span class=\"shine\">E roda.</span>",
     "hero.lead": "O Fenestra é um servidor local minúsculo que transforma qualquer <code>dist/index.html</code> num site funcionando no seu navegador. Sem terminal, sem extensão, sem navegador próprio.",
-    "hero.download": "Baixar v0.5.3",
+    "hero.download": "Baixar v0.6.0",
     "hero.how": "Como funciona",
     "hero.meta1": "Licença MIT",
     "hero.meta2": "sem SDK .NET",
@@ -162,6 +162,7 @@
     "faq.a7": "Sim. No Linux há binários estáticos (amd64 e arm64) com instalação via --install. No macOS não há binário pronto: o kit em macos/ compila na sua máquina, sem conta Apple e sem os US$ 99/ano da notarização.",
 
     "nav.browser": "Navegador",
+    "browser.first": "Na primeira vez, o Fenestra pergunta qual navegador usar e salva a resposta.",
     "browser.kicker": "Navegador",
     "browser.title": "Escolha o navegador, uma vez",
     "browser.lead": "O Fenestra abre uma aba normal no navegador que você escolher. A escolha fica salva e vale para todos os próximos duplo cliques.",

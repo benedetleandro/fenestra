@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -91,9 +92,81 @@ namespace Fenestra
             return rest.ToArray();
         }
 
+        private static void EnsureBrowserChoice()
+        {
+            if (File.Exists(BrowserPrefPath())) return;
+            if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
+            if (!Environment.UserInteractive) return;
+
+            string[] keys = { "default", "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
+            string[] labels = { "System default browser", "Microsoft Edge", "Google Chrome", "Firefox", "Brave", "Vivaldi", "Opera", "Chromium" };
+
+            using (Form form = new Form())
+            {
+                form.Text = "Fenestra - choose your browser";
+                form.FormBorderStyle = FormBorderStyle.FixedDialog;
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.MaximizeBox = false;
+                form.MinimizeBox = false;
+                form.ClientSize = new Size(420, 320);
+                form.Font = new Font("Segoe UI", 9f);
+
+                Label title = new Label();
+                title.Text = "Which browser should open local sites?";
+                title.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
+                title.SetBounds(18, 16, 384, 24);
+                form.Controls.Add(title);
+
+                Label hint = new Label();
+                hint.Text = "Fenestra opens a normal tab. You can change this later with --browser.";
+                hint.SetBounds(18, 44, 384, 34);
+                form.Controls.Add(hint);
+
+                ListBox list = new ListBox();
+                list.SetBounds(18, 86, 384, 170);
+                list.IntegralHeight = false;
+
+                List<string> itemKeys = new List<string>();
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    if (keys[i] != "default" && FindBrowser(keys[i]) == null) continue;
+                    itemKeys.Add(keys[i]);
+                    list.Items.Add(labels[i]);
+                }
+                list.SelectedIndex = 0;
+                form.Controls.Add(list);
+
+                Button ok = new Button();
+                ok.Text = "Use this browser";
+                ok.DialogResult = DialogResult.OK;
+                ok.SetBounds(196, 272, 120, 30);
+                form.Controls.Add(ok);
+
+                Button cancel = new Button();
+                cancel.Text = "System default";
+                cancel.DialogResult = DialogResult.Cancel;
+                cancel.SetBounds(322, 272, 80, 30);
+                form.Controls.Add(cancel);
+
+                form.AcceptButton = ok;
+                form.CancelButton = cancel;
+
+                DialogResult result = form.ShowDialog();
+                string chosen = result == DialogResult.OK && list.SelectedIndex >= 0
+                    ? itemKeys[list.SelectedIndex]
+                    : "default";
+
+                try { File.WriteAllText(BrowserPrefPath(), chosen); }
+                catch (Exception ex) { Log("could not save browser choice: " + ex.Message); }
+                Log("first-run browser choice: " + chosen);
+            }
+        }
+
         private static void Serve(string target, bool force)
         {
             string full = Path.GetFullPath(target);
+
+            EnsureBrowserChoice();
 
             if (File.Exists(full) && IsHtml(full) && LooksLikeSourceEntry(full))
             {
@@ -1012,11 +1085,11 @@ namespace Fenestra
             try
             {
                 string path = BrowserPrefPath();
-                if (!File.Exists(path)) return "edge";
+                if (!File.Exists(path)) return "default";
                 string value = File.ReadAllText(path).Trim().ToLowerInvariant();
-                return value.Length == 0 ? "edge" : value;
+                return value.Length == 0 ? "default" : value;
             }
-            catch { return "edge"; }
+            catch { return "default"; }
         }
 
         private static string ResolveBrowser()
@@ -1027,15 +1100,8 @@ namespace Fenestra
             string exe = FindBrowser(pref);
             if (exe != null) return exe;
 
-            // Preference unavailable: fall back to the first browser found.
-            string[] order = { "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
-            for (int i = 0; i < order.Length; i++)
-            {
-                if (order[i] == pref) continue;
-                string candidate = FindBrowser(order[i]);
-                if (candidate != null) return candidate;
-            }
-
+            // Preference unavailable: hand the choice to the system default.
+            Log("browser " + pref + " not found; using the system default");
             return null;
         }
 
@@ -1290,7 +1356,7 @@ namespace Fenestra
                 "  Fenestra.exe --browser chrome \"C:\\path\\index.html\"\r\n" +
                 "  Fenestra.exe --browser chrome              set the preferred browser\r\n" +
                 "  Fenestra.exe --browsers                    list detected browsers\r\n\r\n" +
-                "  Browsers: edge (default), chrome, firefox, brave, vivaldi, opera,\r\n" +
+                "  Browsers: default (system), edge, chrome, firefox, brave, vivaldi, opera,\r\n" +
                 "  chromium, default\r\n\r\n" +
                 "  --install [file]      register the .html handler\r\n" +
                 "  --uninstall           remove it\r\n",

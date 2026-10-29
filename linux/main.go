@@ -6,6 +6,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"html"
 	"io"
@@ -85,7 +86,7 @@ Usage:
   fenestra --uninstall                     remove it
 
 Browsers: edge, chrome, chromium, firefox, brave, vivaldi, opera, default
-(edge is the default; "default" hands off to xdg-open)
+("default" uses the system browser; edge is opt-in)
 `)
 }
 
@@ -101,6 +102,8 @@ func run(target string, force bool) {
 	if err != nil {
 		fatal(fmt.Errorf("path not found: %s", target))
 	}
+
+	chooseBrowserOnFirstRun()
 
 	var root, entry string
 	if info.IsDir() {
@@ -692,13 +695,91 @@ func lookup(key string) (string, bool) {
 func readBrowserPref() string {
 	data, err := os.ReadFile(filepath.Join(configDir(), "browser"))
 	if err != nil {
-		return "edge"
+		return "default"
 	}
 	value := strings.ToLower(strings.TrimSpace(string(data)))
 	if value == "" {
-		return "edge"
+		return "default"
 	}
 	return value
+}
+
+func browserPrefPath() string {
+	return filepath.Join(configDir(), "browser")
+}
+
+func saveBrowserPref(name string) {
+	if err := os.MkdirAll(configDir(), 0o755); err == nil {
+		if err := os.WriteFile(browserPrefPath(), []byte(name+"\n"), 0o644); err != nil {
+			logf("browser preference: %v", err)
+		}
+	}
+}
+
+func browserLabel(key string) string {
+	switch key {
+	case "edge":
+		return "Microsoft Edge"
+	case "chrome":
+		return "Google Chrome"
+	case "chromium":
+		return "Chromium"
+	case "firefox":
+		return "Firefox"
+	case "brave":
+		return "Brave"
+	case "vivaldi":
+		return "Vivaldi"
+	case "opera":
+		return "Opera"
+	case "safari":
+		return "Safari"
+	}
+	return key
+}
+
+func isTTY() bool {
+	fi, err := os.Stdin.Stat()
+	return err == nil && (fi.Mode()&os.ModeCharDevice) != 0
+}
+
+func chooseBrowserOnFirstRun() {
+	if os.Getenv("FENESTRA_NO_OPEN") == "1" {
+		return
+	}
+	if _, err := os.Stat(browserPrefPath()); err == nil {
+		return
+	}
+	if !isTTY() {
+		saveBrowserPref("default")
+		return
+	}
+
+	keys := []string{"default"}
+	labels := []string{"System default browser"}
+	for _, b := range browserList() {
+		if _, ok := lookup(b.key); ok {
+			keys = append(keys, b.key)
+			labels = append(labels, browserLabel(b.key))
+		}
+	}
+
+	fmt.Println("Fenestra — which browser should open local sites?")
+	for i, label := range labels {
+		fmt.Printf("  %d) %s\n", i+1, label)
+	}
+	fmt.Print("Choose [1]: ")
+
+	line, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+	line = strings.TrimSpace(line)
+	choice := 1
+	if line != "" {
+		if n, err := strconv.Atoi(line); err == nil && n >= 1 && n <= len(keys) {
+			choice = n
+		}
+	}
+	saveBrowserPref(keys[choice-1])
+	logf("first-run browser choice: %s", keys[choice-1])
 }
 
 func setBrowser(name string) bool {
@@ -762,17 +843,8 @@ func launch(target string) *exec.Cmd {
 				logf("opening %s %s", bin, target)
 				return cmd
 			}
-		}
-	}
-
-	// Fallback: first known browser, then xdg-open.
-	for _, b := range browserList() {
-		if bin, ok := lookup(b.key); ok {
-			cmd := exec.Command(bin, target)
-			if err := cmd.Start(); err == nil {
-				logf("opening %s %s", bin, target)
-				return cmd
-			}
+		} else {
+			logf("browser %s not found; using the system default", name)
 		}
 	}
 
