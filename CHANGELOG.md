@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Nothing yet.
+
+## 0.7.0
+
 - Linux and macOS now build from a single Go module (`linux/`), with the
   platform behavior selected at runtime; the macOS kit compiles the same source.
 - Handle ignored errors in Go and C# (`writeString`, lock/log/preference errors,
