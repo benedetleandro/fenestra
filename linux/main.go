@@ -41,8 +41,8 @@ const (
 func main() {
 	args := extractPort(os.Args[1:])
 	if len(args) == 0 {
-		usage()
-		os.Exit(1)
+		showBrowserSettings()
+		return
 	}
 
 	switch args[0] {
@@ -52,6 +52,8 @@ func main() {
 		usage()
 	case "--browsers":
 		listBrowsers()
+	case "--settings":
+		showBrowserSettings()
 	case "--install":
 		install()
 	case "--uninstall":
@@ -951,6 +953,45 @@ func listBrowsers() {
 
 // launch opens target in the configured browser. Returns the process when it
 // was started by us (so the caller can exit when it closes).
+func showBrowserSettings() {
+	current := readBrowserPref()
+	if !isTTY() {
+		fmt.Printf("current browser: %s\n", current)
+		fmt.Println("Run this in a terminal to change it, or use --browser <name>.")
+		return
+	}
+
+	keys := []string{"default"}
+	labels := []string{"System default browser"}
+	for _, b := range browserList() {
+		if _, ok := lookup(b.key); ok {
+			keys = append(keys, b.key)
+			labels = append(labels, browserLabel(b.key))
+		}
+	}
+
+	fmt.Println("Fenestra — which browser should open local sites?")
+	for i, label := range labels {
+		mark := " "
+		if keys[i] == current {
+			mark = "*"
+		}
+		fmt.Printf(" %s %d) %s\n", mark, i+1, label)
+	}
+	fmt.Print("Choose [1]: ")
+
+	line, _ := bufio.NewReader(os.Stdin).ReadString('\n')
+	line = strings.TrimSpace(line)
+	choice := 1
+	if line != "" {
+		if n, err := strconv.Atoi(line); err == nil && n >= 1 && n <= len(keys) {
+			choice = n
+		}
+	}
+	saveBrowserPref(keys[choice-1])
+	fmt.Printf("Saved: %s\n", keys[choice-1])
+}
+
 func launch(target string) *exec.Cmd {
 	if os.Getenv("FENESTRA_NO_OPEN") == "1" {
 		logf("FENESTRA_NO_OPEN=1, not opening a browser")

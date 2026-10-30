@@ -162,6 +162,7 @@
     "faq.a7": "Sim. No Linux há binários estáticos (amd64 e arm64) com instalação via --install. No macOS não há binário pronto: o kit em macos/ compila na sua máquina, sem conta Apple e sem os US$ 99/ano da notarização.",
 
     "nav.browser": "Navegador",
+    "browser.settings": "Dê duplo clique no Fenestra sem arquivo para abrir esta tela de novo.",
     "browser.first": "Na primeira vez, o Fenestra pergunta qual navegador usar e salva a resposta.",
     "browser.kicker": "Navegador",
     "browser.title": "Escolha o navegador, uma vez",

@@ -32,9 +32,10 @@ namespace Fenestra
             try
             {
                 args = ExtractPort(args);
-                if (args.Length == 0) { Usage(); return; }
+                if (args.Length == 0) { ShowBrowserSettings(); return; }
 
                 string a = args[0];
+                if (Eq(a, "--settings")) { ShowBrowserSettings(); return; }
                 if (Eq(a, "--install")) { Install(args.Length > 1 ? args[1] : null); return; }
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
@@ -105,12 +106,44 @@ namespace Fenestra
             if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
             if (!Environment.UserInteractive) return;
 
+            string chosen = ShowBrowserPicker(true, "default");
+            if (chosen == null) chosen = "default";
+
+            try { File.WriteAllText(BrowserPrefPath(), chosen); }
+            catch (Exception ex) { Log("could not save browser choice: " + ex.Message); }
+            Log("first-run browser choice: " + chosen);
+        }
+
+        private static void ShowBrowserSettings()
+        {
+            string current = ReadBrowserPref();
+            string chosen = ShowBrowserPicker(false, current);
+            if (chosen == null) return;
+
+            try { File.WriteAllText(BrowserPrefPath(), chosen); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not save the preference: " + ex.Message,
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Log("browser preference changed: " + chosen);
+            string label = chosen == "default" ? "the system default browser" : chosen;
+            MessageBox.Show(
+                "Fenestra will use " + label + ".\r\n\r\n" +
+                "Double-click any .html to open it in that browser.",
+                "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private static string ShowBrowserPicker(bool firstRun, string current)
+        {
             string[] keys = { "default", "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
             string[] labels = { "System default browser", "Microsoft Edge", "Google Chrome", "Firefox", "Brave", "Vivaldi", "Opera", "Chromium" };
 
             using (Form form = new Form())
             {
-                form.Text = "Fenestra - choose your browser";
+                form.Text = firstRun ? "Fenestra - choose your browser" : "Fenestra - browser settings";
                 form.FormBorderStyle = FormBorderStyle.FixedDialog;
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.MaximizeBox = false;
@@ -119,13 +152,15 @@ namespace Fenestra
                 form.Font = new Font("Segoe UI", 9f);
 
                 Label title = new Label();
-                title.Text = "Which browser should open local sites?";
+                title.Text = firstRun
+                    ? "Which browser should open local sites?"
+                    : "Which browser should Fenestra use?";
                 title.Font = new Font("Segoe UI", 11f, FontStyle.Bold);
                 title.SetBounds(18, 16, 384, 24);
                 form.Controls.Add(title);
 
                 Label hint = new Label();
-                hint.Text = "Fenestra opens a normal tab. You can change this later with --browser.";
+                hint.Text = "This is the browser that opens local sites. It applies to every double-click.";
                 hint.SetBounds(18, 44, 384, 34);
                 form.Controls.Add(hint);
 
@@ -139,18 +174,19 @@ namespace Fenestra
                     if (keys[i] != "default" && FindBrowser(keys[i]) == null) continue;
                     itemKeys.Add(keys[i]);
                     list.Items.Add(labels[i]);
+                    if (keys[i] == current) list.SelectedIndex = list.Items.Count - 1;
                 }
-                list.SelectedIndex = 0;
+                if (list.SelectedIndex < 0) list.SelectedIndex = 0;
                 form.Controls.Add(list);
 
                 Button ok = new Button();
-                ok.Text = "Use this browser";
+                ok.Text = firstRun ? "Use this browser" : "Save";
                 ok.DialogResult = DialogResult.OK;
                 ok.SetBounds(196, 272, 120, 30);
                 form.Controls.Add(ok);
 
                 Button cancel = new Button();
-                cancel.Text = "System default";
+                cancel.Text = firstRun ? "System default" : "Cancel";
                 cancel.DialogResult = DialogResult.Cancel;
                 cancel.SetBounds(322, 272, 80, 30);
                 form.Controls.Add(cancel);
@@ -159,13 +195,8 @@ namespace Fenestra
                 form.CancelButton = cancel;
 
                 DialogResult result = form.ShowDialog();
-                string chosen = result == DialogResult.OK && list.SelectedIndex >= 0
-                    ? itemKeys[list.SelectedIndex]
-                    : "default";
-
-                try { File.WriteAllText(BrowserPrefPath(), chosen); }
-                catch (Exception ex) { Log("could not save browser choice: " + ex.Message); }
-                Log("first-run browser choice: " + chosen);
+                if (result != DialogResult.OK || list.SelectedIndex < 0) return null;
+                return itemKeys[list.SelectedIndex];
             }
         }
 

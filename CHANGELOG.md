@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Nothing yet.
+- Double-click Fenestra with no file to open the browser settings screen and pick the default browser; `--settings` does the same.
 
 ## 0.7.0
 
