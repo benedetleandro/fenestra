@@ -124,13 +124,63 @@ namespace Fenestra
 
         private static string SystemDefaultBrowserExe()
         {
-            // .html follows Fenestra once installed, so the real default lives
-            // in the http/https associations, which Windows updates live.
-            string[] targets = { ".html", "http", "https" };
-            for (int i = 0; i < targets.Length; i++)
+            string html = HandlerExeFor(".html");
+            if (html != null && !IsSelf(html)) return html;
+
+            if (html != null)
             {
-                string exe = HandlerExeFor(targets[i]);
-                if (exe != null && !IsSelf(exe)) return exe;
+                // Fenestra owns .html now; recover the browser used before it
+                // from the "Open with" most-recently-used list.
+                string previous = PreviousBrowserExe();
+                Log("html handler is Fenestra; previous browser: " + (previous ?? "none"));
+                if (previous != null) return previous;
+            }
+
+            string http = HandlerExeFor("http");
+            if (http != null && !IsSelf(http)) return http;
+
+            string https = HandlerExeFor("https");
+            if (https != null && !IsSelf(https)) return https;
+
+            return null;
+        }
+
+        private static string PreviousBrowserExe()
+        {
+            try
+            {
+                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(
+                    @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.html\OpenWithList"))
+                {
+                    if (k == null) return null;
+                    string mru = k.GetValue("MRUList") as string;
+                    if (string.IsNullOrEmpty(mru)) return null;
+
+                    for (int i = 0; i < mru.Length; i++)
+                    {
+                        string name = k.GetValue(mru[i].ToString()) as string;
+                        if (string.IsNullOrEmpty(name)) continue;
+                        string exe = ResolveKnownExe(name);
+                        if (exe != null && !IsSelf(exe)) return exe;
+                    }
+                }
+            }
+            catch (Exception ex) { Log("OpenWithList: " + ex.Message); }
+            return null;
+        }
+
+        private static string ResolveKnownExe(string name)
+        {
+            string file = Path.GetFileName(name);
+            string[] keys = { "edge", "chrome", "chromium", "firefox", "brave", "vivaldi", "opera" };
+            for (int i = 0; i < keys.Length; i++)
+            {
+                string known = BrowserExeName(keys[i]);
+                if (string.IsNullOrEmpty(known)) continue;
+                if (string.Equals(Path.GetFileName(known), file, StringComparison.OrdinalIgnoreCase))
+                {
+                    return FindBrowser(keys[i]);
+                }
             }
             return null;
         }
