@@ -23,6 +23,7 @@ namespace Fenestra
         private static string _lockFile;
         private static long _lastRequest = DateTime.UtcNow.Ticks;
         private static int _forcedPort;
+        private static bool _noPrompt;
         private static System.Threading.Timer _idleTimer;
 
         [STAThread]
@@ -76,6 +77,11 @@ namespace Fenestra
             List<string> rest = new List<string>();
             for (int i = 0; i < args.Length; i++)
             {
+                if (Eq(args[i], "--no-prompt"))
+                {
+                    _noPrompt = true;
+                    continue;
+                }
                 if (Eq(args[i], "--port") && i + 1 < args.Length)
                 {
                     int port;
@@ -92,8 +98,9 @@ namespace Fenestra
             return rest.ToArray();
         }
 
-        private static void EnsureBrowserChoice()
+        private static void EnsureBrowserChoice(bool force)
         {
+            if (force || _noPrompt) return;
             if (File.Exists(BrowserPrefPath())) return;
             if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
             if (!Environment.UserInteractive) return;
@@ -166,7 +173,7 @@ namespace Fenestra
         {
             string full = Path.GetFullPath(target);
 
-            EnsureBrowserChoice();
+            EnsureBrowserChoice(force);
 
             if (File.Exists(full) && IsHtml(full) && LooksLikeSourceEntry(full))
             {
@@ -1353,6 +1360,7 @@ namespace Fenestra
                 "  Fenestra.exe \"C:\\path\\folder\"\r\n" +
                 "  Fenestra.exe --serve \"C:\\path\\index.html\"   force the server\r\n" +
                 "  Fenestra.exe --port 8080 \"C:\\path\\index.html\" use a specific port\r\n" +
+                "  Fenestra.exe --no-prompt \"C:\\path\\index.html\" skip the browser prompt\r\n" +
                 "  Fenestra.exe --browser chrome \"C:\\path\\index.html\"\r\n" +
                 "  Fenestra.exe --browser chrome              set the preferred browser\r\n" +
                 "  Fenestra.exe --browsers                    list detected browsers\r\n\r\n" +

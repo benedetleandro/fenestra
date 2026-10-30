@@ -406,3 +406,41 @@ func TestHTTPFeatures(t *testing.T) {
 		t.Errorf("host tampering = %d, want 403", resp.StatusCode)
 	}
 }
+
+func FuzzHandlerPaths(f *testing.F) {
+	base := f.TempDir()
+	root := filepath.Join(base, "public")
+	if err := os.MkdirAll(root, 0o755); err != nil {
+		f.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "index.html"), []byte("<h1>fixture</h1>"), 0o644); err != nil {
+		f.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(base, "secret.txt"), []byte("SECRET"), 0o644); err != nil {
+		f.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, ".git"), 0o755); err != nil {
+		f.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, ".git", "config"), []byte("SECRET"), 0o644); err != nil {
+		f.Fatal(err)
+	}
+
+	for _, seed := range []string{
+		"/", "/index.html", "/../secret.txt", "/%2e%2e/secret.txt",
+		"/.env", "/.git/config", "/::", "/a\x00b", "/....//secret.txt",
+		"/%2e%2e/%2e%2e/secret.txt", "/..%5csecret.txt",
+	} {
+		f.Add(seed)
+	}
+
+	f.Fuzz(func(t *testing.T, p string) {
+		req := httptest.NewRequest("GET", "/", nil)
+		req.URL.Path = p
+		rec := httptest.NewRecorder()
+		handler(root, "index.html").ServeHTTP(rec, req)
+		if strings.Contains(rec.Body.String(), "SECRET") {
+			t.Fatalf("path %q served a file outside the root", p)
+		}
+	})
+}

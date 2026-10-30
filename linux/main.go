@@ -30,6 +30,7 @@ var version = "0.0.0-dev"
 
 var lastRequest int64 = time.Now().UnixNano()
 var forcedPort int
+var noPrompt bool
 
 func main() {
 	args := extractPort(os.Args[1:])
@@ -79,6 +80,7 @@ Usage:
   fenestra "~/projects/app/dist"
   fenestra --serve "~/index.html"          force the server
   fenestra --port 8080 "~/index.html"      use a specific port
+  fenestra --no-prompt "~/index.html"      skip the browser prompt
   fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
   fenestra --browsers                      list detected browsers
@@ -103,7 +105,7 @@ func run(target string, force bool) {
 		fatal(fmt.Errorf("path not found: %s", target))
 	}
 
-	chooseBrowserOnFirstRun()
+	chooseBrowserOnFirstRun(force)
 
 	var root, entry string
 	if info.IsDir() {
@@ -191,6 +193,10 @@ func run(target string, force bool) {
 func extractPort(args []string) []string {
 	out := make([]string, 0, len(args))
 	for i := 0; i < len(args); i++ {
+		if args[i] == "--no-prompt" {
+			noPrompt = true
+			continue
+		}
 		if args[i] == "--port" && i+1 < len(args) {
 			n, err := strconv.Atoi(args[i+1])
 			if err != nil || n < 1 || n > 65535 {
@@ -743,8 +749,8 @@ func isTTY() bool {
 	return err == nil && (fi.Mode()&os.ModeCharDevice) != 0
 }
 
-func chooseBrowserOnFirstRun() {
-	if os.Getenv("FENESTRA_NO_OPEN") == "1" {
+func chooseBrowserOnFirstRun(force bool) {
+	if force || noPrompt || os.Getenv("FENESTRA_NO_OPEN") == "1" {
 		return
 	}
 	if _, err := os.Stat(browserPrefPath()); err == nil {

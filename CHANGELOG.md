@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+- `--no-prompt` skips the first-run browser picker; `--serve` skips it too, so
+  scripts and services never block on a dialog.
+- `FuzzHandlerPaths` exercises request-path handling with traversal, NUL,
+  hidden-file and encoded inputs; 34k runs locally with no crash.
+
 ## 0.6.0
 
 - First run asks which browser to use and saves the answer: a native dialog on
