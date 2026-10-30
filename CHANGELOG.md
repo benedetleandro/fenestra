@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Nothing yet. Changes land here and ship at the next milestone, not per fix.
+- Policy: [RELEASING.md](RELEASING.md).
+
 ## 0.6.1
 
 - `--no-prompt` skips the first-run browser picker; `--serve` skips it too, so
