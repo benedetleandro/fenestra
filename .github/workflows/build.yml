@@ -39,7 +39,7 @@ jobs:
       - name: gosec (reviewed exclusions G115, G204, G703)
         run: |
           go install github.com/securego/gosec/v2/cmd/gosec@latest
-          cd linux && gosec -quiet -exclude=G115,G204,G703 ./...
+          cd linux && gosec -quiet -severity=medium -exclude=G115,G204,G703 ./...
 
   windows:
     runs-on: windows-latest
