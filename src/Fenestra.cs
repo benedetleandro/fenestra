@@ -1449,6 +1449,10 @@ namespace Fenestra
             // Remember the browser that is the .html handler right now.
             CaptureHandler();
 
+            // Follow the captured handler until the user pins a browser in settings.
+            try { File.WriteAllText(BrowserPrefPath(), "default"); }
+            catch (Exception ex) { Log("could not reset browser preference: " + ex.Message); }
+
             using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Fenestra.html"))
             {
                 k.SetValue("", "Fenestra (local app)");
