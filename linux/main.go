@@ -32,6 +32,12 @@ var lastRequest int64 = time.Now().UnixNano()
 var forcedPort int
 var noPrompt bool
 
+const (
+	handoffDelay = 6 * time.Second
+	idleAfter    = 4 * time.Hour
+	maxHTMLSize  = 4 * 1024 * 1024
+)
+
 func main() {
 	args := extractPort(os.Args[1:])
 	if len(args) == 0 {
@@ -183,7 +189,7 @@ func run(target string, force bool) {
 			case <-done:
 				// Exited in under 6s: it handed off to a running instance.
 				return
-			case <-time.After(6 * time.Second):
+			case <-time.After(handoffDelay):
 				<-done
 				os.Exit(0)
 			}
@@ -224,7 +230,7 @@ func idleWatch() {
 	for {
 		time.Sleep(time.Minute)
 		last := time.Unix(0, atomic.LoadInt64(&lastRequest))
-		if time.Since(last) > 4*time.Hour {
+		if time.Since(last) > idleAfter {
 			os.Exit(0)
 		}
 	}
@@ -398,7 +404,7 @@ func isHTML(name string) bool {
 // needsServer decides whether the file needs an HTTP origin.
 func needsServer(file string) bool {
 	st, err := os.Stat(file)
-	if err != nil || st.Size() > 4*1024*1024 {
+	if err != nil || st.Size() > maxHTMLSize {
 		return true
 	}
 
@@ -681,20 +687,19 @@ func ping(port int, root string) bool {
 // ---------------------------------------------------------------- browser
 
 type browser struct {
-	key   string
-	bins  []string
-	found string
+	key  string
+	bins []string
 }
 
 func browserList() []browser {
 	return []browser{
-		{"edge", []string{"microsoft-edge", "microsoft-edge-stable"}, ""},
-		{"chrome", []string{"google-chrome", "google-chrome-stable"}, ""},
-		{"chromium", []string{"chromium", "chromium-browser"}, ""},
-		{"firefox", []string{"firefox", "firefox-esr"}, ""},
-		{"brave", []string{"brave-browser", "brave"}, ""},
-		{"vivaldi", []string{"vivaldi", "vivaldi-stable"}, ""},
-		{"opera", []string{"opera"}, ""},
+		{"edge", []string{"microsoft-edge", "microsoft-edge-stable"}},
+		{"chrome", []string{"google-chrome", "google-chrome-stable"}},
+		{"chromium", []string{"chromium", "chromium-browser"}},
+		{"firefox", []string{"firefox", "firefox-esr"}},
+		{"brave", []string{"brave-browser", "brave"}},
+		{"vivaldi", []string{"vivaldi", "vivaldi-stable"}},
+		{"opera", []string{"opera"}},
 	}
 }
 
