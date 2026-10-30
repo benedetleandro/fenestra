@@ -88,10 +88,10 @@ O script imprime `FAILED at line N`. Copie essa mensagem.
 Enquanto isso, o caminho manual mostra onde está o problema:
 
 ```bash
-cd fenestra/macos
+cd fenestra/linux
 go version
-go build -o fenestra .
-./fenestra ~/caminho/dist/index.html
+GOOS=darwin CGO_ENABLED=0 go build -o ../macos/fenestra .
+../macos/fenestra ~/caminho/dist/index.html
 ```
 
 Se o `go build` funcionar e o `./fenestra` abrir a página, o problema está só

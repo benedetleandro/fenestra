@@ -87,10 +87,10 @@ The script prints `FAILED at line N`. Copy that message.
 Meanwhile, the manual path shows where the problem is:
 
 ```bash
-cd fenestra/macos
+cd fenestra/linux
 go version
-go build -o fenestra .
-./fenestra ~/path/dist/index.html
+GOOS=darwin CGO_ENABLED=0 go build -o ../macos/fenestra .
+../macos/fenestra ~/path/dist/index.html
 ```
 
 If `go build` works and `./fenestra` opens the page, the problem is only in the
