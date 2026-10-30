@@ -508,7 +508,7 @@ namespace Fenestra
                     Send404(ns, target, head);
                 }
             }
-            catch { }
+            catch (Exception ex) { Log("ignored error: " + ex.Message); }
         }
 
         private static void ServeFile(NetworkStream ns, string path, bool head, Dictionary<string, string> headers)
@@ -770,7 +770,7 @@ namespace Fenestra
                     if (!name.StartsWith(".")) files.Add(name);
                 }
             }
-            catch { }
+            catch (Exception ex) { Log("ignored error: " + ex.Message); }
 
             dirs.Sort(StringComparer.OrdinalIgnoreCase);
             files.Sort(StringComparer.OrdinalIgnoreCase);
@@ -931,7 +931,7 @@ namespace Fenestra
                 File.AppendAllText(Path.Combine(dir, "fenestra.log"),
                     DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  " + message + "\r\n");
             }
-            catch { }
+            catch (Exception ex) { Log("ignored error: " + ex.Message); }
         }
 
         // -------------------------------------------------------------- browser
@@ -957,7 +957,7 @@ namespace Fenestra
             if (exe == null)
             {
                 Log("no known browser; using the system default");
-                try { Process.Start(target); } catch { }
+                try { Process.Start(target); } catch (Exception ex) { Log("ignored error: " + ex.Message); }
                 return null;
             }
 
@@ -1060,7 +1060,7 @@ namespace Fenestra
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { Log("ignored error: " + ex.Message); }
 
                 try
                 {
@@ -1073,7 +1073,7 @@ namespace Fenestra
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { Log("ignored error: " + ex.Message); }
             }
 
             return null;
@@ -1185,7 +1185,7 @@ namespace Fenestra
                     if (browser.WaitForExit(6000)) return;
                     browser.WaitForExit();
                 }
-                catch { }
+                catch (Exception ex) { Log("ignored error: " + ex.Message); }
 
                 Shutdown("browser closed");
             });
@@ -1201,7 +1201,7 @@ namespace Fenestra
                 TimeSpan idle = TimeSpan.FromTicks(DateTime.UtcNow.Ticks - last);
                 if (idle.TotalMinutes > 240) Shutdown("ocioso");
             }
-            catch { }
+            catch (Exception ex) { Log("ignored error: " + ex.Message); }
         }
 
         private static void Shutdown(string reason)
@@ -1265,7 +1265,7 @@ namespace Fenestra
             {
                 File.WriteAllText(_lockFile, port + "|" + Process.GetCurrentProcess().Id);
             }
-            catch { }
+            catch (Exception ex) { Log("ignored error: " + ex.Message); }
         }
 
         // ------------------------------------------------------------- install
@@ -1336,7 +1336,7 @@ namespace Fenestra
 
         private static void TryDeleteKey(string path)
         {
-            try { Registry.CurrentUser.DeleteSubKeyTree(path, false); } catch { }
+            try { Registry.CurrentUser.DeleteSubKeyTree(path, false); } catch (Exception ex) { Log("ignored error: " + ex.Message); }
         }
 
         private static void TryDeleteValue(string path, string name)
@@ -1348,7 +1348,7 @@ namespace Fenestra
                     if (k != null) k.DeleteValue(name, false);
                 }
             }
-            catch { }
+            catch (Exception ex) { Log("ignored error: " + ex.Message); }
         }
 
         private static void Usage()

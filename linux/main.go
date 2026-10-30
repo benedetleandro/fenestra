@@ -232,6 +232,12 @@ func idleWatch() {
 
 // ---------------------------------------------------------------- server
 
+func writeString(w io.Writer, s string) {
+	if _, err := io.WriteString(w, s); err != nil {
+		logf("write response: %v", err)
+	}
+}
+
 func handler(root, defaultDoc string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		atomic.StoreInt64(&lastRequest, time.Now().UnixNano())
@@ -242,7 +248,7 @@ func handler(root, defaultDoc string) http.Handler {
 		}
 
 		if r.URL.Path == "/__fenestra/ping" {
-			io.WriteString(w, "fenestra-ok\n"+root)
+			writeString(w, "fenestra-ok\n"+root)
 			return
 		}
 
@@ -358,13 +364,13 @@ func listDir(w http.ResponseWriter, dir, urlPath string) {
 
 	b.WriteString("</ul>")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	io.WriteString(w, b.String())
+	writeString(w, b.String())
 }
 
 func notFound(w http.ResponseWriter, target, root string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusNotFound)
-	io.WriteString(w, "<!doctype html><meta charset=\"utf-8\"><title>404</title>"+
+	writeString(w, "<!doctype html><meta charset=\"utf-8\"><title>404</title>"+
 		"<body style=\"font:15px/1.6 system-ui,sans-serif;background:#0f0f10;color:#e8e8ea;padding:40px\">"+
 		"<h1>404</h1><p>Could not find <code>"+html.EscapeString(target)+"</code> at:</p>"+
 		"<p style=\"color:#8a8a90;word-break:break-all\">"+html.EscapeString(root)+"</p></body>")
@@ -652,8 +658,13 @@ func readLock(file string) (int, bool) {
 }
 
 func writeLock(file string, port int) {
-	os.MkdirAll(filepath.Dir(file), 0o750)
-	os.WriteFile(file, []byte(fmt.Sprintf("%d|%d", port, os.Getpid())), 0o600)
+	if err := os.MkdirAll(filepath.Dir(file), 0o750); err != nil {
+		logf("lock directory: %v", err)
+		return
+	}
+	if err := os.WriteFile(file, []byte(fmt.Sprintf("%d|%d", port, os.Getpid())), 0o600); err != nil {
+		logf("lock file: %v", err)
+	}
 }
 
 func ping(port int, root string) bool {
@@ -718,10 +729,12 @@ func browserPrefPath() string {
 }
 
 func saveBrowserPref(name string) {
-	if err := os.MkdirAll(configDir(), 0o750); err == nil {
-		if err := os.WriteFile(browserPrefPath(), []byte(name+"\n"), 0o600); err != nil {
-			logf("browser preference: %v", err)
-		}
+	if err := os.MkdirAll(configDir(), 0o750); err != nil {
+		logf("browser preference directory: %v", err)
+		return
+	}
+	if err := os.WriteFile(browserPrefPath(), []byte(name+"\n"), 0o600); err != nil {
+		logf("browser preference: %v", err)
 	}
 }
 
@@ -895,7 +908,9 @@ Categories=Development;
 		fatal(err)
 	}
 
-	exec.Command("update-desktop-database", dir).Run()
+	if err := exec.Command("update-desktop-database", dir).Run(); err != nil {
+		logf("update-desktop-database: %v", err)
+	}
 
 	if out, err := exec.Command("xdg-mime", "default", "fenestra.desktop", "text/html").CombinedOutput(); err != nil {
 		fmt.Fprintf(os.Stderr, "xdg-mime failed: %v\n%s\n", err, out)
@@ -912,7 +927,9 @@ func uninstall() {
 	if err := os.Remove(file); err != nil && !os.IsNotExist(err) {
 		fatal(err)
 	}
-	exec.Command("update-desktop-database", appsDir()).Run()
+	if err := exec.Command("update-desktop-database", appsDir()).Run(); err != nil {
+		logf("update-desktop-database: %v", err)
+	}
 
 	fmt.Println("Fenestra removed. Set your default browser back with:")
 	if desktop := desktopFileFor(readBrowserPref()); desktop != "" {
@@ -948,7 +965,10 @@ func dataDir() string {
 	if x := os.Getenv("XDG_DATA_HOME"); x != "" {
 		return filepath.Join(x, "fenestra")
 	}
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		fatal(fmt.Errorf("cannot determine the home directory: %v", err))
+	}
 	return filepath.Join(home, ".local", "share", "fenestra")
 }
 
@@ -956,7 +976,10 @@ func configDir() string {
 	if x := os.Getenv("XDG_CONFIG_HOME"); x != "" {
 		return filepath.Join(x, "fenestra")
 	}
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		fatal(fmt.Errorf("cannot determine the home directory: %v", err))
+	}
 	return filepath.Join(home, ".config", "fenestra")
 }
 
@@ -964,13 +987,19 @@ func appsDir() string {
 	if x := os.Getenv("XDG_DATA_HOME"); x != "" {
 		return filepath.Join(x, "applications")
 	}
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+	if err != nil {
+		fatal(fmt.Errorf("cannot determine the home directory: %v", err))
+	}
 	return filepath.Join(home, ".local", "share", "applications")
 }
 
 func logf(format string, args ...any) {
 	dir := dataDir()
-	os.MkdirAll(dir, 0o750)
+	if err := os.MkdirAll(dir, 0o750); err != nil {
+		fmt.Fprintln(os.Stderr, "log directory:", err)
+		return
+	}
 	f, err := os.OpenFile(filepath.Join(dir, "fenestra.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
 		return
