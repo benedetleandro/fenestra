@@ -163,7 +163,7 @@
 
     "nav.browser": "Navegador",
     "browser.settings": "Dê duplo clique no Fenestra sem arquivo para abrir esta tela de novo.",
-    "browser.first": "O Fenestra segue o navegador padrão do sistema (a associação de http), então mudar no Windows vale já na próxima abertura.",
+    "browser.first": "O Fenestra lê o navegador padrão do sistema a cada abertura (a associação de http), então mudar no Windows vale na hora. Nada é gravado a menos que você fixe um navegador nas configurações.",
     "browser.kicker": "Navegador",
     "browser.title": "Escolha o navegador, uma vez",
     "browser.lead": "O Fenestra abre uma aba normal no navegador que você escolher. A escolha fica salva e vale para todos os próximos duplo cliques.",

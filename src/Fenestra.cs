@@ -23,7 +23,6 @@ namespace Fenestra
         private static string _lockFile;
         private static long _lastRequest = DateTime.UtcNow.Ticks;
         private static int _forcedPort;
-        private static bool _noPrompt;
         private static System.Threading.Timer _idleTimer;
 
         [STAThread]
@@ -78,11 +77,6 @@ namespace Fenestra
             List<string> rest = new List<string>();
             for (int i = 0; i < args.Length; i++)
             {
-                if (Eq(args[i], "--no-prompt"))
-                {
-                    _noPrompt = true;
-                    continue;
-                }
                 if (Eq(args[i], "--port") && i + 1 < args.Length)
                 {
                     int port;
@@ -101,15 +95,31 @@ namespace Fenestra
 
         private static void EnsureBrowserChoice(bool force)
         {
-            if (force || _noPrompt) return;
-            if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
+            CleanupLegacyState();
+        }
 
-            if (!File.Exists(HandlerPrefPath())) CaptureHandler();
-            if (File.Exists(BrowserPrefPath())) return;
+        // Older builds stored the handler in handler.txt. The system is the
+        // source of truth now, so drop the file and any "default" placeholder.
+        private static void CleanupLegacyState()
+        {
+            try
+            {
+                string handler = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Fenestra", "handler.txt");
+                if (File.Exists(handler)) File.Delete(handler);
+            }
+            catch (Exception ex) { Log("cleanup handler: " + ex.Message); }
 
-            try { File.WriteAllText(BrowserPrefPath(), "default"); }
-            catch (Exception ex) { Log("could not save browser choice: " + ex.Message); }
-            Log("first run: default browser preference written");
+            try
+            {
+                string path = BrowserPrefPath();
+                if (File.Exists(path) && File.ReadAllText(path).Trim().ToLowerInvariant() == "default")
+                {
+                    File.Delete(path);
+                }
+            }
+            catch (Exception ex) { Log("cleanup browser: " + ex.Message); }
         }
 
         private static string SystemDefaultBrowserExe()
@@ -203,7 +213,17 @@ namespace Fenestra
             string chosen = ShowBrowserPicker(false, current);
             if (chosen == null) return;
 
-            try { File.WriteAllText(BrowserPrefPath(), chosen); }
+            try
+            {
+                if (chosen == "default")
+                {
+                    if (File.Exists(BrowserPrefPath())) File.Delete(BrowserPrefPath());
+                }
+                else
+                {
+                    File.WriteAllText(BrowserPrefPath(), chosen);
+                }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("Could not save the preference: " + ex.Message,
@@ -1293,9 +1313,6 @@ namespace Fenestra
             string system = SystemDefaultBrowserExe();
             if (system != null && !IsSelf(system)) return system;
 
-            string handler = ReadHandlerPref();
-            if (handler != null && File.Exists(handler) && !IsSelf(handler)) return handler;
-
             return null;
         }
 
@@ -1323,7 +1340,17 @@ namespace Fenestra
                 return false;
             }
 
-            try { File.WriteAllText(BrowserPrefPath(), name); }
+            try
+            {
+                if (name == "default")
+                {
+                    if (File.Exists(BrowserPrefPath())) File.Delete(BrowserPrefPath());
+                }
+                else
+                {
+                    File.WriteAllText(BrowserPrefPath(), name);
+                }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("Could not save the preference: " + ex.Message,
@@ -1461,13 +1488,6 @@ namespace Fenestra
         {
             string exe = Application.ExecutablePath;
 
-            // Remember the browser that is the .html handler right now.
-            CaptureHandler();
-
-            // Follow the captured handler until the user pins a browser in settings.
-            try { File.WriteAllText(BrowserPrefPath(), "default"); }
-            catch (Exception ex) { Log("could not reset browser preference: " + ex.Message); }
-
             using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Fenestra.html"))
             {
                 k.SetValue("", "Fenestra (local app)");
@@ -1554,7 +1574,6 @@ namespace Fenestra
                 "  Fenestra.exe \"C:\\path\\folder\"\r\n" +
                 "  Fenestra.exe --serve \"C:\\path\\index.html\"   force the server\r\n" +
                 "  Fenestra.exe --port 8080 \"C:\\path\\index.html\" use a specific port\r\n" +
-                "  Fenestra.exe --no-prompt \"C:\\path\\index.html\" skip the browser prompt\r\n" +
                 "  Fenestra.exe --browser chrome \"C:\\path\\index.html\"\r\n" +
                 "  Fenestra.exe --browser chrome              set the preferred browser\r\n" +
                 "  Fenestra.exe --browsers                    list detected browsers\r\n\r\n" +

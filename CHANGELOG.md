@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- The default follows the live http/https association (the real system browser), so changing it in Windows is picked up on the next open; `--install` still captures the previous `.html` handler as a fallback.
+- Browser choice is stateless: the default is read from the live http/https association on every open, and no preference file is written unless a browser is pinned in settings. The legacy `handler.txt` is removed.
 - Double-click Fenestra with no file to open the browser settings screen and pick the default browser; `--settings` does the same.
 
 ## 0.7.0
