@@ -1062,7 +1062,23 @@ namespace Fenestra
             string exe = ResolveBrowser();
             if (exe == null)
             {
-                Log("no known browser; using the system default");
+                // Follow the .html handler exactly, not the http default.
+                string handler = SystemDefaultBrowserExe();
+                if (handler != null)
+                {
+                    Log("opening the .html handler " + handler);
+                    try
+                    {
+                        ProcessStartInfo h = new ProcessStartInfo();
+                        h.FileName = handler;
+                        h.Arguments = "\"" + target + "\"";
+                        h.UseShellExecute = false;
+                        return Process.Start(h);
+                    }
+                    catch (Exception ex) { Log("html handler failed: " + ex.Message); }
+                }
+
+                Log("no .html handler; using the shell default");
                 try { Process.Start(target); } catch (Exception ex) { Log("ignored error: " + ex.Message); }
                 return null;
             }
