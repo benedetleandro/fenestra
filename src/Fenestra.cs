@@ -36,6 +36,7 @@ namespace Fenestra
                 string a = args[0];
                 if (Eq(a, "--settings")) { ShowBrowserSettings(); return; }
                 if (Eq(a, "--diagnose")) { Diagnose(); return; }
+                if (Eq(a, "--set-default")) { OpenDefaultApps(); return; }
                 if (Eq(a, "--install")) { Install(args.Length > 1 ? args[1] : null); return; }
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
@@ -258,14 +259,48 @@ namespace Fenestra
             return null;
         }
 
+        private static void OpenDefaultApps()
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("ms-settings:defaultapps")
+                {
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex) { Log("default apps: " + ex.Message); }
+
+            MessageBox.Show(
+                "1. In Settings, type .html in the search box.\r\n" +
+                "2. Click the app shown for .html (currently Edge).\r\n" +
+                "3. Choose Fenestra and click Set default.\r\n\r\n" +
+                "Then run: Fenestra.exe --diagnose",
+                "Fenestra - set the .html handler",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private static void Diagnose()
         {
+            string progId = null;
+            try
+            {
+                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(
+                    @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.html\UserChoice"))
+                {
+                    if (k != null) progId = k.GetValue("ProgId") as string;
+                }
+            }
+            catch (Exception ex) { Log("diagnose progid: " + ex.Message); }
+
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine(".html ProgId: " + (progId ?? "none"));
             sb.AppendLine(".html handler: " + (HandlerExeFor(".html") ?? "none"));
             sb.AppendLine("http handler: " + (HandlerExeFor("http") ?? "none"));
             sb.AppendLine("https handler: " + (HandlerExeFor("https") ?? "none"));
             sb.AppendLine("previous (OpenWithList): " + (PreviousBrowserExe() ?? "none"));
             sb.AppendLine("pinned: " + (File.Exists(BrowserPrefPath()) ? ReadBrowserPref() : "none"));
+            sb.AppendLine("capabilities: " + (Registry.CurrentUser.OpenSubKey(
+                @"Software\Fenestra\Capabilities") != null ? "registered" : "missing"));
             sb.AppendLine("resolved: " + (ResolveBrowser() ?? "shell default"));
 
             string text = sb.ToString();
