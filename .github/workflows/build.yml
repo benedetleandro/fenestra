@@ -20,6 +20,27 @@ jobs:
           grep -q "v$V" docs/app.js
           echo "version $V is consistent"
 
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: staticcheck
+        run: |
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          cd linux && staticcheck ./...
+          cd ../macos && staticcheck ./...
+
+      - name: gosec (reviewed exclusions: G115, G204, G703)
+        run: |
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          cd linux && gosec -quiet -exclude=G115,G204,G703 ./...
+
   windows:
     runs-on: windows-latest
 

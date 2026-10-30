@@ -266,7 +266,9 @@ func TestCandidatePort(t *testing.T) {
 			t.Fatalf("port %d out of range", p)
 		}
 	}
-	if candidatePort("/tmp/app", 0) != candidatePort("/tmp/app", 0) {
+	first := candidatePort("/tmp/app", 0)
+	second := candidatePort("/tmp/app", 0)
+	if first != second {
 		t.Error("candidatePort is not deterministic")
 	}
 }

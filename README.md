@@ -75,8 +75,9 @@ be automated. The handler is invisible; the window that opens is your browser.
 
 ### Browsers
 
-**Edge is the default.** Chrome, Firefox, Brave, Vivaldi, Opera and Chromium are
-detected automatically. On macOS, **Safari** is in the list too.
+**The system browser is the default.** Chrome, Firefox, Brave, Vivaldi, Opera and
+Chromium are detected automatically, and `--browser edge` pins Edge. On macOS,
+**Safari** is in the list too.
 
 ```powershell
 Fenestra.exe --browsers              # what is installed

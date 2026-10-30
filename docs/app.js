@@ -155,7 +155,7 @@
     "faq.q4": "Ele altera meus arquivos?",
     "faq.a4": "Não. Ele abre em modo leitura, serve e não escreve nada no projeto. O único estado que guarda é um número de porta por pasta, em %LOCALAPPDATA%.",
     "faq.q5": "Quais navegadores ele suporta?",
-    "faq.a5": "Edge é o padrão. Chrome, Firefox, Brave, Vivaldi, Opera e Chromium são detectados automaticamente — e o Safari no macOS. Troque com --browser. Ele abre uma aba normal no navegador que você já usa, então não há motor para corrigir nem 150 MB extras.",
+    "faq.a5": "O navegador do sistema é o padrão. Chrome, Firefox, Brave, Vivaldi, Opera e Chromium são detectados automaticamente — e o Safari no macOS. Use --browser edge para fixar o Edge. Ele abre uma aba normal no navegador que você já usa, então não há motor para corrigir nem 150 MB extras.",
     "faq.q6": "O Fenestra é um navegador?",
     "faq.a6": "Não. É um servidor que abre uma aba no seu navegador. Não tem barra de endereço própria, nem abas, nem motor de renderização. Essa é a ideia.",
     "faq.q7": "Roda no macOS ou Linux?",
