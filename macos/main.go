@@ -159,7 +159,10 @@ func run(target string, force bool) {
 		writeLock(lock, port)
 	}
 
-	srv := &http.Server{Handler: handler(root, defaultDoc)}
+	srv := &http.Server{
+		Handler:           handler(root, defaultDoc),
+		ReadHeaderTimeout: 10 * time.Second,
+	}
 	go func() {
 		if err := srv.Serve(ln); err != nil && err != http.ErrServerClosed {
 			fatal(err)
@@ -648,8 +651,8 @@ func readLock(file string) (int, bool) {
 }
 
 func writeLock(file string, port int) {
-	os.MkdirAll(filepath.Dir(file), 0o755)
-	os.WriteFile(file, []byte(fmt.Sprintf("%d|%d", port, os.Getpid())), 0o644)
+	os.MkdirAll(filepath.Dir(file), 0o750)
+	os.WriteFile(file, []byte(fmt.Sprintf("%d|%d", port, os.Getpid())), 0o600)
 }
 
 func ping(port int, root string) bool {
@@ -725,8 +728,8 @@ func browserPrefPath() string {
 }
 
 func saveBrowserPref(name string) {
-	if err := os.MkdirAll(configDir(), 0o755); err == nil {
-		if err := os.WriteFile(browserPrefPath(), []byte(name+"\n"), 0o644); err != nil {
+	if err := os.MkdirAll(configDir(), 0o750); err == nil {
+		if err := os.WriteFile(browserPrefPath(), []byte(name+"\n"), 0o600); err != nil {
 			logf("browser preference: %v", err)
 		}
 	}
@@ -830,11 +833,11 @@ func setBrowser(name string) bool {
 		}
 	}
 
-	if err := os.MkdirAll(configDir(), 0o755); err != nil {
+	if err := os.MkdirAll(configDir(), 0o750); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return false
 	}
-	if err := os.WriteFile(filepath.Join(configDir(), "browser"), []byte(name+"\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(configDir(), "browser"), []byte(name+"\n"), 0o600); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return false
 	}
@@ -914,8 +917,8 @@ func configDir() string {
 
 func logf(format string, args ...any) {
 	dir := dataDir()
-	os.MkdirAll(dir, 0o755)
-	f, err := os.OpenFile(filepath.Join(dir, "fenestra.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+	os.MkdirAll(dir, 0o750)
+	f, err := os.OpenFile(filepath.Join(dir, "fenestra.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
 		return
 	}
