@@ -102,16 +102,14 @@ namespace Fenestra
         private static void EnsureBrowserChoice(bool force)
         {
             if (force || _noPrompt) return;
-            if (File.Exists(BrowserPrefPath())) return;
             if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
 
-            string exe = SystemDefaultBrowserExe();
-            string key = KeyForExe(exe);
-            string chosen = key != null ? key : "default";
+            if (!File.Exists(HandlerPrefPath())) CaptureHandler();
+            if (File.Exists(BrowserPrefPath())) return;
 
-            try { File.WriteAllText(BrowserPrefPath(), chosen); }
+            try { File.WriteAllText(BrowserPrefPath(), "default"); }
             catch (Exception ex) { Log("could not save browser choice: " + ex.Message); }
-            Log("first run: html handler " + (exe ?? "unknown") + " -> " + chosen);
+            Log("first run: default browser preference written");
         }
 
         private static string SystemDefaultBrowserExe()
@@ -210,8 +208,9 @@ namespace Fenestra
         {
             string[] keys = { "default", "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
             string[] labels = { "System default browser", "Microsoft Edge", "Google Chrome", "Firefox", "Brave", "Vivaldi", "Opera", "Chromium" };
-            string sysExe = SystemDefaultBrowserExe();
-            if (sysExe != null)
+            string sysExe = ReadHandlerPref();
+            if (sysExe == null) sysExe = SystemDefaultBrowserExe();
+            if (sysExe != null && !IsSelf(sysExe))
             {
                 labels[0] = "System default (" + Path.GetFileNameWithoutExtension(sysExe) + ")";
             }
@@ -1064,7 +1063,7 @@ namespace Fenestra
             {
                 // Follow the .html handler exactly, not the http default.
                 string handler = SystemDefaultBrowserExe();
-                if (handler != null)
+                if (handler != null && !IsSelf(handler))
                 {
                     Log("opening the .html handler " + handler);
                     try
@@ -1221,16 +1220,67 @@ namespace Fenestra
             catch { return "default"; }
         }
 
+        private static string HandlerPrefPath()
+        {
+            string dir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fenestra");
+            Directory.CreateDirectory(dir);
+            return Path.Combine(dir, "handler.txt");
+        }
+
+        private static string ReadHandlerPref()
+        {
+            try
+            {
+                string path = HandlerPrefPath();
+                if (!File.Exists(path)) return null;
+                string value = File.ReadAllText(path).Trim();
+                return value.Length == 0 ? null : value;
+            }
+            catch { return null; }
+        }
+
+        private static void SaveHandlerPref(string exe)
+        {
+            try { File.WriteAllText(HandlerPrefPath(), exe); }
+            catch (Exception ex) { Log("handler preference: " + ex.Message); }
+        }
+
+        private static bool IsSelf(string exe)
+        {
+            try
+            {
+                return string.Equals(Path.GetFullPath(exe), Path.GetFullPath(Application.ExecutablePath),
+                    StringComparison.OrdinalIgnoreCase);
+            }
+            catch { return false; }
+        }
+
+        // Captures which browser owned .html before Fenestra became the handler.
+        private static void CaptureHandler()
+        {
+            string exe = SystemDefaultBrowserExe();
+            if (exe == null || IsSelf(exe)) return;
+            SaveHandlerPref(exe);
+            Log("captured html handler: " + exe);
+        }
+
         private static string ResolveBrowser()
         {
             string pref = ReadBrowserPref();
-            if (pref == "default") return null;
+            if (pref != "default")
+            {
+                string exe = FindBrowser(pref);
+                if (exe != null) return exe;
+                Log("browser " + pref + " not found; falling back");
+            }
 
-            string exe = FindBrowser(pref);
-            if (exe != null) return exe;
+            string handler = ReadHandlerPref();
+            if (handler != null && File.Exists(handler) && !IsSelf(handler)) return handler;
 
-            // Preference unavailable: hand the choice to the system default.
-            Log("browser " + pref + " not found; using the system default");
+            string system = SystemDefaultBrowserExe();
+            if (system != null && !IsSelf(system)) return system;
+
             return null;
         }
 
@@ -1395,6 +1445,9 @@ namespace Fenestra
         private static void Install(string sample)
         {
             string exe = Application.ExecutablePath;
+
+            // Remember the browser that is the .html handler right now.
+            CaptureHandler();
 
             using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Fenestra.html"))
             {
