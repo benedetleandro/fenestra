@@ -35,6 +35,7 @@ namespace Fenestra
 
                 string a = args[0];
                 if (Eq(a, "--settings")) { ShowBrowserSettings(); return; }
+                if (Eq(a, "--diagnose")) { Diagnose(); return; }
                 if (Eq(a, "--install")) { Install(args.Length > 1 ? args[1] : null); return; }
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
@@ -255,6 +256,22 @@ namespace Fenestra
                 if (name == Path.GetFileNameWithoutExtension(known).ToLowerInvariant()) return keys[i];
             }
             return null;
+        }
+
+        private static void Diagnose()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(".html handler: " + (HandlerExeFor(".html") ?? "none"));
+            sb.AppendLine("http handler: " + (HandlerExeFor("http") ?? "none"));
+            sb.AppendLine("https handler: " + (HandlerExeFor("https") ?? "none"));
+            sb.AppendLine("previous (OpenWithList): " + (PreviousBrowserExe() ?? "none"));
+            sb.AppendLine("pinned: " + (File.Exists(BrowserPrefPath()) ? ReadBrowserPref() : "none"));
+            sb.AppendLine("resolved: " + (ResolveBrowser() ?? "shell default"));
+
+            string text = sb.ToString();
+            Log("diagnose: " + text.Replace("\r\n", " | "));
+            MessageBox.Show(text, "Fenestra - browser diagnosis",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private static void ShowBrowserSettings()
@@ -1565,6 +1582,23 @@ namespace Fenestra
             AddOpenWith(".html");
             AddOpenWith(".htm");
 
+            // Make Fenestra visible in Settings > Default apps, so the user can
+            // set it as the .html handler through the supported UI.
+            using (RegistryKey cap = Registry.CurrentUser.CreateSubKey(@"Software\Fenestra\Capabilities"))
+            {
+                cap.SetValue("ApplicationName", "Fenestra");
+                cap.SetValue("ApplicationDescription", "Open local HTML over localhost");
+                using (RegistryKey fa = cap.CreateSubKey("FileAssociations"))
+                {
+                    fa.SetValue(".html", "Fenestra.html");
+                    fa.SetValue(".htm", "Fenestra.html");
+                }
+            }
+            using (RegistryKey reg = Registry.CurrentUser.CreateSubKey(@"Software\RegisteredApplications"))
+            {
+                reg.SetValue("Fenestra", @"Software\Fenestra\Capabilities");
+            }
+
             MessageBox.Show(
                 "Fenestra registered.\r\n\r\n" +
                 "One time only, to make the double-click work:\r\n\r\n" +
@@ -1593,6 +1627,8 @@ namespace Fenestra
             TryDeleteKey(@"Software\Classes\Applications\Fenestra.exe");
             TryDeleteValue(@"Software\Classes\.html\OpenWithProgids", "Fenestra.html");
             TryDeleteValue(@"Software\Classes\.htm\OpenWithProgids", "Fenestra.html");
+            TryDeleteKey(@"Software\Fenestra");
+            TryDeleteValue(@"Software\RegisteredApplications", "Fenestra");
 
             MessageBox.Show("Fenestra removed from the .html handler.", "Fenestra",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
