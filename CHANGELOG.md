@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- `--install` captures the browser that owned `.html` before Fenestra and keeps using it; re-running `--install` after changing the default captures the new one.
+- The default follows the live http/https association (the real system browser), so changing it in Windows is picked up on the next open; `--install` still captures the previous `.html` handler as a fallback.
 - Double-click Fenestra with no file to open the browser settings screen and pick the default browser; `--settings` does the same.
 
 ## 0.7.0

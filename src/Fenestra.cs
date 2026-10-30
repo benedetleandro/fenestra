@@ -114,27 +114,42 @@ namespace Fenestra
 
         private static string SystemDefaultBrowserExe()
         {
+            // .html follows Fenestra once installed, so the real default lives
+            // in the http/https associations, which Windows updates live.
+            string[] targets = { ".html", "http", "https" };
+            for (int i = 0; i < targets.Length; i++)
+            {
+                string exe = HandlerExeFor(targets[i]);
+                if (exe != null && !IsSelf(exe)) return exe;
+            }
+            return null;
+        }
+
+        private static string HandlerExeFor(string name)
+        {
             string progId = null;
             try
             {
-                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(
-                    @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.html\UserChoice"))
+                string key = name.StartsWith(".")
+                    ? @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" + name + @"\UserChoice"
+                    : @"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\" + name + @"\UserChoice";
+                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(key))
                 {
                     if (k != null) progId = k.GetValue("ProgId") as string;
                 }
             }
-            catch (Exception ex) { Log("html UserChoice: " + ex.Message); }
+            catch (Exception ex) { Log(name + " UserChoice: " + ex.Message); }
 
             if (string.IsNullOrEmpty(progId))
             {
                 try
                 {
-                    using (RegistryKey k = Registry.ClassesRoot.OpenSubKey(".html"))
+                    using (RegistryKey k = Registry.ClassesRoot.OpenSubKey(name))
                     {
                         if (k != null) progId = k.GetValue("") as string;
                     }
                 }
-                catch (Exception ex) { Log("html class: " + ex.Message); }
+                catch (Exception ex) { Log(name + " class: " + ex.Message); }
             }
             if (string.IsNullOrEmpty(progId)) return null;
 
@@ -146,12 +161,12 @@ namespace Fenestra
                     if (k != null) command = k.GetValue("") as string;
                 }
             }
-            catch (Exception ex) { Log("html command: " + ex.Message); }
+            catch (Exception ex) { Log(progId + " command: " + ex.Message); }
 
             string exe = CommandExe(command);
             if (!string.IsNullOrEmpty(exe) && File.Exists(exe)) return exe;
 
-            Log("html handler not resolved: " + progId);
+            Log(name + " handler not resolved: " + progId);
             return null;
         }
 
@@ -1275,11 +1290,11 @@ namespace Fenestra
                 Log("browser " + pref + " not found; falling back");
             }
 
-            string handler = ReadHandlerPref();
-            if (handler != null && File.Exists(handler) && !IsSelf(handler)) return handler;
-
             string system = SystemDefaultBrowserExe();
             if (system != null && !IsSelf(system)) return system;
+
+            string handler = ReadHandlerPref();
+            if (handler != null && File.Exists(handler) && !IsSelf(handler)) return handler;
 
             return null;
         }
