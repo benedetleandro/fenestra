@@ -30,7 +30,6 @@ var version = "0.0.0-dev"
 
 var lastRequest int64 = time.Now().UnixNano()
 var forcedPort int
-var noPrompt bool
 
 const (
 	handoffDelay = 6 * time.Second
@@ -89,7 +88,6 @@ Usage:
   fenestra "~/projects/app/dist"
   fenestra --serve "~/index.html"          force the server
   fenestra --port 8080 "~/index.html"      use a specific port
-  fenestra --no-prompt "~/index.html"      skip the browser prompt
   fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
   fenestra --browsers                      list detected browsers
@@ -108,7 +106,6 @@ Usage:
   fenestra "~/projects/app/dist"
   fenestra --serve "~/index.html"          force the server
   fenestra --port 8080 "~/index.html"      use a specific port
-  fenestra --no-prompt "~/index.html"      skip the browser prompt
   fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
   fenestra --browsers                      list detected browsers
@@ -132,8 +129,6 @@ func run(target string, force bool) {
 	if err != nil {
 		fatal(fmt.Errorf("path not found: %s", target))
 	}
-
-	chooseBrowserOnFirstRun(force)
 
 	var root, entry string
 	if info.IsDir() {
@@ -224,10 +219,6 @@ func run(target string, force bool) {
 func extractPort(args []string) []string {
 	out := make([]string, 0, len(args))
 	for i := 0; i < len(args); i++ {
-		if args[i] == "--no-prompt" {
-			noPrompt = true
-			continue
-		}
 		if args[i] == "--port" && i+1 < len(args) {
 			n, err := strconv.Atoi(args[i+1])
 			if err != nil || n < 1 || n > 65535 {
@@ -823,49 +814,6 @@ func isTTY() bool {
 	return err == nil && (fi.Mode()&os.ModeCharDevice) != 0
 }
 
-func chooseBrowserOnFirstRun(force bool) {
-	if force || noPrompt || os.Getenv("FENESTRA_NO_OPEN") == "1" {
-		return
-	}
-	if _, err := os.Stat(browserPrefPath()); err == nil {
-		return
-	}
-	if !isTTY() {
-		if runtime.GOOS == "darwin" {
-			chooseWithOsaScript()
-		} else {
-			saveBrowserPref("default")
-		}
-		return
-	}
-
-	keys := []string{"default"}
-	labels := []string{"System default browser"}
-	for _, b := range browserList() {
-		if _, ok := lookup(b.key); ok {
-			keys = append(keys, b.key)
-			labels = append(labels, browserLabel(b.key))
-		}
-	}
-
-	fmt.Println("Fenestra — which browser should open local sites?")
-	for i, label := range labels {
-		fmt.Printf("  %d) %s\n", i+1, label)
-	}
-	fmt.Print("Choose [1]: ")
-
-	line, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-	line = strings.TrimSpace(line)
-	choice := 1
-	if line != "" {
-		if n, err := strconv.Atoi(line); err == nil && n >= 1 && n <= len(keys) {
-			choice = n
-		}
-	}
-	saveBrowserPref(keys[choice-1])
-	logf("first-run browser choice: %s", keys[choice-1])
-}
-
 func appName(key string) string {
 	for _, b := range browserList() {
 		if b.key == key {
@@ -873,37 +821,6 @@ func appName(key string) string {
 		}
 	}
 	return ""
-}
-
-func chooseWithOsaScript() {
-	keys := []string{"default"}
-	labels := []string{"System default browser"}
-	for _, b := range browserList() {
-		if _, ok := lookup(b.key); ok {
-			keys = append(keys, b.key)
-			labels = append(labels, b.app)
-		}
-	}
-	quoted := make([]string, len(labels))
-	for i, label := range labels {
-		quoted[i] = "\"" + strings.ReplaceAll(label, "\"", "\\\"") + "\""
-	}
-	script := `choose from list {` + strings.Join(quoted, ", ") +
-		`} with title "Fenestra" with prompt "Which browser should open local sites?" default items {"System default browser"}`
-	out, err := exec.Command("osascript", "-e", script).Output()
-	if err != nil {
-		saveBrowserPref("default")
-		return
-	}
-	chosen := strings.TrimSpace(string(out))
-	key := "default"
-	for i, label := range labels {
-		if label == chosen {
-			key = keys[i]
-		}
-	}
-	saveBrowserPref(key)
-	logf("first-run browser choice: %s", key)
 }
 
 func setBrowser(name string) bool {

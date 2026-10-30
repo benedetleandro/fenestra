@@ -163,7 +163,7 @@
 
     "nav.browser": "Navegador",
     "browser.settings": "Dê duplo clique no Fenestra sem arquivo para abrir esta tela de novo.",
-    "browser.first": "Na primeira vez, o Fenestra pergunta qual navegador usar e salva a resposta.",
+    "browser.first": "Na primeira vez, o Fenestra lê o navegador padrão do sistema para .html e usa ele.",
     "browser.kicker": "Navegador",
     "browser.title": "Escolha o navegador, uma vez",
     "browser.lead": "O Fenestra abre uma aba normal no navegador que você escolher. A escolha fica salva e vale para todos os próximos duplo cliques.",

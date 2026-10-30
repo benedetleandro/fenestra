@@ -104,14 +104,84 @@ namespace Fenestra
             if (force || _noPrompt) return;
             if (File.Exists(BrowserPrefPath())) return;
             if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
-            if (!Environment.UserInteractive) return;
 
-            string chosen = ShowBrowserPicker(true, "default");
-            if (chosen == null) chosen = "default";
+            string exe = SystemDefaultBrowserExe();
+            string key = KeyForExe(exe);
+            string chosen = key != null ? key : "default";
 
             try { File.WriteAllText(BrowserPrefPath(), chosen); }
             catch (Exception ex) { Log("could not save browser choice: " + ex.Message); }
-            Log("first-run browser choice: " + chosen);
+            Log("first run: html handler " + (exe ?? "unknown") + " -> " + chosen);
+        }
+
+        private static string SystemDefaultBrowserExe()
+        {
+            string progId = null;
+            try
+            {
+                using (RegistryKey k = Registry.CurrentUser.OpenSubKey(
+                    @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.html\UserChoice"))
+                {
+                    if (k != null) progId = k.GetValue("ProgId") as string;
+                }
+            }
+            catch (Exception ex) { Log("html UserChoice: " + ex.Message); }
+
+            if (string.IsNullOrEmpty(progId))
+            {
+                try
+                {
+                    using (RegistryKey k = Registry.ClassesRoot.OpenSubKey(".html"))
+                    {
+                        if (k != null) progId = k.GetValue("") as string;
+                    }
+                }
+                catch (Exception ex) { Log("html class: " + ex.Message); }
+            }
+            if (string.IsNullOrEmpty(progId)) return null;
+
+            string command = null;
+            try
+            {
+                using (RegistryKey k = Registry.ClassesRoot.OpenSubKey(progId + @"\shell\open\command"))
+                {
+                    if (k != null) command = k.GetValue("") as string;
+                }
+            }
+            catch (Exception ex) { Log("html command: " + ex.Message); }
+
+            string exe = CommandExe(command);
+            if (!string.IsNullOrEmpty(exe) && File.Exists(exe)) return exe;
+
+            Log("html handler not resolved: " + progId);
+            return null;
+        }
+
+        private static string CommandExe(string command)
+        {
+            if (string.IsNullOrEmpty(command)) return null;
+            command = command.Trim();
+            if (command.StartsWith("\""))
+            {
+                int end = command.IndexOf('"', 1);
+                return end > 1 ? command.Substring(1, end - 1) : null;
+            }
+            int space = command.IndexOf(' ');
+            return space > 0 ? command.Substring(0, space) : command;
+        }
+
+        private static string KeyForExe(string exe)
+        {
+            if (string.IsNullOrEmpty(exe)) return null;
+            string name = Path.GetFileNameWithoutExtension(exe).ToLowerInvariant();
+            string[] keys = { "edge", "chrome", "chromium", "firefox", "brave", "vivaldi", "opera" };
+            for (int i = 0; i < keys.Length; i++)
+            {
+                string known = BrowserExeName(keys[i]);
+                if (string.IsNullOrEmpty(known)) continue;
+                if (name == Path.GetFileNameWithoutExtension(known).ToLowerInvariant()) return keys[i];
+            }
+            return null;
         }
 
         private static void ShowBrowserSettings()
@@ -140,6 +210,11 @@ namespace Fenestra
         {
             string[] keys = { "default", "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
             string[] labels = { "System default browser", "Microsoft Edge", "Google Chrome", "Firefox", "Brave", "Vivaldi", "Opera", "Chromium" };
+            string sysExe = SystemDefaultBrowserExe();
+            if (sysExe != null)
+            {
+                labels[0] = "System default (" + Path.GetFileNameWithoutExtension(sysExe) + ")";
+            }
 
             using (Form form = new Form())
             {
