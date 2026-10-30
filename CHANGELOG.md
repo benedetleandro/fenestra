@@ -2,8 +2,12 @@
 
 ## Unreleased
 
-- Nothing yet. Changes land here and ship at the next milestone, not per fix.
-- Policy: [RELEASING.md](RELEASING.md).
+- Linux and macOS now build from a single Go module (`linux/`), with the
+  platform behavior selected at runtime; the macOS kit compiles the same source.
+- Handle ignored errors in Go and C# (`writeString`, lock/log/preference errors,
+  HOME failures, logged catches); gosec is clean.
+- Pin GitHub Actions by SHA, name the timing constants, drop the unused field.
+- Release policy: milestones, not per-change tags. See [RELEASING.md](RELEASING.md).
 
 ## 0.6.1
 

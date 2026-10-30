@@ -79,6 +79,26 @@ func main() {
 }
 
 func usage() {
+	if runtime.GOOS == "darwin" {
+		fmt.Print(`Fenestra ` + version + ` (macos)
+
+Usage:
+  fenestra "~/projects/app/dist/index.html"
+  fenestra "~/projects/app/dist"
+  fenestra --serve "~/index.html"          force the server
+  fenestra --port 8080 "~/index.html"      use a specific port
+  fenestra --no-prompt "~/index.html"      skip the browser prompt
+  fenestra --browser firefox               set the preferred browser
+  fenestra --browser chrome "~/app/index.html"
+  fenestra --browsers                      list detected browsers
+  fenestra --install                       Finder instructions
+  fenestra --uninstall                     undo instructions
+
+Browsers: edge, chrome, chromium, firefox, brave, vivaldi, opera, safari, default
+("default" uses the system browser; edge is opt-in)
+`)
+		return
+	}
 	fmt.Print(`Fenestra ` + version + ` (linux)
 
 Usage:
@@ -689,21 +709,52 @@ func ping(port int, root string) bool {
 type browser struct {
 	key  string
 	bins []string
+	app  string
 }
 
 func browserList() []browser {
+	if runtime.GOOS == "darwin" {
+		return []browser{
+			{key: "edge", app: "Microsoft Edge"},
+			{key: "chrome", app: "Google Chrome"},
+			{key: "chromium", app: "Chromium"},
+			{key: "firefox", app: "Firefox"},
+			{key: "brave", app: "Brave Browser"},
+			{key: "vivaldi", app: "Vivaldi"},
+			{key: "opera", app: "Opera"},
+			{key: "safari", app: "Safari"},
+		}
+	}
 	return []browser{
-		{"edge", []string{"microsoft-edge", "microsoft-edge-stable"}},
-		{"chrome", []string{"google-chrome", "google-chrome-stable"}},
-		{"chromium", []string{"chromium", "chromium-browser"}},
-		{"firefox", []string{"firefox", "firefox-esr"}},
-		{"brave", []string{"brave-browser", "brave"}},
-		{"vivaldi", []string{"vivaldi", "vivaldi-stable"}},
-		{"opera", []string{"opera"}},
+		{key: "edge", bins: []string{"microsoft-edge", "microsoft-edge-stable"}},
+		{key: "chrome", bins: []string{"google-chrome", "google-chrome-stable"}},
+		{key: "chromium", bins: []string{"chromium", "chromium-browser"}},
+		{key: "firefox", bins: []string{"firefox", "firefox-esr"}},
+		{key: "brave", bins: []string{"brave-browser", "brave"}},
+		{key: "vivaldi", bins: []string{"vivaldi", "vivaldi-stable"}},
+		{key: "opera", bins: []string{"opera"}},
 	}
 }
 
 func lookup(key string) (string, bool) {
+	if runtime.GOOS == "darwin" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			fatal(fmt.Errorf("cannot determine the home directory: %v", err))
+		}
+		for _, b := range browserList() {
+			if b.key != key {
+				continue
+			}
+			for _, base := range []string{"/Applications", filepath.Join(home, "Applications"), "/System/Applications"} {
+				p := filepath.Join(base, b.app+".app")
+				if _, err := os.Stat(p); err == nil {
+					return p, true
+				}
+			}
+		}
+		return "", false
+	}
 	for _, b := range browserList() {
 		if b.key != key {
 			continue
@@ -778,7 +829,11 @@ func chooseBrowserOnFirstRun(force bool) {
 		return
 	}
 	if !isTTY() {
-		saveBrowserPref("default")
+		if runtime.GOOS == "darwin" {
+			chooseWithOsaScript()
+		} else {
+			saveBrowserPref("default")
+		}
 		return
 	}
 
@@ -807,6 +862,46 @@ func chooseBrowserOnFirstRun(force bool) {
 	}
 	saveBrowserPref(keys[choice-1])
 	logf("first-run browser choice: %s", keys[choice-1])
+}
+
+func appName(key string) string {
+	for _, b := range browserList() {
+		if b.key == key {
+			return b.app
+		}
+	}
+	return ""
+}
+
+func chooseWithOsaScript() {
+	keys := []string{"default"}
+	labels := []string{"System default browser"}
+	for _, b := range browserList() {
+		if _, ok := lookup(b.key); ok {
+			keys = append(keys, b.key)
+			labels = append(labels, b.app)
+		}
+	}
+	quoted := make([]string, len(labels))
+	for i, label := range labels {
+		quoted[i] = "\"" + strings.ReplaceAll(label, "\"", "\\\"") + "\""
+	}
+	script := `choose from list {` + strings.Join(quoted, ", ") +
+		`} with title "Fenestra" with prompt "Which browser should open local sites?" default items {"System default browser"}`
+	out, err := exec.Command("osascript", "-e", script).Output()
+	if err != nil {
+		saveBrowserPref("default")
+		return
+	}
+	chosen := strings.TrimSpace(string(out))
+	key := "default"
+	for i, label := range labels {
+		if label == chosen {
+			key = keys[i]
+		}
+	}
+	saveBrowserPref(key)
+	logf("first-run browser choice: %s", key)
 }
 
 func setBrowser(name string) bool {
@@ -865,7 +960,12 @@ func launch(target string) *exec.Cmd {
 	name := readBrowserPref()
 	if name != "default" {
 		if bin, ok := lookup(name); ok {
-			cmd := exec.Command(bin, target)
+			var cmd *exec.Cmd
+			if runtime.GOOS == "darwin" {
+				cmd = exec.Command("open", "-a", appName(name), target)
+			} else {
+				cmd = exec.Command(bin, target)
+			}
 			if err := cmd.Start(); err == nil {
 				logf("opening %s %s", bin, target)
 				return cmd
@@ -875,9 +975,14 @@ func launch(target string) *exec.Cmd {
 		}
 	}
 
-	cmd := exec.Command("xdg-open", target)
+	var cmd *exec.Cmd
+	if runtime.GOOS == "darwin" {
+		cmd = exec.Command("open", target)
+	} else {
+		cmd = exec.Command("xdg-open", target)
+	}
 	if err := cmd.Start(); err == nil {
-		logf("opening xdg-open %s", target)
+		logf("opening system browser %s", target)
 		return cmd
 	}
 
@@ -888,16 +993,24 @@ func launch(target string) *exec.Cmd {
 // ---------------------------------------------------------------- install
 
 func install() {
+	if runtime.GOOS == "darwin" {
+		fmt.Println("On macOS the .html association is set from the Finder:")
+		fmt.Println()
+		fmt.Println("  1. Drag Fenestra.app to /Applications")
+		fmt.Println("  2. Right-click an index.html > Open with > Fenestra")
+		fmt.Println("  3. Check \"Always use this app\"")
+		fmt.Println()
+		fmt.Println("Fenestra.app is created by ./build.command.")
+		return
+	}
 	exe, err := os.Executable()
 	if err != nil {
 		fatal(err)
 	}
-
 	dir := appsDir()
 	if err := os.MkdirAll(dir, 0o750); err != nil {
 		fatal(err)
 	}
-
 	entry := fmt.Sprintf(`[Desktop Entry]
 Type=Application
 Name=Fenestra
@@ -907,27 +1020,27 @@ Terminal=false
 MimeType=text/html;
 Categories=Development;
 `, exe)
-
 	file := filepath.Join(dir, "fenestra.desktop")
 	if err := os.WriteFile(file, []byte(entry), 0o600); err != nil {
 		fatal(err)
 	}
-
 	if err := exec.Command("update-desktop-database", dir).Run(); err != nil {
 		logf("update-desktop-database: %v", err)
 	}
-
 	if out, err := exec.Command("xdg-mime", "default", "fenestra.desktop", "text/html").CombinedOutput(); err != nil {
 		fmt.Fprintf(os.Stderr, "xdg-mime failed: %v\n%s\n", err, out)
 		fmt.Println("Create the .desktop entry manually, or run: xdg-mime default fenestra.desktop text/html")
 		return
 	}
-
 	fmt.Println("Fenestra registered as the text/html handler.")
 	fmt.Println("To undo: fenestra --uninstall")
 }
 
 func uninstall() {
+	if runtime.GOOS == "darwin" {
+		fmt.Println("To undo: right-click an .html > Open with > choose another app.")
+		return
+	}
 	file := filepath.Join(appsDir(), "fenestra.desktop")
 	if err := os.Remove(file); err != nil && !os.IsNotExist(err) {
 		fatal(err)
@@ -935,7 +1048,6 @@ func uninstall() {
 	if err := exec.Command("update-desktop-database", appsDir()).Run(); err != nil {
 		logf("update-desktop-database: %v", err)
 	}
-
 	fmt.Println("Fenestra removed. Set your default browser back with:")
 	if desktop := desktopFileFor(readBrowserPref()); desktop != "" {
 		fmt.Printf("  xdg-mime default %s text/html\n", desktop)
@@ -967,6 +1079,13 @@ func desktopFileFor(key string) string {
 // ---------------------------------------------------------------- misc
 
 func dataDir() string {
+	if runtime.GOOS == "darwin" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			fatal(fmt.Errorf("cannot determine the home directory: %v", err))
+		}
+		return filepath.Join(home, "Library", "Application Support", "Fenestra")
+	}
 	if x := os.Getenv("XDG_DATA_HOME"); x != "" {
 		return filepath.Join(x, "fenestra")
 	}
@@ -978,6 +1097,9 @@ func dataDir() string {
 }
 
 func configDir() string {
+	if runtime.GOOS == "darwin" {
+		return dataDir()
+	}
 	if x := os.Getenv("XDG_CONFIG_HOME"); x != "" {
 		return filepath.Join(x, "fenestra")
 	}

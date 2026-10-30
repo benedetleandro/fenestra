@@ -30,7 +30,7 @@ echo "Go: $(go version)"
 echo
 
 echo "building fenestra..."
-CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o fenestra .
+(cd ../linux && CGO_ENABLED=0 GOOS=darwin go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o ../macos/fenestra .)
 chmod +x fenestra
 echo "ok: $(pwd)/fenestra"
 echo

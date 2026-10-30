@@ -119,15 +119,15 @@ jobs:
           go-version: stable
 
       - name: Vet
-        working-directory: macos
+        working-directory: linux
         run: go vet ./...
 
       - name: Build arm64
-        working-directory: macos
+        working-directory: linux
         run: CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags "-s -w -X main.version=$(cat ../VERSION)" -o ../bin/fenestra-darwin-arm64 .
 
       - name: Build amd64
-        working-directory: macos
+        working-directory: linux
         run: CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags "-s -w -X main.version=$(cat ../VERSION)" -o ../bin/fenestra-darwin-amd64 .
 
       - name: Check Mach-O
