@@ -37,6 +37,7 @@ namespace Fenestra
                 if (Eq(a, "--settings")) { ShowBrowserSettings(); return; }
                 if (Eq(a, "--diagnose")) { Diagnose(); return; }
                 if (Eq(a, "--set-default")) { OpenDefaultApps(); return; }
+                if (Eq(a, "--associate")) { Associate(); return; }
                 if (Eq(a, "--install")) { Install(args.Length > 1 ? args[1] : null); return; }
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
@@ -257,6 +258,89 @@ namespace Fenestra
                 if (name == Path.GetFileNameWithoutExtension(known).ToLowerInvariant()) return keys[i];
             }
             return null;
+        }
+
+        [ComImport, Guid("591209c7-767b-42b2-9fba-44ee4615f2c7")]
+        private class ApplicationAssociationRegistration { }
+
+        [ComImport, Guid("4e530b0a-e611-4c77-a3ac-9031d022281b"),
+         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IApplicationAssociationRegistration
+        {
+            [PreserveSig] int QueryCurrentDefault(string query, int type, int queryType, out string result);
+            [PreserveSig] int QueryAppIsDefault(string query, int type, int queryType, string app, out bool result);
+            [PreserveSig] int QueryAppIsDefaultAll(int queryType, string app, out bool result);
+            [PreserveSig] int SetAppAsDefault(string app, string assoc, int type);
+            [PreserveSig] int SetAppAsDefaultAll(string app);
+            [PreserveSig] int ClearUserAssociations();
+        }
+
+        [ComImport, Guid("1968106d-f3b5-44cf-890e-116fcb9ecef1")]
+        private class ApplicationAssociationRegistrationUI { }
+
+        [ComImport, Guid("1f76a169-f994-40ac-8fc8-0959e8874710"),
+         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IApplicationAssociationRegistrationUI
+        {
+            [PreserveSig] int LaunchAdvancedAssociationUI(
+                [MarshalAs(UnmanagedType.LPWStr)] string appRegistryName);
+        }
+
+        private static void Associate()
+        {
+            try
+            {
+                IApplicationAssociationRegistration reg =
+                    (IApplicationAssociationRegistration)new ApplicationAssociationRegistration();
+                int h1 = reg.SetAppAsDefault("Fenestra", ".html", 0);
+                int h2 = reg.SetAppAsDefault("Fenestra", ".htm", 0);
+                Log("associate: .html=0x" + h1.ToString("X8") + " .htm=0x" + h2.ToString("X8"));
+                if (h1 == 0 && h2 == 0)
+                {
+                    MessageBox.Show("Fenestra is now the .html handler.",
+                        "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+            }
+            catch (Exception ex) { Log("associate failed: " + ex.Message); }
+
+            OpenAssociationUI();
+            MessageBox.Show(
+                "Next, the Windows Open with window opens.\r\n\r\n" +
+                "1. Select Fenestra.\r\n" +
+                "2. Check Always use this app.\r\n" +
+                "3. Click OK.\r\n\r\n" +
+                "Then run: Fenestra.exe --diagnose",
+                "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            OpenWithDialog();
+        }
+
+        private static void OpenWithDialog()
+        {
+            try
+            {
+                string sample = Path.Combine(Path.GetTempPath(), "fenestra-association.html");
+                File.WriteAllText(sample, "<!doctype html><title>Fenestra association</title>");
+                Process.Start(new ProcessStartInfo("rundll32.exe",
+                    "shell32.dll,OpenAs_RunDLL \"" + sample + "\"")
+                {
+                    UseShellExecute = true
+                });
+                Log("opened the Open with dialog for " + sample);
+            }
+            catch (Exception ex) { Log("open with dialog: " + ex.Message); }
+        }
+
+        private static void OpenAssociationUI()
+        {
+            try
+            {
+                IApplicationAssociationRegistrationUI ui =
+                    (IApplicationAssociationRegistrationUI)new ApplicationAssociationRegistrationUI();
+                int hr = ui.LaunchAdvancedAssociationUI("Fenestra");
+                Log("LaunchAdvancedAssociationUI: 0x" + hr.ToString("X8"));
+            }
+            catch (Exception ex) { Log("association UI failed: " + ex.Message); }
         }
 
         private static void OpenDefaultApps()
@@ -1623,6 +1707,7 @@ namespace Fenestra
             {
                 cap.SetValue("ApplicationName", "Fenestra");
                 cap.SetValue("ApplicationDescription", "Open local HTML over localhost");
+                cap.SetValue("ApplicationIcon", "\"" + exe + "\",0");
                 using (RegistryKey fa = cap.CreateSubKey("FileAssociations"))
                 {
                     fa.SetValue(".html", "Fenestra.html");
