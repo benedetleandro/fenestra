@@ -59,6 +59,21 @@
   .sc-card h3 { margin: 0 0 8px; font-size: 16px; }
   .sc-card ol { margin: 0 0 12px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
   .sc-card li { margin-bottom: 6px; }
+  .mock-settings { background: #202020; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 10.5px; color: #e6e6e6; margin-top: 10px; }
+  .mock-settings .ms-title { background: #2b2b2b; padding: 7px 10px; border-bottom: 1px solid #3a3a3a; font-weight: 600; }
+  .mock-settings .ms-row { display: flex; align-items: center; gap: 8px; padding: 9px 10px; }
+  .mock-settings .ms-row .ext { color: #cfcfcf; }
+  .mock-settings .ms-row strong { margin-left: auto; }
+  .mock-settings .ms-row .chev { color: #9aa1ad; }
+  .mock-term { background: #0c0c0c; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: var(--mono); font-size: 10px; color: #e6e6e6; margin-top: 10px; }
+  .mock-term .mt-title { background: #2b2b2b; padding: 6px 9px; font-family: var(--sans); font-size: 10px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; display: flex; gap: 6px; align-items: center; }
+  .mock-term .lights { display: inline-flex; gap: 4px; }
+  .mock-term .lights i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .mock-term .lights i:nth-child(1) { background: #ff5f57; }
+  .mock-term .lights i:nth-child(2) { background: #febc2e; }
+  .mock-term .lights i:nth-child(3) { background: #28c840; }
+  .mock-term pre { margin: 0; padding: 9px; white-space: pre-wrap; word-break: break-all; }
+  .mock-term .p { color: #7ee787; }
   .mock-finder { background: #f6f6f6; color: #1b1b1b; border: 1px solid #cfcfcf; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 10px; margin-top: 10px; }
   .mock-finder .mf-title { background: #e9e9e9; padding: 6px 10px; border-bottom: 1px solid #d6d6d6; font-weight: 600; display: flex; align-items: center; gap: 7px; }
   .mock-finder .lights { display: inline-flex; gap: 4px; }
@@ -217,6 +232,10 @@
               <li>Search <code>.html</code> and choose <strong>Fenestra</strong>.</li>
             </ol>
             <p class="small">Shortcut: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Settings — Default apps</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
           </div>
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
@@ -226,6 +245,10 @@
               <li><code>xdg-mime default fenestra.desktop text/html</code></li>
             </ol>
             <p class="small">Undo with <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
           </div>
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
@@ -357,6 +380,10 @@ settings.json   (only when you pin a browser)</div>
               <li>Procure <code>.html</code> e escolha <strong>Fenestra</strong>.</li>
             </ol>
             <p class="small">Atalho: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Configurações — Aplicativos padrão</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
           </div>
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
@@ -366,6 +393,10 @@ settings.json   (only when you pin a browser)</div>
               <li><code>xdg-mime default fenestra.desktop text/html</code></li>
             </ol>
             <p class="small">Desfaça com <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">voce@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
           </div>
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
