@@ -272,7 +272,7 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
           <ol>
             <li>Right-click the Desktop → <strong>New → Shortcut</strong>.</li>
             <li>In “Type the location of the item”, paste:<br>
-              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\Users\you\Documents\Example\dist\index.html"</code></li>
+              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
             <li>Click <strong>Next</strong>, name it <em>Example</em>, and finish.</li>
             <li>Optional: right-click the shortcut → <strong>Properties</strong> → <strong>Start in</strong> = the <code>dist</code> folder.</li>
             <li>Double-click it to test.</li>
@@ -281,7 +281,7 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
           <div class="mock-win">
             <div class="mock-title">Example Properties</div>
             <div class="mock-tabs"><span>General</span><span class="on">Shortcut</span><span>Details</span></div>
-            <div class="mock-row"><span>Target</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\...\Example\dist\index.html"</code></div>
+            <div class="mock-row"><span>Target</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
             <div class="mock-row"><span>Start in</span><code>C:\...\dist</code></div>
             <div class="mock-row"><span>Run</span><code>Normal window</code></div>
             <div class="mock-foot"><i>OK</i></div>
@@ -298,7 +298,7 @@ Type=Application
 Name=Example
 Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
           </div>
-          <p class="small">Then mark it trusted or run <code>update-desktop-database</code>.</p>
+          <p class="small">Then mark it trusted or run <code>update-desktop-database</code>. Linux does not expand <code>$HOME</code> in <code>.desktop</code> files — use the absolute path or a small wrapper script.</p>
         </div>
         <div class="sc-card">
           <h3>macOS</h3>
@@ -412,7 +412,7 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
           <ol>
             <li>Botão direito na Área de Trabalho → <strong>Novo → Atalho</strong>.</li>
             <li>Em “Digite o local do item”, cole:<br>
-              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\Users\voce\Documents\Exemplo\dist\index.html"</code></li>
+              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></li>
             <li>Clique em <strong>Avançar</strong>, dê o nome <em>Exemplo</em> e conclua.</li>
             <li>Opcional: botão direito no atalho → <strong>Propriedades</strong> → <strong>Executar em</strong> = a pasta <code>dist</code>.</li>
             <li>Dê duplo clique para testar.</li>
@@ -421,7 +421,7 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
           <div class="mock-win">
             <div class="mock-title">Propriedades de Exemplo</div>
             <div class="mock-tabs"><span>Geral</span><span class="on">Atalho</span><span>Detalhes</span></div>
-            <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\...\Exemplo\dist\index.html"</code></div>
+            <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></div>
             <div class="mock-row"><span>Executar em</span><code>C:\...\dist</code></div>
             <div class="mock-row"><span>Executar</span><code>Janela normal</code></div>
             <div class="mock-foot"><i>OK</i></div>
@@ -438,7 +438,7 @@ Type=Application
 Name=Exemplo
 Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</pre>
           </div>
-          <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>.</p>
+          <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>. O Linux não expande <code>$HOME</code> em arquivos <code>.desktop</code> — use o caminho absoluto ou um script wrapper.</p>
         </div>
         <div class="sc-card">
           <h3>macOS</h3>
