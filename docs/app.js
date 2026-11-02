@@ -10,6 +10,7 @@
     "nav.download": "Baixar",
     "lang.label": "Idioma",
     "nav.faq": "Dúvidas",
+    "nav.manual": "Manual",
     "skip.label": "Pular para o conteúdo",
 
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
