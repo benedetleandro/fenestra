@@ -52,6 +52,17 @@
   section { padding: 34px 0; }
   h2 { font-size: 26px; letter-spacing: -.02em; margin: 0 0 6px; }
   .section-lead { color: var(--muted); margin: 0 0 24px; max-width: 700px; }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 8px 0 22px; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); font: inherit; font-weight: 600; font-size: 14px; padding: 10px 14px; cursor: pointer; }
+  .tab svg { width: 16px; height: 16px; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: #9cc4ff; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .panel-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: start; }
+  .panel-grid h3 { margin: 0 0 8px; font-size: 16px; }
+  .panel-grid .mock-win, .panel-grid .mock-linux, .panel-grid .mock-mac { max-width: none; margin-top: 0; }
+  @media (max-width: 760px) { .panel-grid { grid-template-columns: 1fr; } }
   .sc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .sc-card.win { grid-column: 1 / -1; }
   .sc-card.win .mock-win { max-width: 640px; margin-top: 6px; }
@@ -288,52 +299,71 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
 
     <section id="shortcut">
       <h2>Create a shortcut for a site</h2>
-      <p class="section-lead">A shortcut is not just a link to the .html: it must start Fenestra with the file as an argument. Each system does it its own way.</p>
-      <div class="sc-grid">
-        <div class="sc-card win">
-          <h3>Windows</h3>
-          <ol>
-            <li>Right-click the Desktop → <strong>New → Shortcut</strong>.</li>
-            <li>In “Type the location of the item”, paste:<br>
-              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
-            <li>Click <strong>Next</strong>, name it <em>Example</em>, and finish.</li>
-            <li>Optional: right-click the shortcut → <strong>Properties</strong> → <strong>Start in</strong> = the <code>dist</code> folder.</li>
-            <li>Double-click it to test.</li>
-          </ol>
-          <p class="small">Windows expands <code>%LOCALAPPDATA%</code>. Keep the quotes around the .html path — they separate the executable from the file.</p>
-          <div class="mock-win">
-            <div class="mock-title">Example Properties</div>
-            <div class="mock-tabs"><span>General</span><span class="on">Shortcut</span><span>Details</span></div>
-            <div class="mock-row"><span>Target</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
-            <div class="mock-row"><span>Start in</span><code>C:\...\dist</code></div>
-            <div class="mock-row"><span>Run</span><code>Normal window</code></div>
-            <div class="mock-foot"><i>OK</i></div>
+      <p class="section-lead">A shortcut is not just a link to the .html: it must start Fenestra with the file as an argument.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Right-click the Desktop → <strong>New → Shortcut</strong>.</li>
+                <li>In “Type the location of the item”, paste:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Click <strong>Next</strong>, name it <em>Example</em>, and finish.</li>
+                <li>Optional: <strong>Properties → Start in</strong> = the <code>dist</code> folder.</li>
+                <li>Double-click it to test.</li>
+              </ol>
+              <p class="small">Windows expands <code>%LOCALAPPDATA%</code> and <code>%USERPROFILE%</code>. Keep the quotes around the .html path.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Example Properties</div>
+              <div class="mock-tabs"><span>General</span><span class="on">Shortcut</span><span>Details</span></div>
+              <div class="mock-row"><span>Target</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Start in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Run</span><code>Normal window</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
           </div>
-          <p class="small">The quotes are required. “Start in” is optional.</p>
         </div>
-        <div class="sc-card">
-          <h3>Linux</h3>
-          <p>Create <code>~/.local/share/applications/example.desktop</code>:</p>
-          <div class="mock-linux">
-            <div class="ml-title">example.desktop — Text Editor</div>
-            <pre><span class="k">[Desktop Entry]</span>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Create <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Mark it trusted or run <code>update-desktop-database</code>. Linux does not expand <code>$HOME</code> in <code>.desktop</code> files — use an absolute path or a wrapper script.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Text Editor</div>
+              <pre><span class="k">[Desktop Entry]</span>
 Type=Application
 Name=Example
 Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
           </div>
-          <p class="small">Then mark it trusted or run <code>update-desktop-database</code>. Linux does not expand <code>$HOME</code> in <code>.desktop</code> files — use the absolute path or a small wrapper script.</p>
         </div>
-        <div class="sc-card">
-          <h3>macOS</h3>
-          <p>Save <code>Example.command</code>:</p>
-          <div class="mock-mac">
-            <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
-            <pre>#!/bin/sh
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Save <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Run <code>chmod +x Example.command</code> once, then double-click it.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
 exec "$HOME/Applications/fenestra" \
   "$HOME/Example/dist/index.html"</pre>
-            <div class="term">$ chmod +x Example.command</div>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
           </div>
-          <p class="small">Run <code>chmod +x Example.command</code> once.</p>
         </div>
       </div>
     </section>
@@ -436,52 +466,71 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
 
     <section id="shortcut">
       <h2>Crie um atalho para um site</h2>
-      <p class="section-lead">Atalho não é só um link para o .html: ele precisa iniciar o Fenestra com o arquivo como argumento. Cada sistema faz do seu jeito.</p>
-      <div class="sc-grid">
-        <div class="sc-card win">
-          <h3>Windows</h3>
-          <ol>
-            <li>Botão direito na Área de Trabalho → <strong>Novo → Atalho</strong>.</li>
-            <li>Em “Digite o local do item”, cole:<br>
-              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></li>
-            <li>Clique em <strong>Avançar</strong>, dê o nome <em>Exemplo</em> e conclua.</li>
-            <li>Opcional: botão direito no atalho → <strong>Propriedades</strong> → <strong>Executar em</strong> = a pasta <code>dist</code>.</li>
-            <li>Dê duplo clique para testar.</li>
-          </ol>
-          <p class="small">O Windows expande <code>%LOCALAPPDATA%</code>. Mantenha as aspas no caminho do .html — é o que separa o executável do arquivo.</p>
-          <div class="mock-win">
-            <div class="mock-title">Propriedades de Exemplo</div>
-            <div class="mock-tabs"><span>Geral</span><span class="on">Atalho</span><span>Detalhes</span></div>
-            <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></div>
-            <div class="mock-row"><span>Executar em</span><code>C:\...\dist</code></div>
-            <div class="mock-row"><span>Executar</span><code>Janela normal</code></div>
-            <div class="mock-foot"><i>OK</i></div>
+      <p class="section-lead">Atalho não é só um link para o .html: ele precisa iniciar o Fenestra com o arquivo como argumento.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Botão direito na Área de Trabalho → <strong>Novo → Atalho</strong>.</li>
+                <li>Em “Digite o local do item”, cole:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></li>
+                <li>Clique em <strong>Avançar</strong>, dê o nome <em>Exemplo</em> e conclua.</li>
+                <li>Opcional: <strong>Propriedades → Executar em</strong> = a pasta <code>dist</code>.</li>
+                <li>Dê duplo clique para testar.</li>
+              </ol>
+              <p class="small">O Windows expande <code>%LOCALAPPDATA%</code> e <code>%USERPROFILE%</code>. Mantenha as aspas no caminho do .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Propriedades de Exemplo</div>
+              <div class="mock-tabs"><span>Geral</span><span class="on">Atalho</span><span>Detalhes</span></div>
+              <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></div>
+              <div class="mock-row"><span>Executar em</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Executar</span><code>Janela normal</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
           </div>
-          <p class="small">As aspas são obrigatórias. “Executar em” é opcional.</p>
         </div>
-        <div class="sc-card">
-          <h3>Linux</h3>
-          <p>Crie <code>~/.local/share/applications/exemplo.desktop</code>:</p>
-          <div class="mock-linux">
-            <div class="ml-title">exemplo.desktop — Text Editor</div>
-            <pre><span class="k">[Desktop Entry]</span>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Crie <code>~/.local/share/applications/exemplo.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Exemplo
+Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</div>
+              <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>. O Linux não expande <code>$HOME</code> em <code>.desktop</code> — use caminho absoluto ou um script wrapper.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">exemplo.desktop — Text Editor</div>
+              <pre><span class="k">[Desktop Entry]</span>
 Type=Application
 Name=Exemplo
 Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</pre>
+            </div>
           </div>
-          <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>. O Linux não expande <code>$HOME</code> em arquivos <code>.desktop</code> — use o caminho absoluto ou um script wrapper.</p>
         </div>
-        <div class="sc-card">
-          <h3>macOS</h3>
-          <p>Salve <code>Exemplo.command</code>:</p>
-          <div class="mock-mac">
-            <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Exemplo.command</div>
-            <pre>#!/bin/sh
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Salve <code>Exemplo.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Exemplo/dist/index.html"</div>
+              <p class="small">Rode <code>chmod +x Exemplo.command</code> uma vez e dê duplo clique.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Exemplo.command</div>
+              <pre>#!/bin/sh
 exec "$HOME/Applications/fenestra" \
   "$HOME/Exemplo/dist/index.html"</pre>
-            <div class="term">$ chmod +x Exemplo.command</div>
+              <div class="term">$ chmod +x Exemplo.command</div>
+            </div>
           </div>
-          <p class="small">Rode <code>chmod +x Exemplo.command</code> uma vez.</p>
         </div>
       </div>
     </section>
@@ -534,5 +583,30 @@ settings.json   (só quando você fixa um navegador)</div>
 })();
 </script>
 
+<script>
+(function () {
+  var tabs = document.querySelectorAll(".tabs");
+  for (var t = 0; t < tabs.length; t++) {
+    (function (bar) {
+      var section = bar.parentElement;
+      var buttons = bar.querySelectorAll(".tab");
+      var panels = section.querySelectorAll(".tab-panel");
+      function select(name) {
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].setAttribute("aria-selected", buttons[i].getAttribute("data-tab") === name ? "true" : "false");
+        }
+        for (var j = 0; j < panels.length; j++) {
+          panels[j].className = "tab-panel" + (panels[j].getAttribute("data-panel") === name ? " active" : "");
+        }
+      }
+      for (var b = 0; b < buttons.length; b++) {
+        buttons[b].addEventListener("click", function () { select(this.getAttribute("data-tab")); });
+      }
+      var ua = navigator.userAgent;
+      select(/Mac/i.test(ua) ? "mac" : /Linux/i.test(ua) ? "linux" : "win");
+    })(tabs[t]);
+  }
+})();
+</script>
 </body>
 </html>
