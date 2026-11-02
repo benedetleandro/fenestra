@@ -19,6 +19,7 @@
   }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
+  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: linear-gradient(90deg, #9db4ff, #c9b8ff); z-index: 200; }
   body {
     margin: 0; background: var(--bg); color: var(--text);
     font-family: var(--sans); font-size: 16px; line-height: 1.65;
@@ -32,7 +33,7 @@
   }
   a { color: inherit; text-decoration: none; }
   code { font-family: var(--mono); font-size: .9em; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; color: #cfd4df; }
-  .wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .wrap { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
   header { border-bottom: 1px solid var(--line-soft); background: rgba(8,9,12,.72); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 10; }
   .head { display: flex; align-items: center; height: 64px; gap: 12px; }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -.01em; }
@@ -63,16 +64,19 @@
   @media (max-width: 760px) { .toc { grid-template-columns: 1fr; } }
   .layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 44px; align-items: start; margin-top: 6px; }
   .side-toc { position: sticky; top: 92px; padding-top: 6px; }
+  .side-toc.open { display: block; position: fixed; top: 64px; right: 18px; bottom: 18px; width: 280px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; z-index: 130; overflow: auto; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
   .st-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-2); margin: 0 0 14px; font-weight: 700; }
   .side-toc a { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; margin: 0 0 2px -10px; border-left: 2px solid transparent; color: var(--muted); font-size: 13.5px; border-radius: 0 6px 6px 0; transition: color .15s, background .15s, border-color .15s; }
   .side-toc a:hover { color: var(--text); background: rgba(255,255,255,.03); }
   .side-toc a.active { color: var(--text); border-left-color: #9cc4ff; background: rgba(156,196,255,.06); }
   .side-toc .n { color: var(--muted-2); font-size: 10.5px; letter-spacing: .06em; min-width: 18px; }
-  .toc-fab { display: none; }
+  .toc-fab { display: flex; position: fixed; right: 18px; bottom: 18px; z-index: 120; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.4); cursor: pointer; }
+  .toc-fab::after { content: "Índice"; }
+  html[lang^="en"] .toc-fab::after { content: "Contents"; }
   @media (max-width: 980px) {
     .layout { display: block; }
     .side-toc { display: none; }
-    .side-toc.open { display: block; position: fixed; inset: 64px 0 0 0; z-index: 80; background: rgba(8,9,12,.98); backdrop-filter: blur(10px); padding: 24px; overflow: auto; }
+    .side-toc.open { display: block; position: fixed; inset: 64px 0 0 0; width: auto; z-index: 80; background: rgba(8,9,12,.98); backdrop-filter: blur(10px); padding: 24px; overflow: auto; }
     .side-toc.open a { font-size: 16px; padding: 11px 10px; }
     .toc-fab { display: flex; position: fixed; right: 18px; bottom: 18px; z-index: 90; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.4); cursor: pointer; }
   }
@@ -212,6 +216,8 @@
 </head>
 <body>
 
+<div class="progress" id="progress"></div>
+
 <header>
   <div class="wrap head">
     <a class="brand" href="#top">
@@ -222,7 +228,6 @@
       </svg>
       <span>Fenestra</span>
     </a>
-    <span class="pill" id="pill">manual</span>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-set-lang="en" aria-pressed="false">
         <svg viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="4.5"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="14"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg>
@@ -608,7 +613,7 @@ settings.json   (só quando você fixa um navegador)</div>
 
 </main>
 
-<button class="toc-fab" type="button" aria-label="Contents">&#9776; &#205;ndice</button>
+<button class="toc-fab" type="button" aria-label="Contents">&#9776;</button>
 
 <footer>
   <div class="wrap">
@@ -634,7 +639,6 @@ settings.json   (só quando você fixa um navegador)</div>
     for (var j = 0; j < buttons.length; j++) {
       buttons[j].setAttribute("aria-pressed", buttons[j].getAttribute("data-set-lang") === l ? "true" : "false");
     }
-    document.getElementById("pill").textContent = l === "pt" ? "manual local" : "local manual";
     document.getElementById("foot").textContent = l === "pt" ? "manual local" : "local manual";
     try { localStorage.setItem("fenestra-manual-lang", l); } catch (e) {}
   }
@@ -709,6 +713,20 @@ settings.json   (só quando você fixa um navegador)</div>
       if (toc) toc.classList.toggle("open");
     });
   }
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById("progress");
+  function paint() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var ratio = max > 0 ? doc.scrollTop / max : 0;
+    if (bar) bar.style.width = (ratio * 100).toFixed(2) + "%";
+  }
+  window.addEventListener("scroll", paint, { passive: true });
+  window.addEventListener("resize", paint);
+  paint();
 })();
 </script>
 </body>
