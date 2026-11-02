@@ -59,6 +59,19 @@
   .sc-card h3 { margin: 0 0 8px; font-size: 16px; }
   .sc-card ol { margin: 0 0 12px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
   .sc-card li { margin-bottom: 6px; }
+  .mock-linux { background: #242424; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: var(--mono); font-size: 10.5px; color: #e6e6e6; margin-top: 6px; }
+  .mock-linux .ml-title { background: #303030; padding: 6px 10px; font-family: var(--sans); font-size: 10.5px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; }
+  .mock-linux pre { margin: 0; padding: 10px; white-space: pre-wrap; word-break: break-all; }
+  .mock-linux .k { color: #8ab4f8; }
+  .mock-mac { background: #1e1e1e; border: 1px solid #3a3a3a; border-radius: 10px; overflow: hidden; font-family: var(--mono); font-size: 10.5px; color: #e6e6e6; margin-top: 6px; }
+  .mock-mac .mm-title { background: #2d2d2d; padding: 7px 10px; font-family: var(--sans); font-size: 10.5px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; display: flex; align-items: center; gap: 7px; }
+  .mock-mac .lights { display: inline-flex; gap: 4px; }
+  .mock-mac .lights i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .mock-mac .lights i:nth-child(1) { background: #ff5f57; }
+  .mock-mac .lights i:nth-child(2) { background: #febc2e; }
+  .mock-mac .lights i:nth-child(3) { background: #28c840; }
+  .mock-mac pre { margin: 0; padding: 10px; white-space: pre-wrap; word-break: break-all; }
+  .mock-mac .term { border-top: 1px solid #3a3a3a; padding: 8px 10px; color: #9fe870; }
   .mock-win { background: #f3f3f3; color: #1b1b1b; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 11px; border: 1px solid #cfcfcf; }
   .mock-title { background: #e9e9e9; padding: 8px 10px; font-weight: 600; font-size: 11px; border-bottom: 1px solid #d6d6d6; }
   .mock-tabs { display: flex; gap: 2px; padding: 4px 6px 0; background: #ececec; border-bottom: 1px solid #d6d6d6; font-size: 9.5px; }
@@ -218,7 +231,7 @@
 
     <section>
       <h2>Choose Fenestra's browser</h2>
-      <p class="section-lead">These are the browsers detected on this machine. Click one to pin the choice — it applies to the next <code>.html</code>.</p>
+      <p class="section-lead">These are the browsers Fenestra supports. In the installed app, click one to pin it — the choice applies to the next <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
       <p class="refresh"><a href="fenestra://manual">&#8635; Refresh list</a></p>
     </section>
@@ -256,18 +269,25 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
         <div class="sc-card">
           <h3>Linux</h3>
           <p>Create <code>~/.local/share/applications/calendario.desktop</code>:</p>
-          <div class="cmd">[Desktop Entry]
+          <div class="mock-linux">
+            <div class="ml-title">calendario.desktop — Text Editor</div>
+            <pre><span class="k">[Desktop Entry]</span>
 Type=Application
 Name=Calendario
-Exec=/home/you/.local/bin/fenestra "/home/you/Calendario/dist/index.html"</div>
+Exec=/home/you/.local/bin/fenestra "/home/you/Calendario/dist/index.html"</pre>
+          </div>
           <p class="small">Then mark it trusted or run <code>update-desktop-database</code>.</p>
         </div>
         <div class="sc-card">
           <h3>macOS</h3>
           <p>Save <code>Calendario.command</code>:</p>
-          <div class="cmd">#!/bin/sh
+          <div class="mock-mac">
+            <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Calendario.command</div>
+            <pre>#!/bin/sh
 exec "$HOME/Applications/fenestra" \
-  "$HOME/Calendario/dist/index.html"</div>
+  "$HOME/Calendario/dist/index.html"</pre>
+            <div class="term">$ chmod +x Calendario.command</div>
+          </div>
           <p class="small">Run <code>chmod +x Calendario.command</code> once.</p>
         </div>
       </div>
@@ -340,7 +360,7 @@ settings.json   (only when you pin a browser)</div>
 
     <section>
       <h2>Escolha o navegador do Fenestra</h2>
-      <p class="section-lead">Estes são os navegadores detectados nesta máquina. Clique em um para fixar a escolha — vale no próximo <code>.html</code>.</p>
+      <p class="section-lead">Estes são os navegadores que o Fenestra suporta. No app instalado, clique em um para fixar a escolha — vale no próximo <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
       <p class="refresh"><a href="fenestra://manual">&#8635; Atualizar lista</a></p>
     </section>
@@ -378,10 +398,13 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
         <div class="sc-card">
           <h3>Linux</h3>
           <p>Crie <code>~/.local/share/applications/calendario.desktop</code>:</p>
-          <div class="cmd">[Desktop Entry]
+          <div class="mock-linux">
+            <div class="ml-title">calendario.desktop — Text Editor</div>
+            <pre><span class="k">[Desktop Entry]</span>
 Type=Application
 Name=Calendario
-Exec=/home/voce/.local/bin/fenestra "/home/voce/Calendario/dist/index.html"</div>
+Exec=/home/voce/.local/bin/fenestra "/home/voce/Calendario/dist/index.html"</pre>
+          </div>
           <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>.</p>
         </div>
         <div class="sc-card">
