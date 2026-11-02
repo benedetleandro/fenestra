@@ -10,6 +10,8 @@
     "lang.label": "Idioma",
     "nav.faq": "Dúvidas",
     "nav.manual": "Manual",
+    "nav.macos": "macOS",
+    "index.title": "Índice",
     "skip.label": "Pular para o conteúdo",
 
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
@@ -342,4 +344,19 @@
   } else {
     reveals.forEach(function (el) { el.classList.add("in"); });
   }
+})();
+
+/* ------------------------------------------------------- floating index */
+(function () {
+  var fab = document.getElementById("pageFab");
+  var idx = document.getElementById("pageIndex");
+  if (!fab || !idx) return;
+  fab.addEventListener("click", function (e) { e.stopPropagation(); idx.classList.toggle("open"); });
+  idx.addEventListener("click", function () { idx.classList.remove("open"); });
+  document.addEventListener("click", function (e) {
+    if (e.target !== fab && !idx.contains(e.target)) idx.classList.remove("open");
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") idx.classList.remove("open");
+  });
 })();

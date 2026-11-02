@@ -1134,3 +1134,12 @@ footer {
     transform: none;
   }
 }
+
+.page-fab { position: fixed; right: 20px; bottom: 20px; z-index: 90; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.4); cursor: pointer; }
+.page-fab:hover { background: var(--panel-2); }
+.page-index { position: fixed; right: 20px; bottom: 76px; z-index: 95; width: 244px; display: none; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; box-shadow: 0 24px 70px rgba(0,0,0,.55); }
+.page-index.open { display: block; }
+.pi-title { margin: 0 0 8px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-2); font-weight: 700; }
+.page-index a { display: block; padding: 7px 8px; margin: 0 -4px; border-radius: 6px; color: var(--muted); font-size: 14px; }
+.page-index a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+@media (max-width: 480px) { .page-index { left: 16px; right: 16px; width: auto; } }
