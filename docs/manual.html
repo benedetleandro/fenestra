@@ -81,6 +81,7 @@
   .idx-label::after { content: "Índice"; }
   html[lang^="en"] .idx-label::after { content: "Contents"; }
   @media (max-width: 420px) { .idx-label { display: none; } }
+  @media (min-width: 981px) { .idx-btn { display: none; } }
   @media (max-width: 980px) {
     .layout { display: block; }
     .side-toc { display: none; }
@@ -732,6 +733,12 @@ settings.json   (só quando você fixa um navegador)</div>
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
+        var toc = visibleToc();
+        if (toc) toc.classList.remove("open");
+      }
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 980) {
         var toc = visibleToc();
         if (toc) toc.classList.remove("open");
       }
