@@ -2,6 +2,7 @@
   "use strict";
 
   var PT = {
+    "nav.problem": "O problema",
     "nav.how": "Como funciona",
     "nav.compat": "Compatibilidade",
     "nav.plat": "Plataformas",
@@ -9,6 +10,9 @@
     "nav.download": "Baixar",
     "lang.label": "Idioma",
     "nav.faq": "Dúvidas",
+    "nav.under": "Por dentro",
+    "nav.sec": "Segurança",
+    "nav.name": "O nome",
     "nav.manual": "Manual",
     "nav.macos": "macOS",
     "index.title": "Menu",
