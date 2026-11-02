@@ -58,26 +58,21 @@
       <button class="page-fab" id="pageFab" type="button" aria-label="Index" data-i18n-aria="index.title">&#9776; <span data-i18n="index.title">Menu</span></button>
 
       <div class="header-right">
-        <div class="lang" role="group" aria-label="Language" data-i18n-aria="lang.label">
-          <button type="button" data-lang="en" aria-pressed="true">
-            <svg viewBox="0 0 60 40" aria-hidden="true">
-              <rect width="60" height="40" fill="#012169"/>
-              <path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/>
-              <path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="4.5"/>
-              <path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="14"/>
-              <path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/>
-            </svg>
-            <span>EN</span>
+        <div class="lang-menu" id="langMenu">
+          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9Z"/></svg>
+            <span id="langCode">EN</span>
+            <span class="lang-chev">&#9662;</span>
           </button>
-          <button type="button" data-lang="pt" aria-pressed="false">
-            <svg viewBox="0 0 60 42" aria-hidden="true">
-              <rect width="60" height="42" fill="#009C3B"/>
-              <path d="M30 5 55 21 30 37 5 21Z" fill="#FFDF00"/>
-              <circle cx="30" cy="21" r="9" fill="#002776"/>
-              <path d="M21.5 18.6q8.5-4.6 17 0" stroke="#fff" stroke-width="2.6" fill="none"/>
-            </svg>
-            <span>PT</span>
-          </button>
+          <div class="lang-pop" id="langPop" role="listbox" aria-label="Language">
+            <button type="button" data-lang="en" role="option">English</button>
+            <button type="button" data-lang="pt" role="option">Português</button>
+            <button type="button" data-lang="es" role="option">Español</button>
+            <button type="button" data-lang="fr" role="option">Français</button>
+            <button type="button" data-lang="de" role="option">Deutsch</button>
+            <button type="button" data-lang="it" role="option">Italiano</button>
+            <button type="button" data-lang="nl" role="option">Nederlands</button>
+          </div>
         </div>
 
         <a class="header-manual" href="manual.html" data-i18n="nav.manual">Manual</a>
@@ -696,6 +691,7 @@
     <a href="#faq"><span class="pi-n">11</span><span data-i18n="nav.faq">FAQ</span></a>
   </nav>
 
-  <script src="app.js?v=0.7.0.9"></script>
+  <script src="locales.js?v=2"></script>
+  <script src="app.js?v=0.7.0.10"></script>
 </body>
 </html>

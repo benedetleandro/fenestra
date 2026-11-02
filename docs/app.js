@@ -219,51 +219,91 @@
     EN_ARIA[el.getAttribute("data-i18n-aria")] = el.getAttribute("aria-label");
   });
 
+  var LOCALES = window.FENESTRA_LOCALES || {};
+  var SUPPORTED = ["en", "pt", "es", "fr", "de", "it", "nl"];
+  var LANG_TAGS = { en: "en", pt: "pt-BR", es: "es", fr: "fr", de: "de", it: "it", nl: "nl" };
+
   function apply(lang) {
+    var d = LOCALES[lang] || null;
     var pt = lang === "pt";
 
     textNodes.forEach(function (el) {
       var key = el.getAttribute("data-i18n");
-      el.textContent = pt && PT[key] != null ? PT[key] : EN[key];
+      var value = d && d.text && d.text[key] != null ? d.text[key]
+        : (pt && PT[key] != null ? PT[key] : EN[key]);
+      el.textContent = value;
     });
 
     htmlNodes.forEach(function (el) {
       var key = el.getAttribute("data-i18n-html");
-      el.innerHTML = pt && PT[key] != null ? PT[key] : EN_HTML[key];
+      var value = d && d.html && d.html[key] != null ? d.html[key]
+        : (pt && PT[key] != null ? PT[key] : EN_HTML[key]);
+      el.innerHTML = value;
     });
 
     ariaNodes.forEach(function (el) {
       var key = el.getAttribute("data-i18n-aria");
-      el.setAttribute("aria-label", pt && PT[key] != null ? PT[key] : EN_ARIA[key]);
+      var value = d && d.aria && d.aria[key] != null ? d.aria[key]
+        : (pt && PT[key] != null ? PT[key] : EN_ARIA[key]);
+      el.setAttribute("aria-label", value);
     });
 
-    document.documentElement.lang = pt ? "pt-BR" : "en";
-    document.title = META[lang].title;
+    document.documentElement.lang = LANG_TAGS[lang] || lang;
 
+    var meta = d && d.meta ? d.meta : (pt ? META.pt : META.en);
+    document.title = meta.title;
     var desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", META[lang].desc);
+    if (desc) desc.setAttribute("content", meta.desc);
 
-    document.querySelectorAll(".lang button").forEach(function (btn) {
-      btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
+    var code = document.getElementById("langCode");
+    if (code) code.textContent = lang.toUpperCase();
+
+    document.querySelectorAll(".lang-pop button").forEach(function (btn) {
+      btn.setAttribute("aria-selected", btn.getAttribute("data-lang") === lang ? "true" : "false");
     });
 
     try { localStorage.setItem("fenestra-lang", lang); } catch (e) { /* private mode */ }
   }
 
+  var stored = null;
+  try { stored = localStorage.getItem("fenestra-lang"); } catch (e) { /* private mode */ }
+  var param = new URLSearchParams(location.search).get("lang");
+  var nav = ((navigator.language || "en").toLowerCase().split("-")[0]);
   var initial = "en";
-  try {
-    if (localStorage.getItem("fenestra-lang") === "pt") initial = "pt";
-  } catch (e) { /* ignore */ }
-  if (new URLSearchParams(location.search).get("lang") === "pt") initial = "pt";
-  if (new URLSearchParams(location.search).get("lang") === "en") initial = "en";
+  if (param && SUPPORTED.indexOf(param) >= 0) initial = param;
+  else if (stored && SUPPORTED.indexOf(stored) >= 0) initial = stored;
+  else if (SUPPORTED.indexOf(nav) >= 0) initial = nav;
 
   apply(initial);
 
-  document.querySelectorAll(".lang button").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      apply(btn.getAttribute("data-lang"));
+  var langBtn = document.getElementById("langBtn");
+  var langPop = document.getElementById("langPop");
+  if (langBtn && langPop) {
+    langBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      langPop.classList.toggle("open");
+      langBtn.setAttribute("aria-expanded", langPop.classList.contains("open") ? "true" : "false");
     });
-  });
+    langPop.querySelectorAll("button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        apply(btn.getAttribute("data-lang"));
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+    document.addEventListener("click", function (e) {
+      if (!langPop.contains(e.target) && e.target !== langBtn) {
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
 
   /* ------------------------------------------------------------ copy */
 
