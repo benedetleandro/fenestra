@@ -271,13 +271,17 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
           <h3>Windows</h3>
           <ol>
             <li>Right-click the Desktop → <strong>New → Shortcut</strong>.</li>
-            <li>Paste the full command as the location (below).</li>
-            <li>Name it <em>Example</em> and finish.</li>
+            <li>In “Type the location of the item”, paste:<br>
+              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\Users\you\Documents\Example\dist\index.html"</code></li>
+            <li>Click <strong>Next</strong>, name it <em>Example</em>, and finish.</li>
+            <li>Optional: right-click the shortcut → <strong>Properties</strong> → <strong>Start in</strong> = the <code>dist</code> folder.</li>
+            <li>Double-click it to test.</li>
           </ol>
+          <p class="small">Windows expands <code>%LOCALAPPDATA%</code>. Keep the quotes around the .html path — they separate the executable from the file.</p>
           <div class="mock-win">
             <div class="mock-title">Example Properties</div>
             <div class="mock-tabs"><span>General</span><span class="on">Shortcut</span><span>Details</span></div>
-            <div class="mock-row"><span>Target</span><code>"...\Fenestra.exe" "C:\...\dist\index.html"</code></div>
+            <div class="mock-row"><span>Target</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\...\Example\dist\index.html"</code></div>
             <div class="mock-row"><span>Start in</span><code>C:\...\dist</code></div>
             <div class="mock-row"><span>Run</span><code>Normal window</code></div>
             <div class="mock-foot"><i>OK</i></div>
@@ -407,13 +411,17 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
           <h3>Windows</h3>
           <ol>
             <li>Botão direito na Área de Trabalho → <strong>Novo → Atalho</strong>.</li>
-            <li>Cole o comando completo como local (abaixo).</li>
-            <li>Dê o nome <em>Exemplo</em> e conclua.</li>
+            <li>Em “Digite o local do item”, cole:<br>
+              <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\Users\voce\Documents\Exemplo\dist\index.html"</code></li>
+            <li>Clique em <strong>Avançar</strong>, dê o nome <em>Exemplo</em> e conclua.</li>
+            <li>Opcional: botão direito no atalho → <strong>Propriedades</strong> → <strong>Executar em</strong> = a pasta <code>dist</code>.</li>
+            <li>Dê duplo clique para testar.</li>
           </ol>
+          <p class="small">O Windows expande <code>%LOCALAPPDATA%</code>. Mantenha as aspas no caminho do .html — é o que separa o executável do arquivo.</p>
           <div class="mock-win">
             <div class="mock-title">Propriedades de Exemplo</div>
             <div class="mock-tabs"><span>Geral</span><span class="on">Atalho</span><span>Detalhes</span></div>
-            <div class="mock-row"><span>Destino</span><code>"...\Fenestra.exe" "C:\...\dist\index.html"</code></div>
+            <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "C:\...\Exemplo\dist\index.html"</code></div>
             <div class="mock-row"><span>Executar em</span><code>C:\...\dist</code></div>
             <div class="mock-row"><span>Executar</span><code>Janela normal</code></div>
             <div class="mock-foot"><i>OK</i></div>
