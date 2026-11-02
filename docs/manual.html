@@ -52,6 +52,23 @@
   section { padding: 34px 0; }
   h2 { font-size: 26px; letter-spacing: -.02em; margin: 0 0 6px; }
   .section-lead { color: var(--muted); margin: 0 0 24px; max-width: 700px; }
+  .setup { background: linear-gradient(180deg, #141821, #0e1118); border: 1px solid #2b3242; border-radius: 20px; padding: 30px; margin: 10px 0 26px; box-shadow: 0 24px 70px rgba(0,0,0,.38); }
+  .kicker { text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; font-weight: 700; color: #9cc4ff; }
+  .setup h2 { font-size: clamp(26px, 3.4vw, 34px); margin: 10px 0 10px; letter-spacing: -.03em; }
+  .lead2 { color: var(--muted); max-width: 660px; margin: 0 0 22px; }
+  .cta { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 24px; border-radius: 11px; background: var(--silver); color: #0a0b0e; font-weight: 700; font-size: 15.5px; box-shadow: 0 10px 34px rgba(200,210,235,.18); transition: transform .15s, box-shadow .15s; }
+  .cta:hover { transform: translateY(-1px); box-shadow: 0 14px 42px rgba(200,210,235,.26); }
+  .cta-note { display: block; color: var(--muted-2); font-size: 12.5px; margin-top: 10px; }
+  .steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 26px 0 8px; }
+  .step3 { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .step3 .n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--silver); color: #0a0b0e; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+  .step3 strong { display: block; font-size: 14.5px; margin-bottom: 4px; }
+  .step3 p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .os-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .os-card { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; background: var(--panel); }
+  .os-card h3 { margin: 0 0 6px; font-size: 14.5px; }
+  .os-card p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .os-card code { display: inline-block; margin-top: 8px; font-size: 12.5px; }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .card { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
   .num { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #0a0b0e; background: var(--silver); margin-bottom: 14px; }
@@ -80,7 +97,7 @@
   footer { border-top: 1px solid var(--line-soft); margin-top: 30px; padding: 26px 0 40px; color: var(--muted-2); font-size: 13px; }
   footer a { color: #9cc4ff; }
   @media (max-width: 760px) {
-    .steps, .browsers { grid-template-columns: 1fr; }
+    .steps, .browsers, .steps3, .os-grid { grid-template-columns: 1fr; }
     .hero { padding-top: 48px; }
   }
 </style>
@@ -132,6 +149,26 @@
     </section>
 
     <section>
+      <div class="setup">
+        <span class="kicker">one essential step</span>
+        <h2>Make Fenestra the default for .html</h2>
+        <p class="lead2">Until you do this, double-clicking an .html still goes straight to Edge or Chrome. With Fenestra as the handler, it starts the local server and then opens your browser.</p>
+        <a class="cta" href="fenestra://associate">Make Fenestra the default</a>
+        <span class="cta-note">A web page cannot change Windows associations, so this opens the official Windows dialog. It takes 10 seconds.</span>
+        <div class="steps3">
+          <div class="step3"><span class="n">1</span><strong>Click the button</strong><p>The “Open with” window opens with Fenestra listed.</p></div>
+          <div class="step3"><span class="n">2</span><strong>Pick Fenestra</strong><p>Select “Fenestra” in the list.</p></div>
+          <div class="step3"><span class="n">3</span><strong>Check “Always”</strong><p>Tick “Always use this app” and click OK.</p></div>
+        </div>
+        <span class="cta-note">Prefer Settings? Apps → Default apps → search .html → choose Fenestra → Set default.</span>
+      </div>
+      <div class="os-grid">
+        <div class="os-card"><h3>Linux</h3><p>After <code>--install</code>, set the handler:</p><code>xdg-mime default fenestra.desktop text/html</code></div>
+        <div class="os-card"><h3>macOS</h3><p>Finder: right-click the .html → Get Info → Open with → Fenestra → Change All.</p></div>
+      </div>
+    </section>
+
+    <section>
       <h2>Choose Fenestra's browser</h2>
       <p class="section-lead">These are the browsers Fenestra supports. In the installed app, click one to pin it — the choice applies to the next <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
@@ -172,6 +209,26 @@ settings.json   (only when you pin a browser)</div>
         <div class="card"><div class="num">1</div><h3>Você abre o HTML</h3><p>Duplo clique em um <code>.html</code> ou em uma pasta de build.</p></div>
         <div class="card"><div class="num">2</div><h3>O Fenestra serve</h3><p>Um servidor local sobe em <code>127.0.0.1</code>, com porta estável por pasta.</p></div>
         <div class="card"><div class="num">3</div><h3>O navegador mostra</h3><p>A página abre no navegador que você escolher aqui embaixo.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="setup">
+        <span class="kicker">um passo essencial</span>
+        <h2>Torne o Fenestra o padrão para .html</h2>
+        <p class="lead2">Sem isso, o duplo clique no .html continua indo direto para o Edge ou o Chrome. Com o Fenestra como handler, ele sobe o servidor local e só então abre o seu navegador.</p>
+        <a class="cta" href="fenestra://associate">Tornar o Fenestra padrão</a>
+        <span class="cta-note">Uma página web não pode mudar associações do Windows, então isso abre o diálogo oficial do Windows. Leva 10 segundos.</span>
+        <div class="steps3">
+          <div class="step3"><span class="n">1</span><strong>Clique no botão</strong><p>A janela “Abrir com” abre com o Fenestra na lista.</p></div>
+          <div class="step3"><span class="n">2</span><strong>Escolha Fenestra</strong><p>Selecione “Fenestra” na lista.</p></div>
+          <div class="step3"><span class="n">3</span><strong>Marque “Sempre”</strong><p>Marque “Sempre usar este aplicativo” e clique OK.</p></div>
+        </div>
+        <span class="cta-note">Prefere pelas Configurações? Aplicativos → Aplicativos padrão → procure .html → escolha Fenestra → Definir padrão.</span>
+      </div>
+      <div class="os-grid">
+        <div class="os-card"><h3>Linux</h3><p>Depois do <code>--install</code>, defina o handler:</p><code>xdg-mime default fenestra.desktop text/html</code></div>
+        <div class="os-card"><h3>macOS</h3><p>Finder: botão direito no .html → Obter informações → Abrir com → Fenestra → Alterar tudo.</p></div>
       </div>
     </section>
 
