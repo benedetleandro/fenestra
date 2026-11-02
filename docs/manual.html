@@ -70,21 +70,22 @@
   @media (max-width: 760px) { .toc { grid-template-columns: 1fr; } }
   .layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 44px; align-items: start; margin-top: 6px; }
   .side-toc { position: sticky; top: 92px; padding-top: 6px; }
-  .side-toc.open { display: block; position: fixed; top: 64px; right: 18px; bottom: 18px; width: 280px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; z-index: 130; overflow: auto; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+  .side-toc.open { display: block; position: fixed; top: 74px; left: 18px; width: 280px; max-height: calc(100vh - 100px); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; z-index: 130; overflow: auto; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
   .st-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-2); margin: 0 0 14px; font-weight: 700; }
   .side-toc a { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; margin: 0 0 2px -10px; border-left: 2px solid transparent; color: var(--muted); font-size: 13.5px; border-radius: 0 6px 6px 0; transition: color .15s, background .15s, border-color .15s; }
   .side-toc a:hover { color: var(--text); background: rgba(255,255,255,.03); }
   .side-toc a.active { color: var(--text); border-left-color: #9cc4ff; background: rgba(156,196,255,.06); }
   .side-toc .n { color: var(--muted-2); font-size: 10.5px; letter-spacing: .06em; min-width: 18px; }
-  .toc-fab { display: flex; position: fixed; right: 18px; bottom: 18px; z-index: 120; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.4); cursor: pointer; }
-  .toc-fab::after { content: "Índice"; }
-  html[lang^="en"] .toc-fab::after { content: "Contents"; }
+  .idx-btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; flex: none; }
+  .idx-btn:hover { color: var(--text); border-color: #333a4a; }
+  .idx-label::after { content: "Índice"; }
+  html[lang^="en"] .idx-label::after { content: "Contents"; }
+  @media (max-width: 420px) { .idx-label { display: none; } }
   @media (max-width: 980px) {
     .layout { display: block; }
     .side-toc { display: none; }
-    .side-toc.open { display: block; position: fixed; inset: 64px 0 0 0; width: auto; z-index: 80; background: rgba(8,9,12,.98); backdrop-filter: blur(10px); padding: 24px; overflow: auto; }
-    .side-toc.open a { font-size: 16px; padding: 11px 10px; }
-    .toc-fab { display: flex; position: fixed; right: 18px; bottom: 18px; z-index: 90; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 13px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,.4); cursor: pointer; }
+    .side-toc.open { display: block; position: fixed; top: 70px; left: 16px; right: 16px; width: auto; max-height: 70vh; z-index: 80; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; overflow: auto; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+    .side-toc.open a { font-size: 14px; padding: 9px 10px; }
   }
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 8px 0 22px; }
   .tab { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); font: inherit; font-weight: 600; font-size: 14px; padding: 10px 14px; cursor: pointer; }
@@ -234,6 +235,7 @@
       </svg>
       <span>Fenestra</span>
     </a>
+    <button class="idx-btn" id="tocBtn" type="button" aria-label="Contents">&#9776;<span class="idx-label"></span></button>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-set-lang="en" aria-pressed="false">
         <svg viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="4.5"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="14"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg>
@@ -623,8 +625,6 @@ settings.json   (só quando você fixa um navegador)</div>
 
 </main>
 
-<button class="toc-fab" type="button" aria-label="Contents">&#9776;</button>
-
 <footer>
   <div class="wrap">
     Fenestra · <span id="foot">manual local</span> · <a href="https://benedetleandro.github.io/fenestra/">site do projeto</a>
@@ -715,12 +715,26 @@ settings.json   (só quando você fixa um navegador)</div>
       }
     })(tocs[t]);
   }
-  var fab = document.querySelector(".toc-fab");
-  if (fab) {
-    fab.addEventListener("click", function () {
-      var block = document.querySelector("[data-block]:not([hidden])");
-      var toc = block && block.querySelector(".side-toc");
+  var btn = document.getElementById("tocBtn");
+  function visibleToc() {
+    var block = document.querySelector("[data-block]:not([hidden])");
+    return block && block.querySelector(".side-toc");
+  }
+  if (btn) {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var toc = visibleToc();
       if (toc) toc.classList.toggle("open");
+    });
+    document.addEventListener("click", function (e) {
+      var toc = visibleToc();
+      if (toc && !toc.contains(e.target) && e.target !== btn) toc.classList.remove("open");
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        var toc = visibleToc();
+        if (toc) toc.classList.remove("open");
+      }
     });
   }
 })();
