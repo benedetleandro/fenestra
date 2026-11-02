@@ -360,3 +360,24 @@
     if (e.key === "Escape") idx.classList.remove("open");
   });
 })();
+
+/* ---------------------------------------------------------- side index */
+(function () {
+  var rail = document.getElementById("siteIndex");
+  if (!rail || !("IntersectionObserver" in window)) return;
+  var links = rail.querySelectorAll("a");
+  var map = {};
+  for (var i = 0; i < links.length; i++) {
+    var sec = document.getElementById(links[i].getAttribute("href").slice(1));
+    if (sec) map[sec.id] = links[i];
+  }
+  var obs = new IntersectionObserver(function (entries) {
+    for (var e = 0; e < entries.length; e++) {
+      if (!entries[e].isIntersecting) continue;
+      for (var l = 0; l < links.length; l++) links[l].classList.remove("active");
+      if (map[entries[e].target.id]) map[entries[e].target.id].classList.add("active");
+    }
+  }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+  for (var id in map) obs.observe(document.getElementById(id));
+  if (links.length) links[0].classList.add("active");
+})();
