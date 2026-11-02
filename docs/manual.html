@@ -249,7 +249,7 @@
 
     <section>
       <h2>Choose Fenestra's browser</h2>
-      <p class="section-lead">These are the browsers Fenestra supports. In the installed app, click one to pin it — the choice applies to the next <code>.html</code>.</p>
+      <p class="section-lead">These are the browsers detected on this machine. Click one to pin the choice — it applies to the next <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
       <p class="refresh"><a href="fenestra://manual">&#8635; Refresh list</a></p>
     </section>
@@ -385,7 +385,7 @@ settings.json   (only when you pin a browser)</div>
 
     <section>
       <h2>Escolha o navegador do Fenestra</h2>
-      <p class="section-lead">Estes são os navegadores que o Fenestra suporta. No app instalado, clique em um para fixar a escolha — vale no próximo <code>.html</code>.</p>
+      <p class="section-lead">Estes são os navegadores detectados nesta máquina. Clique em um para fixar a escolha — vale no próximo <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
       <p class="refresh"><a href="fenestra://manual">&#8635; Atualizar lista</a></p>
     </section>
@@ -435,9 +435,13 @@ Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</pre>
         <div class="sc-card">
           <h3>macOS</h3>
           <p>Salve <code>Exemplo.command</code>:</p>
-          <div class="cmd">#!/bin/sh
+          <div class="mock-mac">
+            <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Exemplo.command</div>
+            <pre>#!/bin/sh
 exec "$HOME/Applications/fenestra" \
-  "$HOME/Exemplo/dist/index.html"</div>
+  "$HOME/Exemplo/dist/index.html"</pre>
+            <div class="term">$ chmod +x Exemplo.command</div>
+          </div>
           <p class="small">Rode <code>chmod +x Exemplo.command</code> uma vez.</p>
         </div>
       </div>
