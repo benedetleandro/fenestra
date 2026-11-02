@@ -59,6 +59,17 @@
   .sc-card h3 { margin: 0 0 8px; font-size: 16px; }
   .sc-card ol { margin: 0 0 12px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
   .sc-card li { margin-bottom: 6px; }
+  .mock-finder { background: #f6f6f6; color: #1b1b1b; border: 1px solid #cfcfcf; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 10px; margin-top: 10px; }
+  .mock-finder .mf-title { background: #e9e9e9; padding: 6px 10px; border-bottom: 1px solid #d6d6d6; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+  .mock-finder .lights { display: inline-flex; gap: 4px; }
+  .mock-finder .lights i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .mock-finder .lights i:nth-child(1) { background: #ff5f57; }
+  .mock-finder .lights i:nth-child(2) { background: #febc2e; }
+  .mock-finder .lights i:nth-child(3) { background: #28c840; }
+  .mock-finder .mf-body { display: grid; grid-template-columns: 62px 1fr; gap: 6px; padding: 8px 10px; align-items: center; }
+  .mock-finder .mf-label { color: #555; }
+  .mock-finder .mf-select { background: #fff; border: 1px solid #c9c9c9; border-radius: 4px; padding: 3px 6px; }
+  .mock-finder .mf-btn { background: #f0f0f0; border: 1px solid #b9b9b9; border-radius: 4px; padding: 2px 8px; text-align: center; }
   .mock-linux { background: #242424; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: var(--mono); font-size: 10.5px; color: #e6e6e6; margin-top: 6px; }
   .mock-linux .ml-title { background: #303030; padding: 6px 10px; font-family: var(--sans); font-size: 10.5px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; }
   .mock-linux pre { margin: 0; padding: 10px; white-space: pre-wrap; word-break: break-all; }
@@ -224,6 +235,13 @@
               <li><strong>Open with</strong> → <strong>Fenestra</strong>.</li>
               <li>Click <strong>Change All…</strong>.</li>
             </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Info</div>
+              <div class="mf-body">
+                <div class="mf-label">Open with</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Change All…</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -254,10 +272,10 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
           <ol>
             <li>Right-click the Desktop → <strong>New → Shortcut</strong>.</li>
             <li>Paste the full command as the location (below).</li>
-            <li>Name it <em>Calendario</em> and finish.</li>
+            <li>Name it <em>Example</em> and finish.</li>
           </ol>
           <div class="mock-win">
-            <div class="mock-title">Calendario Properties</div>
+            <div class="mock-title">Example Properties</div>
             <div class="mock-tabs"><span>General</span><span class="on">Shortcut</span><span>Details</span></div>
             <div class="mock-row"><span>Target</span><code>"...\Fenestra.exe" "C:\...\dist\index.html"</code></div>
             <div class="mock-row"><span>Start in</span><code>C:\...\dist</code></div>
@@ -268,27 +286,27 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
         </div>
         <div class="sc-card">
           <h3>Linux</h3>
-          <p>Create <code>~/.local/share/applications/calendario.desktop</code>:</p>
+          <p>Create <code>~/.local/share/applications/example.desktop</code>:</p>
           <div class="mock-linux">
-            <div class="ml-title">calendario.desktop — Text Editor</div>
+            <div class="ml-title">example.desktop — Text Editor</div>
             <pre><span class="k">[Desktop Entry]</span>
 Type=Application
-Name=Calendario
-Exec=/home/you/.local/bin/fenestra "/home/you/Calendario/dist/index.html"</pre>
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
           </div>
           <p class="small">Then mark it trusted or run <code>update-desktop-database</code>.</p>
         </div>
         <div class="sc-card">
           <h3>macOS</h3>
-          <p>Save <code>Calendario.command</code>:</p>
+          <p>Save <code>Example.command</code>:</p>
           <div class="mock-mac">
-            <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Calendario.command</div>
+            <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
             <pre>#!/bin/sh
 exec "$HOME/Applications/fenestra" \
-  "$HOME/Calendario/dist/index.html"</pre>
-            <div class="term">$ chmod +x Calendario.command</div>
+  "$HOME/Example/dist/index.html"</pre>
+            <div class="term">$ chmod +x Example.command</div>
           </div>
-          <p class="small">Run <code>chmod +x Calendario.command</code> once.</p>
+          <p class="small">Run <code>chmod +x Example.command</code> once.</p>
         </div>
       </div>
     </section>
@@ -353,6 +371,13 @@ settings.json   (only when you pin a browser)</div>
               <li><strong>Abrir com</strong> → <strong>Fenestra</strong>.</li>
               <li>Clique em <strong>Alterar tudo…</strong>.</li>
             </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Exemplo.html — Informações</div>
+              <div class="mf-body">
+                <div class="mf-label">Abrir com</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Alterar tudo…</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -383,10 +408,10 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
           <ol>
             <li>Botão direito na Área de Trabalho → <strong>Novo → Atalho</strong>.</li>
             <li>Cole o comando completo como local (abaixo).</li>
-            <li>Dê o nome <em>Calendario</em> e conclua.</li>
+            <li>Dê o nome <em>Exemplo</em> e conclua.</li>
           </ol>
           <div class="mock-win">
-            <div class="mock-title">Propriedades de Calendario</div>
+            <div class="mock-title">Propriedades de Exemplo</div>
             <div class="mock-tabs"><span>Geral</span><span class="on">Atalho</span><span>Detalhes</span></div>
             <div class="mock-row"><span>Destino</span><code>"...\Fenestra.exe" "C:\...\dist\index.html"</code></div>
             <div class="mock-row"><span>Executar em</span><code>C:\...\dist</code></div>
@@ -397,23 +422,23 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
         </div>
         <div class="sc-card">
           <h3>Linux</h3>
-          <p>Crie <code>~/.local/share/applications/calendario.desktop</code>:</p>
+          <p>Crie <code>~/.local/share/applications/exemplo.desktop</code>:</p>
           <div class="mock-linux">
-            <div class="ml-title">calendario.desktop — Text Editor</div>
+            <div class="ml-title">exemplo.desktop — Text Editor</div>
             <pre><span class="k">[Desktop Entry]</span>
 Type=Application
-Name=Calendario
-Exec=/home/voce/.local/bin/fenestra "/home/voce/Calendario/dist/index.html"</pre>
+Name=Exemplo
+Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</pre>
           </div>
           <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>.</p>
         </div>
         <div class="sc-card">
           <h3>macOS</h3>
-          <p>Salve <code>Calendario.command</code>:</p>
+          <p>Salve <code>Exemplo.command</code>:</p>
           <div class="cmd">#!/bin/sh
 exec "$HOME/Applications/fenestra" \
-  "$HOME/Calendario/dist/index.html"</div>
-          <p class="small">Rode <code>chmod +x Calendario.command</code> uma vez.</p>
+  "$HOME/Exemplo/dist/index.html"</div>
+          <p class="small">Rode <code>chmod +x Exemplo.command</code> uma vez.</p>
         </div>
       </div>
     </section>
