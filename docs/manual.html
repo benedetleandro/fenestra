@@ -35,6 +35,7 @@
   code { font-family: var(--mono); font-size: .9em; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; color: #cfd4df; }
   .wrap { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
   header { border-bottom: 1px solid var(--line-soft); background: rgba(8,9,12,.72); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 10; }
+  header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(157,180,255,.35), transparent); }
   .head { display: flex; align-items: center; height: 64px; gap: 12px; }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -.01em; }
   .brand svg { width: 24px; height: 24px; }
