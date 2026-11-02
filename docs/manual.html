@@ -99,7 +99,7 @@
 
   <div data-block="en" hidden>
     <div class="hero">
-      <span class="badge"><span class="dot"></span> installed and ready</span>
+      <span class="badge"><span class="dot"></span> official manual</span>
       <h1>Your HTML, in a <span class="shine">real browser</span>.</h1>
       <p class="lead">Fenestra opens the port on <code>127.0.0.1</code> and hands the site to your browser. It is not a browser — it is the window between your folder and the browser you already use.</p>
       <div class="meta"><span>Windows · Linux · macOS</span><span>no cloud</span><span>no account</span></div>
@@ -117,9 +117,9 @@
 
     <section>
       <h2>Choose Fenestra's browser</h2>
-      <p class="section-lead">These are the browsers detected on this machine. Click one to pin the choice — it applies to the next <code>.html</code>.</p>
+      <p class="section-lead">These are the browsers Fenestra supports. In the installed app, click one to pin it — the choice applies to the next <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/default"><span class="b-ico">S</span><span class="b-txt"><strong>System default</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/edge"><span class="b-ico">E</span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico">C</span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico">F</span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico">B</span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico">V</span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico">O</span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
-      <div class="note"><strong>System default</strong> follows the Windows default browser. Change it in Windows and Fenestra follows along — nothing to edit.</div>
+      <div class="note"><strong>System default</strong> follows the Windows default browser. Change it in Windows and Fenestra follows along — nothing to edit. On this page the cards are a preview.</div>
     </section>
 
     <section>
@@ -142,7 +142,7 @@ settings.json   (only when you pin a browser)</div>
 
   <div data-block="pt">
     <div class="hero">
-      <span class="badge"><span class="dot"></span> instalado e pronto</span>
+      <span class="badge"><span class="dot"></span> manual oficial</span>
       <h1>Seu HTML, no <span class="shine">navegador de verdade</span>.</h1>
       <p class="lead">O Fenestra abre a porta em <code>127.0.0.1</code> e entrega o site para o seu navegador. Ele não é um navegador — é a janela entre a sua pasta e o navegador que você já usa.</p>
       <div class="meta"><span>Windows · Linux · macOS</span><span>sem nuvem</span><span>sem conta</span></div>
@@ -160,9 +160,9 @@ settings.json   (only when you pin a browser)</div>
 
     <section>
       <h2>Escolha o navegador do Fenestra</h2>
-      <p class="section-lead">Estes são os navegadores detectados nesta máquina. Clique em um para fixar a escolha — vale no próximo <code>.html</code>.</p>
+      <p class="section-lead">Estes são os navegadores que o Fenestra suporta. No app instalado, clique em um para fixar a escolha — vale no próximo <code>.html</code>.</p>
       <div class="browsers"><a class="b-card" href="fenestra://browser/default"><span class="b-ico">S</span><span class="b-txt"><strong>System default</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/edge"><span class="b-ico">E</span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico">C</span><span class="b-txt"><strong>Google Chrome</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico">F</span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico">B</span><span class="b-txt"><strong>Brave</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico">V</span><span class="b-txt"><strong>Vivaldi</strong><span class="b-arrow">&rarr;</span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico">O</span><span class="b-txt"><strong>Opera</strong><span class="b-arrow">&rarr;</span></span></a></div>
-      <div class="note"><strong>System default</strong> segue o navegador padrão do Windows. Se você trocar o padrão no Windows, o Fenestra acompanha sozinho — sem arquivo para editar.</div>
+      <div class="note"><strong>System default</strong> segue o navegador padrão do Windows. Se você trocar o padrão no Windows, o Fenestra acompanha sozinho — sem arquivo para editar. Nesta página os cartões são uma prévia.</div>
     </section>
 
     <section>
@@ -209,8 +209,8 @@ settings.json   (só quando você fixa um navegador)</div>
     for (var j = 0; j < buttons.length; j++) {
       buttons[j].setAttribute("aria-pressed", buttons[j].getAttribute("data-set-lang") === l ? "true" : "false");
     }
-    document.getElementById("pill").textContent = l === "pt" ? "manual local" : "local manual";
-    document.getElementById("foot").textContent = l === "pt" ? "manual local" : "local manual";
+    document.getElementById("pill").textContent = l === "pt" ? "manual" : "manual";
+    document.getElementById("foot").textContent = l === "pt" ? "manual" : "manual";
     try { localStorage.setItem("fenestra-manual-lang", l); } catch (e) {}
   }
 
