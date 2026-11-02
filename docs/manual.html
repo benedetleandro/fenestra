@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxMTEyMTYiLz4KICA8cmVjdCB4PSIxNCIgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzMiIgcng9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q2ZGJlNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHBhdGggZD0iTTE0IDI2aDM2TTI3IDI2djIyIiBzdHJva2U9IiNkNmRiZTUiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjEiIHI9IjEuOCIgZmlsbD0iI2Q2ZGJlNSIvPgo8L3N2Zz4K">
 <title>Fenestra — manual</title>
 <meta name="description" content="Fenestra manual: a tiny local server that opens your HTML in a real browser. Windows, Linux and macOS.">
 <link rel="canonical" href="https://benedetleandro.github.io/fenestra/manual.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   :root {
     --bg: #08090c; --panel: #12141a; --panel-2: #171a22;
@@ -167,14 +167,13 @@
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
-            <p>A web page cannot change Windows associations.</p>
-            <a class="cta-sm" href="fenestra://associate">Set as default</a>
+            <p>Through Windows Settings:</p>
             <ol>
-              <li>Click the button (or run <code>Fenestra.exe --associate</code>).</li>
-              <li>Pick <strong>Fenestra</strong> in “Open with”.</li>
-              <li>Tick “Always use this app” → OK.</li>
+              <li>Open <strong>Settings</strong> (Win + I).</li>
+              <li>Go to <strong>Apps → Default apps</strong>.</li>
+              <li>Search <code>.html</code> and choose <strong>Fenestra</strong>.</li>
             </ol>
-            <p class="small">Or Settings → Apps → Default apps → .html → Fenestra.</p>
+            <p class="small">Shortcut: <code>ms-settings:defaultapps</code>.</p>
           </div>
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
@@ -250,14 +249,13 @@ settings.json   (only when you pin a browser)</div>
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
-            <p>Uma página web não pode mudar associações do Windows.</p>
-            <a class="cta-sm" href="fenestra://associate">Tornar padrão</a>
+            <p>Pelas Configurações do Windows:</p>
             <ol>
-              <li>Clique no botão (ou rode <code>Fenestra.exe --associate</code>).</li>
-              <li>Escolha <strong>Fenestra</strong> em “Abrir com”.</li>
-              <li>Marque “Sempre usar este aplicativo” → OK.</li>
+              <li>Abra <strong>Configurações</strong> (Win + I).</li>
+              <li>Vá em <strong>Aplicativos → Aplicativos padrão</strong>.</li>
+              <li>Procure <code>.html</code> e escolha <strong>Fenestra</strong>.</li>
             </ol>
-            <p class="small">Ou Configurações → Aplicativos → Aplicativos padrão → .html → Fenestra.</p>
+            <p class="small">Atalho: <code>ms-settings:defaultapps</code>.</p>
           </div>
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
