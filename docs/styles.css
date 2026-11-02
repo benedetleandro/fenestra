@@ -84,9 +84,13 @@ code, pre { font-family: var(--mono); }
   font-weight: 650;
   letter-spacing: -0.01em;
   font-size: 17px;
+  flex: none;
 }
 
-.brand svg { width: 26px; height: 26px; }
+.brand svg { width: 26px; height: 26px; flex: none; }
+
+.nav a { white-space: nowrap; }
+.kicker { white-space: nowrap; }
 
 .nav {
   display: flex;

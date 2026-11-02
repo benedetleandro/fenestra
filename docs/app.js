@@ -6,7 +6,6 @@
     "nav.compat": "Compatibilidade",
     "nav.plat": "Plataformas",
     "nav.install": "Instalar",
-    "nav.macos": "macOS",
     "nav.download": "Baixar",
     "lang.label": "Idioma",
     "nav.faq": "Dúvidas",
