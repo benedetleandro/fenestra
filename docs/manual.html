@@ -52,6 +52,17 @@
   section { padding: 34px 0; }
   h2 { font-size: 26px; letter-spacing: -.02em; margin: 0 0 6px; }
   .section-lead { color: var(--muted); margin: 0 0 24px; max-width: 700px; }
+  .os-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .os-card { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel); display: flex; flex-direction: column; }
+  .os-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .os-head svg { width: 22px; height: 22px; color: #cfd4df; flex: none; }
+  .os-head h3 { margin: 0; font-size: 16px; }
+  .os-card p { margin: 0 0 10px; color: var(--muted); font-size: 13.5px; }
+  .os-card ol { margin: 0 0 8px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+  .os-card li { margin-bottom: 6px; }
+  .os-card .small { color: var(--muted-2); font-size: 12px; margin: 8px 0 0; }
+  .cta-sm { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 8px; background: var(--silver); color: #0a0b0e; font-weight: 700; font-size: 13.5px; margin: 2px 0 12px; }
+  .cta-sm:hover { transform: translateY(-1px); }
   .setup { background: linear-gradient(180deg, #141821, #0e1118); border: 1px solid #2b3242; border-radius: 20px; padding: 30px; margin: 10px 0 26px; box-shadow: 0 24px 70px rgba(0,0,0,.38); }
   .kicker { text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; font-weight: 700; color: #9cc4ff; }
   .setup h2 { font-size: clamp(26px, 3.4vw, 34px); margin: 10px 0 10px; letter-spacing: -.03em; }
@@ -97,7 +108,7 @@
   footer { border-top: 1px solid var(--line-soft); margin-top: 30px; padding: 26px 0 40px; color: var(--muted-2); font-size: 13px; }
   footer a { color: #9cc4ff; }
   @media (max-width: 760px) {
-    .steps, .browsers, .steps3, .os-grid { grid-template-columns: 1fr; }
+    .steps, .browsers, .steps3, .os-grid, .os-cards { grid-template-columns: 1fr; }
     .hero { padding-top: 48px; }
   }
 </style>
@@ -152,19 +163,38 @@
       <div class="setup">
         <span class="kicker">one essential step</span>
         <h2>Make Fenestra the default for .html</h2>
-        <p class="lead2">Until you do this, double-clicking an .html still goes straight to Edge or Chrome. With Fenestra as the handler, it starts the local server and then opens your browser.</p>
-        <a class="cta" href="fenestra://associate">Make Fenestra the default</a>
-        <span class="cta-note">A web page cannot change Windows associations, so this opens the official Windows dialog. It takes 10 seconds.</span>
-        <div class="steps3">
-          <div class="step3"><span class="n">1</span><strong>Click the button</strong><p>The “Open with” window opens with Fenestra listed.</p></div>
-          <div class="step3"><span class="n">2</span><strong>Pick Fenestra</strong><p>Select “Fenestra” in the list.</p></div>
-          <div class="step3"><span class="n">3</span><strong>Check “Always”</strong><p>Tick “Always use this app” and click OK.</p></div>
+        <p class="lead2">Every system has its own way. Pick yours:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>A web page cannot change Windows associations.</p>
+            <a class="cta-sm" href="fenestra://associate">Set as default</a>
+            <ol>
+              <li>Click the button (or run <code>Fenestra.exe --associate</code>).</li>
+              <li>Pick <strong>Fenestra</strong> in “Open with”.</li>
+              <li>Tick “Always use this app” → OK.</li>
+            </ol>
+            <p class="small">Or Settings → Apps → Default apps → .html → Fenestra.</p>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Register the handler once:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Undo with <code>fenestra --uninstall</code>.</p>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>No terminal needed — use Finder:</p>
+            <ol>
+              <li>Right-click an <code>.html</code> → <strong>Get Info</strong>.</li>
+              <li><strong>Open with</strong> → <strong>Fenestra</strong>.</li>
+              <li>Click <strong>Change All…</strong>.</li>
+            </ol>
+          </div>
         </div>
-        <span class="cta-note">Prefer Settings? Apps → Default apps → search .html → choose Fenestra → Set default.</span>
-      </div>
-      <div class="os-grid">
-        <div class="os-card"><h3>Linux</h3><p>After <code>--install</code>, set the handler:</p><code>xdg-mime default fenestra.desktop text/html</code></div>
-        <div class="os-card"><h3>macOS</h3><p>Finder: right-click the .html → Get Info → Open with → Fenestra → Change All.</p></div>
       </div>
     </section>
 
@@ -216,19 +246,38 @@ settings.json   (only when you pin a browser)</div>
       <div class="setup">
         <span class="kicker">um passo essencial</span>
         <h2>Torne o Fenestra o padrão para .html</h2>
-        <p class="lead2">Sem isso, o duplo clique no .html continua indo direto para o Edge ou o Chrome. Com o Fenestra como handler, ele sobe o servidor local e só então abre o seu navegador.</p>
-        <a class="cta" href="fenestra://associate">Tornar o Fenestra padrão</a>
-        <span class="cta-note">Uma página web não pode mudar associações do Windows, então isso abre o diálogo oficial do Windows. Leva 10 segundos.</span>
-        <div class="steps3">
-          <div class="step3"><span class="n">1</span><strong>Clique no botão</strong><p>A janela “Abrir com” abre com o Fenestra na lista.</p></div>
-          <div class="step3"><span class="n">2</span><strong>Escolha Fenestra</strong><p>Selecione “Fenestra” na lista.</p></div>
-          <div class="step3"><span class="n">3</span><strong>Marque “Sempre”</strong><p>Marque “Sempre usar este aplicativo” e clique OK.</p></div>
+        <p class="lead2">Cada sistema tem o seu jeito. Escolha o seu:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Uma página web não pode mudar associações do Windows.</p>
+            <a class="cta-sm" href="fenestra://associate">Tornar padrão</a>
+            <ol>
+              <li>Clique no botão (ou rode <code>Fenestra.exe --associate</code>).</li>
+              <li>Escolha <strong>Fenestra</strong> em “Abrir com”.</li>
+              <li>Marque “Sempre usar este aplicativo” → OK.</li>
+            </ol>
+            <p class="small">Ou Configurações → Aplicativos → Aplicativos padrão → .html → Fenestra.</p>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registre o handler uma vez:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Desfaça com <code>fenestra --uninstall</code>.</p>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Sem terminal — pelo Finder:</p>
+            <ol>
+              <li>Botão direito no <code>.html</code> → <strong>Obter informações</strong>.</li>
+              <li><strong>Abrir com</strong> → <strong>Fenestra</strong>.</li>
+              <li>Clique em <strong>Alterar tudo…</strong>.</li>
+            </ol>
+          </div>
         </div>
-        <span class="cta-note">Prefere pelas Configurações? Aplicativos → Aplicativos padrão → procure .html → escolha Fenestra → Definir padrão.</span>
-      </div>
-      <div class="os-grid">
-        <div class="os-card"><h3>Linux</h3><p>Depois do <code>--install</code>, defina o handler:</p><code>xdg-mime default fenestra.desktop text/html</code></div>
-        <div class="os-card"><h3>macOS</h3><p>Finder: botão direito no .html → Obter informações → Abrir com → Fenestra → Alterar tudo.</p></div>
       </div>
     </section>
 
