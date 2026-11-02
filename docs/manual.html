@@ -50,6 +50,19 @@
   .gh:hover { color: var(--text); }
   .gh svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
   @media (max-width: 420px) { .gh span { display: none; } }
+
+  .head .lang-menu { margin-left: auto; }
+  .lang-menu { position: relative; }
+  .lang-btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer; }
+  .lang-btn:hover { border-color: #333a4a; }
+  .lang-btn .globe { width: 15px; height: 15px; color: var(--muted); }
+  .lang-chev { color: var(--muted-2); font-size: 10px; }
+  .lang-pop { display: none; position: absolute; top: 42px; right: 0; min-width: 168px; padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 18px 50px rgba(0,0,0,.55); z-index: 140; }
+  .lang-pop.open { display: block; }
+  .lang-pop button { display: block; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: inherit; font-size: 13.5px; cursor: pointer; }
+  .lang-pop button:hover { color: var(--text); background: rgba(255,255,255,.05); }
+  .lang-pop button[aria-selected="true"] { color: var(--text); background: rgba(156,196,255,.08); }
+  @media (max-width: 560px) { .lang-pop { right: auto; left: 0; } }
   .hero { padding: 72px 0 40px; }
   .badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); background: rgba(18,20,26,.7); padding: 7px 13px; border-radius: 999px; margin-bottom: 24px; }
   .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 12px rgba(74,222,128,.7); }
@@ -237,15 +250,21 @@
       <span>Fenestra</span>
     </a>
     <button class="idx-btn" id="tocBtn" type="button" aria-label="Contents">&#9776;<span class="idx-label"></span></button>
-    <div class="lang" role="group" aria-label="Language">
-      <button type="button" data-set-lang="en" aria-pressed="false">
-        <svg viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="9"/><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="4.5"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="14"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg>
-        <span>EN</span>
+    <div class="lang-menu">
+      <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+        <svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9Z"/></svg>
+        <span id="langCode">PT</span>
+        <span class="lang-chev">&#9662;</span>
       </button>
-      <button type="button" data-set-lang="pt" aria-pressed="true">
-        <svg viewBox="0 0 60 42" aria-hidden="true"><rect width="60" height="42" fill="#009C3B"/><path d="M30 5 55 21 30 37 5 21Z" fill="#FFDF00"/><circle cx="30" cy="21" r="9" fill="#002776"/><path d="M21.5 18.6q8.5-4.6 17 0" stroke="#fff" stroke-width="2.6" fill="none"/></svg>
-        <span>PT</span>
-      </button>
+      <div class="lang-pop" id="langPop" role="listbox" aria-label="Language">
+        <button type="button" data-set-lang="en">English</button>
+        <button type="button" data-set-lang="pt">Português</button>
+        <button type="button" data-set-lang="es">Español</button>
+        <button type="button" data-set-lang="fr">Français</button>
+        <button type="button" data-set-lang="de">Deutsch</button>
+        <button type="button" data-set-lang="it">Italiano</button>
+        <button type="button" data-set-lang="nl">Nederlands</button>
+      </div>
     </div>
     <a class="gh" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
@@ -626,6 +645,931 @@ settings.json   (só quando você fixa um navegador)</div>
     </div>
   </div>
 
+  <div data-block="es" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="En este manual">
+        <p class="st-title">Menú</p>
+        <a href="#how-es"><span class="n">01</span>Cómo funciona</a>
+        <a href="#default-es"><span class="n">02</span>Hazlo predeterminado</a>
+        <a href="#browser-es"><span class="n">03</span>Elige el navegador</a>
+        <a href="#usage-es"><span class="n">04</span>El día a día</a>
+        <a href="#shortcut-es"><span class="n">05</span>Crea un acceso directo</a>
+        <a href="#files-es"><span class="n">06</span>Dónde se guarda todo</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> manual oficial</span>
+      <h1>Tu HTML, en un <span class="shine">navegador de verdad</span>.</h1>
+      <p class="lead">Fenestra abre el puerto en <code>127.0.0.1</code> y le pasa el sitio a tu navegador. No es un navegador: es la ventana entre tu carpeta y el navegador que ya usas.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>sin nube</span><span>sin cuenta</span></div>
+    </div>
+    <section id="how-es">
+      <h2>Cómo funciona</h2>
+      <p class="section-lead">Tres pasos, sin configuración.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Tú abres el HTML</h3><p>Haz doble clic en un <code>.html</code> o en una carpeta de compilación.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra lo sirve</h3><p>Se inicia un servidor local en <code>127.0.0.1</code>, con un puerto estable para cada carpeta.</p></div>
+        <div class="card"><div class="num">3</div><h3>El navegador lo muestra</h3><p>La página se abre en el navegador que elijas más abajo.</p></div>
+      </div>
+    </section>
+
+    <section id="default-es">
+      <div class="setup">
+        <span class="kicker">un paso imprescindible</span>
+        <h2>Haz que Fenestra sea el predeterminado para .html</h2>
+        <p class="lead2">Cada sistema tiene su propio método. Elige el tuyo:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Desde la configuración de Windows:</p>
+            <ol>
+              <li>Abre <strong>Configuración</strong> (Win + I).</li>
+              <li>Ve a <strong>Aplicaciones → Aplicaciones predeterminadas</strong>.</li>
+              <li>Busca <code>.html</code> y elige <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Atajo: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Configuración — Aplicaciones predeterminadas</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registra el controlador una sola vez:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Deshazlo con <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>No hace falta la terminal; usa Finder:</p>
+            <ol>
+              <li>Haz clic derecho en un <code>.html</code> → <strong>Obtener información</strong>.</li>
+              <li><strong>Abrir con</strong> → <strong>Fenestra</strong>.</li>
+              <li>Haz clic en <strong>Cambiar todo…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Información</div>
+              <div class="mf-body">
+                <div class="mf-label">Abrir con</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Cambiar todo…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-es">
+      <div class="setup picker">
+        <span class="kicker">elección de navegador</span>
+        <h2>Elige el navegador de Fenestra</h2>
+        <p class="lead2">Esto no es una lista. Haz clic en un navegador para indicarle a Fenestra cuál debe abrir: la elección se aplica al siguiente <code>.html</code>.</p>
+        <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-use"></span></span></a></div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Actualizar la lista</a></p>
+        <p class="small">Windows pide confirmación la primera vez. La lista se actualiza en cada ejecución.</p>
+      </div>
+    </section>
+
+    <section id="usage-es">
+      <h2>El día a día</h2>
+      <p class="section-lead">Los comandos que importan.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Haz doble clic en <code>Fenestra.exe</code> sin ningún archivo para abrir la pantalla de ajustes. <code>--diagnose</code> muestra a qué navegador está pasando Windows el archivo.</div>
+    </section>
+
+    <section id="shortcut-es">
+      <h2>Crea un acceso directo para un sitio</h2>
+      <p class="section-lead">Un acceso directo no es solo un enlace al .html: debe iniciar Fenestra con el archivo como argumento.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Haz clic derecho en el escritorio → <strong>Nuevo → Acceso directo</strong>.</li>
+                <li>En «Escribe la ubicación del elemento», pega:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Haz clic en <strong>Siguiente</strong>, ponle el nombre <em>Example</em> y termina.</li>
+                <li>Opcional: <strong>Propiedades → Iniciar en</strong> = la carpeta <code>dist</code>.</li>
+                <li>Haz doble clic para probarlo.</li>
+              </ol>
+              <p class="small">Windows expande <code>%LOCALAPPDATA%</code> y <code>%USERPROFILE%</code>. Mantén las comillas alrededor de la ruta del .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Propiedades de Example</div>
+              <div class="mock-tabs"><span>General</span><span class="on">Acceso directo</span><span>Detalles</span></div>
+              <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Iniciar en</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Ejecutar</span><code>Ventana normal</code></div>
+              <div class="mock-foot"><i>Aceptar</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Crea <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Márcalo como de confianza o ejecuta <code>update-desktop-database</code>. Linux no expande <code>$HOME</code> en los archivos <code>.desktop</code>: usa una ruta absoluta o un script envoltorio.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Editor de texto</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Guarda <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Ejecuta <code>chmod +x Example.command</code> una vez y luego haz doble clic en él.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-es">
+      <h2>Dónde se guarda todo</h2>
+      <p class="section-lead">Todo en una sola carpeta: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (solo cuando fijas un navegador)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="fr" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="Dans ce manuel">
+        <p class="st-title">Menu</p>
+        <a href="#how-fr"><span class="n">01</span>Comment ça marche</a>
+        <a href="#default-fr"><span class="n">02</span>En faire le navigateur par défaut</a>
+        <a href="#browser-fr"><span class="n">03</span>Choisir le navigateur</a>
+        <a href="#usage-fr"><span class="n">04</span>Au quotidien</a>
+        <a href="#shortcut-fr"><span class="n">05</span>Créer un raccourci</a>
+        <a href="#files-fr"><span class="n">06</span>Où vivent les fichiers</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> manuel officiel</span>
+      <h1>Votre HTML, dans un <span class="shine">vrai navigateur</span>.</h1>
+      <p class="lead">Fenestra ouvre le port sur <code>127.0.0.1</code> et confie le site à votre navigateur. Ce n'est pas un navigateur — c'est la fenêtre entre votre dossier et le navigateur que vous utilisez déjà.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>sans cloud</span><span>sans compte</span></div>
+    </div>
+    <section id="how-fr">
+      <h2>Comment ça marche</h2>
+      <p class="section-lead">Trois étapes, aucune configuration.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Vous ouvrez le HTML</h3><p>Double-cliquez sur un <code>.html</code> ou sur un dossier de build.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra le sert</h3><p>Un serveur local démarre sur <code>127.0.0.1</code>, avec un port stable par dossier.</p></div>
+        <div class="card"><div class="num">3</div><h3>Le navigateur l'affiche</h3><p>La page s'ouvre dans le navigateur que vous choisissez ci-dessous.</p></div>
+      </div>
+    </section>
+
+    <section id="default-fr">
+      <div class="setup">
+        <span class="kicker">une étape essentielle</span>
+        <h2>Faire de Fenestra le programme par défaut pour .html</h2>
+        <p class="lead2">Chaque système a sa propre méthode. Choisissez la vôtre :</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Via les paramètres de Windows :</p>
+            <ol>
+              <li>Ouvrez <strong>Paramètres</strong> (Win + I).</li>
+              <li>Allez dans <strong>Applications → Applications par défaut</strong>.</li>
+              <li>Recherchez <code>.html</code> et choisissez <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Raccourci : <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Paramètres — Applications par défaut</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Enregistrez le gestionnaire une seule fois :</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Annulez avec <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Aucun terminal nécessaire — passez par le Finder :</p>
+            <ol>
+              <li>Clic droit sur un <code>.html</code> → <strong>Lire les informations</strong>.</li>
+              <li><strong>Ouvrir avec</strong> → <strong>Fenestra</strong>.</li>
+              <li>Cliquez sur <strong>Tout modifier…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Informations</div>
+              <div class="mf-body">
+                <div class="mf-label">Ouvrir avec</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Tout modifier…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-fr">
+      <div class="setup picker">
+        <span class="kicker">choix du navigateur</span>
+        <h2>Choisir le navigateur de Fenestra</h2>
+        <p class="lead2">Ce n'est pas une liste. Cliquez sur un navigateur pour indiquer à Fenestra lequel ouvrir — le choix s'applique au prochain <code>.html</code>.</p>
+        <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-use"></span></span></a></div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Actualiser la liste</a></p>
+        <p class="small">Windows demande une confirmation la première fois. La liste est mise à jour à chaque exécution.</p>
+      </div>
+    </section>
+
+    <section id="usage-fr">
+      <h2>Au quotidien</h2>
+      <p class="section-lead">Les commandes qui comptent.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Double-cliquez sur <code>Fenestra.exe</code> sans fichier pour ouvrir l'écran des paramètres. <code>--diagnose</code> indique à quel navigateur Windows transmet la page.</div>
+    </section>
+
+    <section id="shortcut-fr">
+      <h2>Créer un raccourci pour un site</h2>
+      <p class="section-lead">Un raccourci n'est pas un simple lien vers le .html : il doit lancer Fenestra avec le fichier en argument.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Clic droit sur le Bureau → <strong>Nouveau → Raccourci</strong>.</li>
+                <li>Dans « Entrez l'emplacement de l'élément », collez :<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Cliquez sur <strong>Suivant</strong>, nommez-le <em>Example</em>, puis terminez.</li>
+                <li>Facultatif : <strong>Propriétés → Démarrer dans</strong> = le dossier <code>dist</code>.</li>
+                <li>Double-cliquez dessus pour tester.</li>
+              </ol>
+              <p class="small">Windows développe <code>%LOCALAPPDATA%</code> et <code>%USERPROFILE%</code>. Conservez les guillemets autour du chemin du .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Propriétés de Example</div>
+              <div class="mock-tabs"><span>Général</span><span class="on">Raccourci</span><span>Détails</span></div>
+              <div class="mock-row"><span>Cible</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Démarrer dans</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Exécuter</span><code>Fenêtre normale</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Créez <code>~/.local/share/applications/example.desktop</code> :</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Marquez-le comme fiable ou exécutez <code>update-desktop-database</code>. Linux ne développe pas <code>$HOME</code> dans les fichiers <code>.desktop</code> — utilisez un chemin absolu ou un script d'enveloppe.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Éditeur de texte</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Enregistrez <code>Example.command</code> :</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Exécutez <code>chmod +x Example.command</code> une fois, puis double-cliquez dessus.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-fr">
+      <h2>Où vivent les fichiers</h2>
+      <p class="section-lead">Tout dans un seul dossier : <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (only when you pin a browser)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="de" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In diesem Handbuch">
+        <p class="st-title">Menü</p>
+        <a href="#how-de"><span class="n">01</span>So funktioniert es</a>
+        <a href="#default-de"><span class="n">02</span>Zum Standard machen</a>
+        <a href="#browser-de"><span class="n">03</span>Browser auswählen</a>
+        <a href="#usage-de"><span class="n">04</span>Im Alltag</a>
+        <a href="#shortcut-de"><span class="n">05</span>Verknüpfung erstellen</a>
+        <a href="#files-de"><span class="n">06</span>Speicherorte</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> offizielles Handbuch</span>
+      <h1>Ihr HTML, in einem <span class="shine">echten Browser</span>.</h1>
+      <p class="lead">Fenestra öffnet den Port auf <code>127.0.0.1</code> und übergibt die Seite an Ihren Browser. Es ist kein Browser — es ist das Fenster zwischen Ihrem Ordner und dem Browser, den Sie bereits verwenden.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>keine Cloud</span><span>kein Konto</span></div>
+    </div>
+    <section id="how-de">
+      <h2>So funktioniert es</h2>
+      <p class="section-lead">Drei Schritte, keine Konfiguration.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Sie öffnen das HTML</h3><p>Doppelklicken Sie auf eine <code>.html</code> oder einen Build-Ordner.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra stellt es bereit</h3><p>Ein lokaler Server startet auf <code>127.0.0.1</code>, mit einem festen Port pro Ordner.</p></div>
+        <div class="card"><div class="num">3</div><h3>Der Browser zeigt es an</h3><p>Die Seite öffnet sich in dem Browser, den Sie unten auswählen.</p></div>
+      </div>
+    </section>
+
+    <section id="default-de">
+      <div class="setup">
+        <span class="kicker">ein wesentlicher Schritt</span>
+        <h2>Fenestra zum Standard für .html machen</h2>
+        <p class="lead2">Jedes System hat seinen eigenen Weg. Wählen Sie Ihren:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Über die Windows-Einstellungen:</p>
+            <ol>
+              <li>Öffnen Sie <strong>Einstellungen</strong> (Win + I).</li>
+              <li>Gehen Sie zu <strong>Apps → Standard-Apps</strong>.</li>
+              <li>Suchen Sie nach <code>.html</code> und wählen Sie <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Abkürzung: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Einstellungen — Standard-Apps</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registrieren Sie den Handler einmalig:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Rückgängig machen mit <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Kein Terminal nötig — verwenden Sie den Finder:</p>
+            <ol>
+              <li>Klicken Sie mit der rechten Maustaste auf eine <code>.html</code> → <strong>Informationen</strong>.</li>
+              <li><strong>Öffnen mit</strong> → <strong>Fenestra</strong>.</li>
+              <li>Klicken Sie auf <strong>Alle ändern …</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Informationen</div>
+              <div class="mf-body">
+                <div class="mf-label">Öffnen mit</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Alle ändern …</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-de">
+      <div class="setup picker">
+        <span class="kicker">Browser-Auswahl</span>
+        <h2>Fenestras Browser auswählen</h2>
+        <p class="lead2">Dies ist keine Liste. Klicken Sie auf einen Browser, um festzulegen, welchen Fenestra öffnen soll — die Auswahl gilt für die nächste <code>.html</code>.</p>
+        <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-use"></span></span></a></div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Liste aktualisieren</a></p>
+        <p class="small">Windows fragt beim ersten Mal nach einer Bestätigung. Die Liste wird bei jedem Start aktualisiert.</p>
+      </div>
+    </section>
+
+    <section id="usage-de">
+      <h2>Im Alltag</h2>
+      <p class="section-lead">Die Befehle, auf die es ankommt.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Doppelklicken Sie <code>Fenestra.exe</code> ohne Datei, um den Einstellungsbildschirm zu öffnen. <code>--diagnose</code> zeigt, welchen Browser Windows übergibt.</div>
+    </section>
+
+    <section id="shortcut-de">
+      <h2>Eine Verknüpfung für eine Website erstellen</h2>
+      <p class="section-lead">Eine Verknüpfung ist nicht nur ein Link zur .html: Sie muss Fenestra mit der Datei als Argument starten.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Klicken Sie mit der rechten Maustaste auf den Desktop → <strong>Neu → Verknüpfung</strong>.</li>
+                <li>Fügen Sie unter „Geben Sie den Speicherort des Elements ein“ Folgendes ein:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Klicken Sie auf <strong>Weiter</strong>, geben Sie <em>Example</em> als Namen ein und schließen Sie ab.</li>
+                <li>Optional: <strong>Eigenschaften → Ausführen in</strong> = der Ordner <code>dist</code>.</li>
+                <li>Doppelklicken Sie zum Testen darauf.</li>
+              </ol>
+              <p class="small">Windows erweitert <code>%LOCALAPPDATA%</code> und <code>%USERPROFILE%</code>. Behalten Sie die Anführungszeichen um den .html-Pfad bei.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Eigenschaften von Example</div>
+              <div class="mock-tabs"><span>Allgemein</span><span class="on">Verknüpfung</span><span>Details</span></div>
+              <div class="mock-row"><span>Ziel</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Ausführen in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Ausführen</span><code>Normales Fenster</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Erstellen Sie <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Markieren Sie die Datei als vertrauenswürdig oder führen Sie <code>update-desktop-database</code> aus. Linux erweitert <code>$HOME</code> in <code>.desktop</code>-Dateien nicht — verwenden Sie einen absoluten Pfad oder ein Wrapper-Skript.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Texteditor</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Speichern Sie <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Führen Sie <code>chmod +x Example.command</code> einmal aus und doppelklicken Sie dann darauf.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-de">
+      <h2>Speicherorte</h2>
+      <p class="section-lead">Alles in einem Ordner: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (nur wenn Sie einen Browser festlegen)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="it" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In questo manuale">
+        <p class="st-title">Menu</p>
+        <a href="#how-it"><span class="n">01</span>Come funziona</a>
+        <a href="#default-it"><span class="n">02</span>Rendilo predefinito</a>
+        <a href="#browser-it"><span class="n">03</span>Scegli il browser</a>
+        <a href="#usage-it"><span class="n">04</span>Ogni giorno</a>
+        <a href="#shortcut-it"><span class="n">05</span>Crea una scorciatoia</a>
+        <a href="#files-it"><span class="n">06</span>Dove si trovano i file</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> manuale ufficiale</span>
+      <h1>Il tuo HTML, in un <span class="shine">browser vero</span>.</h1>
+      <p class="lead">Fenestra apre la porta su <code>127.0.0.1</code> e consegna il sito al tuo browser. Non è un browser — è la finestra tra la tua cartella e il browser che usi già.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>nessun cloud</span><span>nessun account</span></div>
+    </div>
+    <section id="how-it">
+      <h2>Come funziona</h2>
+      <p class="section-lead">Tre passaggi, nessuna configurazione.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Apri l'HTML</h3><p>Fai doppio clic su un file <code>.html</code> o su una cartella di build.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra lo serve</h3><p>Un server locale si avvia su <code>127.0.0.1</code>, con una porta stabile per ogni cartella.</p></div>
+        <div class="card"><div class="num">3</div><h3>Il browser lo mostra</h3><p>La pagina si apre nel browser che scegli qui sotto.</p></div>
+      </div>
+    </section>
+
+    <section id="default-it">
+      <div class="setup">
+        <span class="kicker">un passaggio essenziale</span>
+        <h2>Rendi Fenestra il predefinito per .html</h2>
+        <p class="lead2">Ogni sistema ha il suo modo. Scegli il tuo:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Dalle Impostazioni di Windows:</p>
+            <ol>
+              <li>Apri <strong>Impostazioni</strong> (Win + I).</li>
+              <li>Vai su <strong>App → App predefinite</strong>.</li>
+              <li>Cerca <code>.html</code> e scegli <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Scorciatoia: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Impostazioni — App predefinite</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registra il gestore una sola volta:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Annulla con <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminale</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Nessun terminale necessario — usa Finder:</p>
+            <ol>
+              <li>Fai clic destro su un <code>.html</code> → <strong>Ottieni informazioni</strong>.</li>
+              <li><strong>Apri con</strong> → <strong>Fenestra</strong>.</li>
+              <li>Fai clic su <strong>Cambia tutto…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Informazioni</div>
+              <div class="mf-body">
+                <div class="mf-label">Apri con</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Cambia tutto…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-it">
+      <div class="setup picker">
+        <span class="kicker">scelta del browser</span>
+        <h2>Scegli il browser di Fenestra</h2>
+        <p class="lead2">Questa non è una lista. Fai clic su un browser per dire a Fenestra quale aprire — la scelta vale per il prossimo <code>.html</code>.</p>
+        <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-use"></span></span></a></div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Aggiorna l'elenco</a></p>
+        <p class="small">Windows chiede conferma la prima volta. L'elenco si aggiorna a ogni avvio.</p>
+      </div>
+    </section>
+
+    <section id="usage-it">
+      <h2>Ogni giorno</h2>
+      <p class="section-lead">I comandi che contano.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Fai doppio clic su <code>Fenestra.exe</code> senza file per aprire la schermata delle impostazioni. <code>--diagnose</code> mostra a quale browser Windows sta passando il file.</div>
+    </section>
+
+    <section id="shortcut-it">
+      <h2>Crea una scorciatoia per un sito</h2>
+      <p class="section-lead">Una scorciatoia non è solo un collegamento all'.html: deve avviare Fenestra con il file come argomento.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Fai clic destro sul desktop → <strong>Nuovo → Collegamento</strong>.</li>
+                <li>In “Digita il percorso dell'elemento”, incolla:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Fai clic su <strong>Avanti</strong>, chiamala <em>Example</em> e completa.</li>
+                <li>Facoltativo: <strong>Proprietà → Esegui in</strong> = la cartella <code>dist</code>.</li>
+                <li>Fai doppio clic per provarla.</li>
+              </ol>
+              <p class="small">Windows espande <code>%LOCALAPPDATA%</code> e <code>%USERPROFILE%</code>. Mantieni le virgolette attorno al percorso dell'.html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Proprietà di Example</div>
+              <div class="mock-tabs"><span>Generale</span><span class="on">Collegamento</span><span>Dettagli</span></div>
+              <div class="mock-row"><span>Destinazione</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Esegui in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Esegui</span><code>Finestra normale</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Crea <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Rendilo attendibile o esegui <code>update-desktop-database</code>. Linux non espande <code>$HOME</code> nei file <code>.desktop</code> — usa un percorso assoluto o uno script wrapper.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Editor di testo</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Salva <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Esegui <code>chmod +x Example.command</code> una volta, poi fai doppio clic.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-it">
+      <h2>Dove si trovano i file</h2>
+      <p class="section-lead">Tutto in una cartella: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (solo quando fissi un browser)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="nl" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In deze handleiding">
+        <p class="st-title">Menu</p>
+        <a href="#how-nl"><span class="n">01</span>Hoe het werkt</a>
+        <a href="#default-nl"><span class="n">02</span>Maak het de standaard</a>
+        <a href="#browser-nl"><span class="n">03</span>Kies de browser</a>
+        <a href="#usage-nl"><span class="n">04</span>Elke dag</a>
+        <a href="#shortcut-nl"><span class="n">05</span>Maak een snelkoppeling</a>
+        <a href="#files-nl"><span class="n">06</span>Waar alles staat</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> officiële handleiding</span>
+      <h1>Je HTML, in een <span class="shine">echte browser</span>.</h1>
+      <p class="lead">Fenestra opent de poort op <code>127.0.0.1</code> en geeft de site aan je browser. Het is geen browser — het is het venster tussen je map en de browser die je al gebruikt.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>geen cloud</span><span>geen account</span></div>
+    </div>
+    <section id="how-nl">
+      <h2>Hoe het werkt</h2>
+      <p class="section-lead">Drie stappen, geen configuratie.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Je opent de HTML</h3><p>Dubbelklik op een <code>.html</code> of een buildmap.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra serveert het</h3><p>Een lokale server start op <code>127.0.0.1</code>, met een vaste poort per map.</p></div>
+        <div class="card"><div class="num">3</div><h3>De browser toont het</h3><p>De pagina opent in de browser die je hieronder kiest.</p></div>
+      </div>
+    </section>
+
+    <section id="default-nl">
+      <div class="setup">
+        <span class="kicker">één essentiële stap</span>
+        <h2>Maak Fenestra de standaard voor .html</h2>
+        <p class="lead2">Elk systeem heeft zijn eigen aanpak. Kies de jouwe:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Via de Instellingen van Windows:</p>
+            <ol>
+              <li>Open <strong>Instellingen</strong> (Win + I).</li>
+              <li>Ga naar <strong>Apps → Standaard-apps</strong>.</li>
+              <li>Zoek <code>.html</code> en kies <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Snelkoppeling: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Instellingen — Standaard-apps</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registreer de handler één keer:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Ongedaan maken met <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Geen terminal nodig — gebruik Finder:</p>
+            <ol>
+              <li>Rechtsklik op een <code>.html</code> → <strong>Toon info</strong>.</li>
+              <li><strong>Open met</strong> → <strong>Fenestra</strong>.</li>
+              <li>Klik op <strong>Wijzig alles…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Info</div>
+              <div class="mf-body">
+                <div class="mf-label">Open met</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Wijzig alles…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-nl">
+      <div class="setup picker">
+        <span class="kicker">browserkeuze</span>
+        <h2>Kies de browser van Fenestra</h2>
+        <p class="lead2">Dit is geen lijst. Klik op een browser om Fenestra te laten weten welke hij moet openen — de keuze geldt voor de volgende <code>.html</code>.</p>
+        <div class="browsers"><a class="b-card" href="fenestra://browser/edge"><span class="b-ico edge"></span><span class="b-txt"><strong>Microsoft Edge</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chrome"><span class="b-ico chrome"></span><span class="b-txt"><strong>Google Chrome</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/chromium"><span class="b-ico chromium">C</span><span class="b-txt"><strong>Chromium</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/firefox"><span class="b-ico firefox"></span><span class="b-txt"><strong>Mozilla Firefox</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/brave"><span class="b-ico brave"></span><span class="b-txt"><strong>Brave</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/vivaldi"><span class="b-ico vivaldi"></span><span class="b-txt"><strong>Vivaldi</strong><span class="b-use"></span></span></a><a class="b-card" href="fenestra://browser/opera"><span class="b-ico opera"></span><span class="b-txt"><strong>Opera</strong><span class="b-use"></span></span></a></div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Lijst vernieuwen</a></p>
+        <p class="small">Windows vraagt de eerste keer om bevestiging. De lijst wordt bij elke uitvoering bijgewerkt.</p>
+      </div>
+    </section>
+
+    <section id="usage-nl">
+      <h2>Elke dag</h2>
+      <p class="section-lead">De commando's die ertoe doen.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Dubbelklik op <code>Fenestra.exe</code> zonder bestand om het instellingenscherm te openen. <code>--diagnose</code> laat zien welke browser Windows doorgeeft.</div>
+    </section>
+
+    <section id="shortcut-nl">
+      <h2>Maak een snelkoppeling voor een site</h2>
+      <p class="section-lead">Een snelkoppeling is niet zomaar een link naar de .html: hij moet Fenestra starten met het bestand als argument.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Rechtsklik op het bureaublad → <strong>Nieuw → Snelkoppeling</strong>.</li>
+                <li>Plak bij “Typ de locatie van het item” het volgende:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Klik op <strong>Volgende</strong>, noem het <em>Example</em> en rond af.</li>
+                <li>Optioneel: <strong>Eigenschappen → Uitvoeren in</strong> = de map <code>dist</code>.</li>
+                <li>Dubbelklik erop om te testen.</li>
+              </ol>
+              <p class="small">Windows vult <code>%LOCALAPPDATA%</code> en <code>%USERPROFILE%</code> in. Houd de aanhalingstekens rond het pad naar de .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Eigenschappen van Example</div>
+              <div class="mock-tabs"><span>Algemeen</span><span class="on">Snelkoppeling</span><span>Details</span></div>
+              <div class="mock-row"><span>Doel</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Uitvoeren in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Uitvoeren</span><code>Normaal venster</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Maak <code>~/.local/share/applications/example.desktop</code> aan:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Markeer het als vertrouwd of voer <code>update-desktop-database</code> uit. Linux vult <code>$HOME</code> niet in bij <code>.desktop</code>-bestanden — gebruik een absoluut pad of een wrapper-script.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Teksteditor</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Sla <code>Example.command</code> op:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Voer <code>chmod +x Example.command</code> één keer uit en dubbelklik er daarna op.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-nl">
+      <h2>Waar alles staat</h2>
+      <p class="section-lead">Alles in één map: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (alleen wanneer je een browser vastzet)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <footer>
@@ -639,26 +1583,59 @@ settings.json   (só quando você fixa um navegador)</div>
   var params = new URLSearchParams(location.search);
   var saved = null;
   try { saved = localStorage.getItem("fenestra-manual-lang"); } catch (e) {}
-  var lang = params.get("lang") || saved ||
-    ((navigator.language || "en").toLowerCase().indexOf("pt") === 0 ? "pt" : "en");
+  var SUPPORTED = ["en", "pt", "es", "fr", "de", "it", "nl"];
+  var TAGS = { en: "en", pt: "pt-BR", es: "es", fr: "fr", de: "de", it: "it", nl: "nl" };
+  var nav = ((navigator.language || "en").toLowerCase().split("-")[0]);
+  var lang = params.get("lang");
+  if (!lang || SUPPORTED.indexOf(lang) < 0) {
+    lang = (saved && SUPPORTED.indexOf(saved) >= 0) ? saved
+      : (SUPPORTED.indexOf(nav) >= 0 ? nav : "en");
+  }
 
   function apply(l) {
-    document.documentElement.lang = l === "pt" ? "pt-BR" : "en";
+    document.documentElement.lang = TAGS[l] || l;
     var blocks = document.querySelectorAll("[data-block]");
     for (var i = 0; i < blocks.length; i++) {
       blocks[i].hidden = blocks[i].getAttribute("data-block") !== l;
     }
-    var buttons = document.querySelectorAll("[data-set-lang]");
+    var buttons = document.querySelectorAll("#langPop [data-set-lang]");
     for (var j = 0; j < buttons.length; j++) {
-      buttons[j].setAttribute("aria-pressed", buttons[j].getAttribute("data-set-lang") === l ? "true" : "false");
+      buttons[j].setAttribute("aria-selected", buttons[j].getAttribute("data-set-lang") === l ? "true" : "false");
     }
-    document.getElementById("foot").textContent = l === "pt" ? "manual local" : "local manual";
+    var code = document.getElementById("langCode");
+    if (code) code.textContent = l.toUpperCase();
+    var foot = document.getElementById("foot");
+    if (foot) foot.textContent = "manual";
     try { localStorage.setItem("fenestra-manual-lang", l); } catch (e) {}
   }
 
-  var buttons = document.querySelectorAll("[data-set-lang]");
-  for (var k = 0; k < buttons.length; k++) {
-    buttons[k].addEventListener("click", function () { apply(this.getAttribute("data-set-lang")); });
+  var langBtn = document.getElementById("langBtn");
+  var langPop = document.getElementById("langPop");
+  if (langBtn && langPop) {
+    langBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      langPop.classList.toggle("open");
+      langBtn.setAttribute("aria-expanded", langPop.classList.contains("open") ? "true" : "false");
+    });
+    langPop.querySelectorAll("[data-set-lang]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        apply(btn.getAttribute("data-set-lang"));
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+    document.addEventListener("click", function (e) {
+      if (!langPop.contains(e.target) && e.target !== langBtn) {
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    });
   }
   apply(lang);
 })();
