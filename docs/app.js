@@ -11,7 +11,7 @@
     "nav.faq": "Dúvidas",
     "nav.manual": "Manual",
     "nav.macos": "macOS",
-    "index.title": "Índice",
+    "index.title": "Menu",
     "skip.label": "Pular para o conteúdo",
 
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
