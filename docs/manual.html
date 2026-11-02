@@ -52,6 +52,15 @@
   section { padding: 34px 0; }
   h2 { font-size: 26px; letter-spacing: -.02em; margin: 0 0 6px; }
   .section-lead { color: var(--muted); margin: 0 0 24px; max-width: 700px; }
+  .toc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 6px 0 14px; }
+  .toc-title { grid-column: 1 / -1; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); margin: 0 0 12px; font-weight: 700; }
+  .toc-item { display: block; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--panel); transition: border-color .18s, background .18s, transform .18s; }
+  .toc-item:hover { border-color: #3a4152; background: var(--panel-2); transform: translateY(-1px); }
+  .toc-n { font-size: 11px; color: var(--muted-2); letter-spacing: .12em; }
+  .toc-item strong { display: block; margin: 3px 0 2px; font-size: 14.5px; }
+  .toc-item small { color: var(--muted); font-size: 12.5px; }
+  section[id] { scroll-margin-top: 80px; }
+  @media (max-width: 760px) { .toc { grid-template-columns: 1fr; } }
   .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 8px 0 22px; }
   .tab { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); font: inherit; font-weight: 600; font-size: 14px; padding: 10px 14px; cursor: pointer; }
   .tab svg { width: 16px; height: 16px; }
@@ -222,7 +231,17 @@
       <div class="meta"><span>Windows · Linux · macOS</span><span>no cloud</span><span>no account</span></div>
     </div>
 
-    <section>
+    <nav class="toc" aria-label="In this manual">
+      <p class="toc-title">In this manual</p>
+      <a class="toc-item" href="#how-en"><span class="toc-n">01</span><strong>How it works</strong><small>Three steps, no configuration.</small></a>
+      <a class="toc-item" href="#default-en"><span class="toc-n">02</span><strong>Make it the default</strong><small>Windows, Linux and macOS.</small></a>
+      <a class="toc-item" href="#browser-en"><span class="toc-n">03</span><strong>Choose the browser</strong><small>The browser Fenestra opens.</small></a>
+      <a class="toc-item" href="#usage-en"><span class="toc-n">04</span><strong>Every day</strong><small>Commands and flags.</small></a>
+      <a class="toc-item" href="#shortcut-en"><span class="toc-n">05</span><strong>Create a shortcut</strong><small>One .html, one click.</small></a>
+      <a class="toc-item" href="#files-en"><span class="toc-n">06</span><strong>Where things live</strong><small>Files and settings.</small></a>
+    </nav>
+
+    <section id="how-en">
       <h2>How it works</h2>
       <p class="section-lead">Three steps, no configuration.</p>
       <div class="steps">
@@ -232,7 +251,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="default-en">
       <div class="setup">
         <span class="kicker">one essential step</span>
         <h2>Make Fenestra the default for .html</h2>
@@ -285,7 +304,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="browser-en">
       <div class="setup picker">
         <span class="kicker">browser choice</span>
         <h2>Choose Fenestra's browser</h2>
@@ -296,7 +315,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="usage-en">
       <h2>Every day</h2>
       <p class="section-lead">The commands that matter.</p>
       <div class="code">Fenestra.exe "C:\project\dist\index.html"
@@ -305,7 +324,7 @@ Fenestra.exe --port 8080 "C:\project\dist"</div>
       <div class="note">Double-click <code>Fenestra.exe</code> with no file to open the settings screen. <code>--diagnose</code> shows which browser Windows is handing over.</div>
     </section>
 
-    <section id="shortcut">
+    <section id="shortcut-en">
       <h2>Create a shortcut for a site</h2>
       <p class="section-lead">A shortcut is not just a link to the .html: it must start Fenestra with the file as an argument.</p>
       <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
@@ -376,7 +395,7 @@ exec "$HOME/Applications/fenestra" \
       </div>
     </section>
 
-    <section>
+    <section id="files-en">
       <h2>Where things live</h2>
       <p class="section-lead">Everything in one folder: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
       <div class="code">Fenestra.exe
@@ -393,7 +412,17 @@ settings.json   (only when you pin a browser)</div>
       <div class="meta"><span>Windows · Linux · macOS</span><span>sem nuvem</span><span>sem conta</span></div>
     </div>
 
-    <section>
+    <nav class="toc" aria-label="Neste manual">
+      <p class="toc-title">Neste manual</p>
+      <a class="toc-item" href="#how-pt"><span class="toc-n">01</span><strong>Como funciona</strong><small>Três passos, sem configuração.</small></a>
+      <a class="toc-item" href="#default-pt"><span class="toc-n">02</span><strong>Torne o Fenestra o padrão</strong><small>Windows, Linux e macOS.</small></a>
+      <a class="toc-item" href="#browser-pt"><span class="toc-n">03</span><strong>Escolha o navegador</strong><small>O navegador que o Fenestra abre.</small></a>
+      <a class="toc-item" href="#usage-pt"><span class="toc-n">04</span><strong>No dia a dia</strong><small>Comandos e opções.</small></a>
+      <a class="toc-item" href="#shortcut-pt"><span class="toc-n">05</span><strong>Crie um atalho</strong><small>Um .html, um clique.</small></a>
+      <a class="toc-item" href="#files-pt"><span class="toc-n">06</span><strong>Onde ficam as coisas</strong><small>Arquivos e configurações.</small></a>
+    </nav>
+
+    <section id="how-pt">
       <h2>Como funciona</h2>
       <p class="section-lead">Três passos, sem configuração.</p>
       <div class="steps">
@@ -403,7 +432,7 @@ settings.json   (only when you pin a browser)</div>
       </div>
     </section>
 
-    <section>
+    <section id="default-pt">
       <div class="setup">
         <span class="kicker">um passo essencial</span>
         <h2>Torne o Fenestra o padrão para .html</h2>
@@ -456,7 +485,7 @@ settings.json   (only when you pin a browser)</div>
       </div>
     </section>
 
-    <section>
+    <section id="browser-pt">
       <div class="setup picker">
         <span class="kicker">escolha do navegador</span>
         <h2>Escolha o navegador do Fenestra</h2>
@@ -467,7 +496,7 @@ settings.json   (only when you pin a browser)</div>
       </div>
     </section>
 
-    <section>
+    <section id="usage-pt">
       <h2>No dia a dia</h2>
       <p class="section-lead">Os comandos que importam.</p>
       <div class="code">Fenestra.exe "C:\projeto\dist\index.html"
@@ -476,7 +505,7 @@ Fenestra.exe --port 8080 "C:\projeto\dist"</div>
       <div class="note">Duplo clique no <code>Fenestra.exe</code> sem arquivo abre a tela de configuração. O <code>--diagnose</code> mostra qual navegador o Windows está entregando.</div>
     </section>
 
-    <section id="shortcut">
+    <section id="shortcut-pt">
       <h2>Crie um atalho para um site</h2>
       <p class="section-lead">Atalho não é só um link para o .html: ele precisa iniciar o Fenestra com o arquivo como argumento.</p>
       <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
@@ -547,7 +576,7 @@ exec "$HOME/Applications/fenestra" \
       </div>
     </section>
 
-    <section>
+    <section id="files-pt">
       <h2>Onde ficam as coisas</h2>
       <p class="section-lead">Tudo em uma pasta só: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
       <div class="code">Fenestra.exe
