@@ -36,7 +36,7 @@ cd fenestra/macos
 
 ## Méthode C — double-clic
 
-Uniquement si Go est déjà installé et que vous souhaitez éviter le Terminal. macOS peut demander une autorisation une fois : **Réglages Système → Confidentialité et sécurité → Ouvrir quand même**.
+Uniquement si Go est déjà installé et que vous souhaitez éviter le Terminal. macOS peut vous demander une autorisation une fois : **Réglages Système → Confidentialité et sécurité → Ouvrir quand même**.
 
 ## Utilisation
 

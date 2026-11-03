@@ -5,7 +5,7 @@
 <!-- translation of RELEASING.md @ 0.7.0 -->
 
 
-Fenestra est en phase alpha. Les versions sont des **jalons**, pas chaque commit.
+Fenestra est en phase alpha. Les versions sont des **jalons**, pas des commits individuels.
 
 ## Politique
 

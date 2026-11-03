@@ -9,7 +9,7 @@ Merci de votre intérêt. Cet outil est volontairement petit — gardons-le ains
 
 ## Compilation
 
-Prérequis : Windows 10/11 et le .NET Framework 4.x fourni avec. Aucun SDK, aucun Visual Studio, aucune connexion Internet.
+Prérequis : Windows 10/11 et le .NET Framework 4.x fourni avec Windows. Aucun SDK, aucun Visual Studio, aucune connexion Internet.
 
 ```powershell
 ./build.ps1

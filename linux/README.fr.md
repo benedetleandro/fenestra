@@ -5,7 +5,7 @@
 <!-- translation of linux/README.md @ 0.7.0 -->
 
 
-Fenestra pour Linux est un binaire Go statique unique. Aucun environnement d’exécution, aucune interface graphique, aucun privilège root.
+Fenestra pour Linux est un binaire Go statique unique. Aucun environnement d’exécution, aucune interface graphique, aucun accès root.
 
 ## Installation
 
@@ -37,7 +37,7 @@ fenestra --browsers                       # what is installed
 
 - Seuls les en-têtes `Host` de la boucle locale sont acceptés (`127.0.0.1`, `localhost`), ce qui bloque le DNS rebinding.
 - Les liens symboliques qui pointent en dehors de la racine servie sont rejetés.
-- Les réponses comportent `ETag` et `Last-Modified`, se revalident avec `304` et prennent en charge `Range` pour les médias volumineux.
+- Les réponses comportent `ETag` et `Last-Modified`, permettent une revalidation avec `304` et prennent en charge `Range` pour les médias volumineux.
 
 ## Points d’entrée source
 
