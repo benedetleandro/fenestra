@@ -1,7 +1,11 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="i18n-pending">
 <head>
 <meta charset="utf-8">
+  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }</style>
+  <noscript><style>html.i18n-pending body { visibility: visible; }</style></noscript>
+  <script>setTimeout(function () { document.documentElement.classList.remove("i18n-pending"); }, 3000);</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxMTEyMTYiLz4KICA8cmVjdCB4PSIxNCIgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzMiIgcng9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q2ZGJlNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHBhdGggZD0iTTE0IDI2aDM2TTI3IDI2djIyIiBzdHJva2U9IiNkNmRiZTUiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjEiIHI9IjEuOCIgZmlsbD0iI2Q2ZGJlNSIvPgo8L3N2Zz4K">
 <title>Fenestra — manual</title>
@@ -1638,6 +1642,7 @@ settings.json   (alleen wanneer je een browser vastzet)</div>
     });
   }
   apply(lang);
+  document.documentElement.classList.remove("i18n-pending");
 })();
 </script>
 

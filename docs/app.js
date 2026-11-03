@@ -275,6 +275,7 @@
   else if (SUPPORTED.indexOf(nav) >= 0) initial = nav;
 
   apply(initial);
+  document.documentElement.classList.remove("i18n-pending");
 
   var langBtn = document.getElementById("langBtn");
   var langPop = document.getElementById("langPop");

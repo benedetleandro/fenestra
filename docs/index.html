@@ -1,7 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="i18n-pending">
 <head>
   <meta charset="utf-8">
+  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }</style>
+  <noscript><style>html.i18n-pending body { visibility: visible; }</style></noscript>
+  <script>setTimeout(function () { document.documentElement.classList.remove("i18n-pending"); }, 3000);</script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fenestra — double-click a local site, it opens in your browser</title>
   <meta name="description" content="Fenestra is a tiny local server for Windows, Linux and macOS that turns any dist/index.html into a working site in your browser. Edge by default; Chrome, Firefox, Brave, Vivaldi, Opera and Chromium supported.">
@@ -692,6 +696,6 @@
   </nav>
 
   <script src="locales.js?v=2"></script>
-  <script src="app.js?v=0.7.0.10"></script>
+  <script src="app.js?v=0.7.0.11"></script>
 </body>
 </html>
