@@ -8,7 +8,7 @@ No terminal. No `npx serve`. No extension to enable. No custom browser window.
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)
 
-[**Website →**](https://benedetleandro.github.io/fenestra/) · [Português](README.pt-BR.md)
+[**Website →**](https://benedetleandro.github.io/fenestra/) · [Privacy](https://benedetleandro.github.io/fenestra/privacy.html) · [Português](README.pt-BR.md)
 
 > **Status: alpha.** The HTTP server and the browser integration work. The file
 > association requires a one-time confirmation from the user — Windows does not
@@ -179,17 +179,23 @@ One C# file, no dependencies, built with the `csc.exe` that ships with Windows.
 
 Fenestra is a local tool: loopback only, no TLS, no authentication, no
 telemetry. It serves every file under the opened folder — do not point it at a
-directory with secrets. See [SECURITY.md](SECURITY.md) for the full threat model.
+directory with secrets. See [SECURITY.md](SECURITY.md) for the full threat model and the [privacy page](https://benedetleandro.github.io/fenestra/privacy.html) for what this site and the app store.
 
 ## Roadmap
 
 - [ ] `--root <folder>` for builds whose entry lives in a subfolder
 - [x] Linux: native Go build in [`linux/`](linux), amd64 and arm64
-- [ ] macOS is **not** planned: it requires Apple Developer notarization
+- [x] macOS: Homebrew CLI and the Finder build kit in [`macos/`](macos)
 - [ ] Code signing for releases, to remove the SmartScreen warning
 - [ ] Portable mode (no `%LOCALAPPDATA%`)
 - [ ] More tests: HEAD, ETag, range requests, UTF-8 paths
 - [ ] A 15-second demo recording
+
+## Privacy
+
+The website and the app use no cookies, analytics, advertising or telemetry.
+The only local storage is the language you choose and the privacy notice you
+dismiss. Details: [privacy page](https://benedetleandro.github.io/fenestra/privacy.html).
 
 ## Contributing
 

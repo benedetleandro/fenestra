@@ -10,7 +10,7 @@ falsa.
 > do `.html` exige uma confirmação única do usuário — o Windows não permite que
 > um programa se torne o manipulador padrão sozinho.
 
-[**Site →**](https://benedetleandro.github.io/fenestra/) · [English](README.md)
+[**Site →**](https://benedetleandro.github.io/fenestra/) · [Privacidade](https://benedetleandro.github.io/fenestra/privacy.html) · [English](README.md)
 
 ## O problema
 
@@ -177,17 +177,23 @@ Um arquivo C#, sem dependências, compilado com o `csc.exe` que já vem no Windo
 
 Ferramenta local: só loopback, sem TLS, sem autenticação, sem telemetria. Serve
 todos os arquivos sob a pasta aberta — não aponte para um diretório com segredos.
-O modelo de ameaça completo está em [SECURITY.md](SECURITY.md).
+O modelo de ameaça completo está em [SECURITY.md](SECURITY.md) e a [página de privacidade](https://benedetleandro.github.io/fenestra/privacy.html) explica o que o site e o app guardam.
 
 ## Roadmap
 
 - [ ] `--root <pasta>` para builds cuja entrada fica em subpasta
 - [x] Linux: build nativa em Go em [`linux/`](linux), amd64 e arm64
-- [ ] macOS **não** está no plano: exige notarização da Apple
+- [x] macOS: CLI via Homebrew e kit do Finder em [`macos/`](macos)
 - [ ] Assinatura de código para remover o aviso do SmartScreen
 - [ ] Modo portátil (sem `%LOCALAPPDATA%`)
 - [ ] Mais testes: HEAD, ETag, range requests, caminhos UTF-8
 - [ ] Vídeo de demonstração de 15 segundos
+
+## Privacidade
+
+O site e o app não usam cookies, analytics, publicidade ou telemetria. O único
+armazenamento local é o idioma que você escolhe e o aviso de privacidade que
+dispensa. Detalhes: [página de privacidade](https://benedetleandro.github.io/fenestra/privacy.html).
 
 ## Contribuindo
 
