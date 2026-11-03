@@ -183,6 +183,7 @@
     "browser.win": "Windows: Configurações → Aplicativos → Aplicativos padrão → escolha o navegador.",
     "browser.mac": "macOS: Ajustes do Sistema → Área de Trabalho e Dock → Navegador padrão.",
     "browser.linux": "Linux: xdg-settings set default-web-browser firefox.desktop",
+    "browser.safariNote": "O Safari existe apenas no macOS.",
     "browser.store": "A escolha fica em %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser (Linux) e ~/Library/Application Support/Fenestra/browser (macOS).",
 
     "footer.tag": "Fenestra · feito para o duplo clique",

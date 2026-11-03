@@ -159,7 +159,8 @@ window.FENESTRA_LOCALES.de = {
     "footer.top": "Nach oben ↑",
     "mac.kicker": "Aus dem Quellcode",
     "compile.link": "Aus dem Quellcode bauen →",
-    "build.docs": "Dokumentation auf GitHub →"
+    "build.docs": "Dokumentation auf GitHub →",
+    "browser.safariNote": "Safari gibt es nur unter macOS."
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",

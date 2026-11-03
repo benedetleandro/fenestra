@@ -157,7 +157,9 @@
     "footer.security": "Security",
     "footer.top": "Back to top ↑",
     "mac.kicker": "Build from source",
-    "compile.link": "Build from source →"
+    "compile.link": "Build from source →",
+    "browser.safariNote": "Safari is available on macOS only.",
+    "build.docs": "Documentation on GitHub →"
   },
   "html": {
     "hero.title": "Double-click.<br><span class=\"shine\">It just runs.</span>",

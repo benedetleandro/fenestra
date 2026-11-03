@@ -159,7 +159,8 @@ window.FENESTRA_LOCALES.es = {
     "footer.top": "Volver arriba ↑",
     "mac.kicker": "Desde el código",
     "compile.link": "Compilar desde el código →",
-    "build.docs": "Documentación en GitHub →"
+    "build.docs": "Documentación en GitHub →",
+    "browser.safariNote": "Safari solo existe en macOS."
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",
@@ -352,7 +353,8 @@ window.FENESTRA_LOCALES.fr = {
     "footer.top": "Haut de page ↑",
     "mac.kicker": "Depuis les sources",
     "compile.link": "Compiler depuis les sources →",
-    "build.docs": "Documentation sur GitHub →"
+    "build.docs": "Documentation sur GitHub →",
+    "browser.safariNote": "Safari n'existe que sur macOS."
   },
   "html": {
     "hero.title": "Double-cliquez.<br><span class=\"shine\">Ça tourne, tout simplement.</span>",
@@ -545,7 +547,8 @@ window.FENESTRA_LOCALES.de = {
     "footer.top": "Nach oben ↑",
     "mac.kicker": "Aus dem Quellcode",
     "compile.link": "Aus dem Quellcode bauen →",
-    "build.docs": "Dokumentation auf GitHub →"
+    "build.docs": "Dokumentation auf GitHub →",
+    "browser.safariNote": "Safari gibt es nur unter macOS."
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",
@@ -738,7 +741,8 @@ window.FENESTRA_LOCALES.it = {
     "footer.top": "Torna su ↑",
     "mac.kicker": "Dai sorgenti",
     "compile.link": "Compila dai sorgenti →",
-    "build.docs": "Documentazione su GitHub →"
+    "build.docs": "Documentazione su GitHub →",
+    "browser.safariNote": "Safari esiste solo su macOS."
   },
   "html": {
     "hero.title": "Doppio clic.<br><span class=\"shine\">Funziona e basta.</span>",
@@ -931,7 +935,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.top": "Terug naar boven ↑",
     "mac.kicker": "Vanuit de bron",
     "compile.link": "Zelf compileren →",
-    "build.docs": "Documentatie op GitHub →"
+    "build.docs": "Documentatie op GitHub →",
+    "browser.safariNote": "Safari is alleen beschikbaar op macOS."
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

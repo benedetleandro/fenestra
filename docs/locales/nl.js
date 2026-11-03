@@ -159,7 +159,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.top": "Terug naar boven ↑",
     "mac.kicker": "Vanuit de bron",
     "compile.link": "Zelf compileren →",
-    "build.docs": "Documentatie op GitHub →"
+    "build.docs": "Documentatie op GitHub →",
+    "browser.safariNote": "Safari is alleen beschikbaar op macOS."
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

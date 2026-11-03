@@ -159,7 +159,8 @@ window.FENESTRA_LOCALES.es = {
     "footer.top": "Volver arriba ↑",
     "mac.kicker": "Desde el código",
     "compile.link": "Compilar desde el código →",
-    "build.docs": "Documentación en GitHub →"
+    "build.docs": "Documentación en GitHub →",
+    "browser.safariNote": "Safari solo existe en macOS."
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",
