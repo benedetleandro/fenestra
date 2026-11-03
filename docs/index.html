@@ -40,7 +40,7 @@
   }
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0.7.0.9">
+  <link rel="stylesheet" href="styles.css?v=0.7.0.10">
 </head>
 <body id="top">
 
@@ -317,9 +317,8 @@
             <p data-i18n="plat.win.desc">A single 54 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
             <ul>
               <li data-i18n-html="plat.win.run">Download <code>Fenestra.exe</code> and run it, or make it the <code>.html</code> handler.</li>
-              <li data-i18n-html="plat.win.build">Build with <code>build.ps1</code> using the <code>csc</code> that ships with Windows.</li>
             </ul>
-            <a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/src/Fenestra.cs" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/src/Fenestra.cs" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
           </article>
 
           <article class="platform">
@@ -330,9 +329,8 @@
             <p data-i18n="plat.linux.desc">One static binary, no runtime, for amd64 and arm64.</p>
             <ul>
               <li data-i18n-html="plat.linux.run"><code>chmod +x fenestra-linux-amd64</code> and run it, or use <code>--install</code> to register the handler.</li>
-              <li data-i18n-html="plat.linux.build">Build with <code>CGO_ENABLED=0 go build .</code> inside <code>linux/</code>.</li>
             </ul>
-            <a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
           </article>
 
           <article class="platform">
@@ -342,10 +340,8 @@
             </header>
             <p data-i18n="plat.macos.desc">No notarized app bundle: the CLI installs via Homebrew, the Finder app you build locally.</p>
             <ul>
-              <li data-i18n-html="plat.macos.run"><code>cd macos &amp;&amp; ./build.command</code> builds the CLI and <code>Fenestra.app</code>.</li>
-              <li data-i18n-html="plat.macos.build">Go only — no Xcode, no Apple account, no quarantine after a clone.</li>
             </ul>
-            <a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
           </article>
         </div>
 
@@ -403,14 +399,7 @@
           </div>
 
           <div>
-            <h3 data-i18n="install.build">Or build it yourself</h3>
-            <div class="code-block">
-              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
-              <pre><span class="cmt"># requires only the csc.exe that ships with Windows</span>
-<span class="cmd">git clone https://github.com/benedetleandro/fenestra.git</span>
-<span class="cmd">cd fenestra</span>
-<span class="cmd">powershell -ExecutionPolicy Bypass -File .\build.ps1</span></pre>
-            </div>
+            <p class="card-links"><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
 
             <h3 data-i18n="install.defTitle">Make it the default for .html</h3>
             <p class="muted" data-i18n="install.defText">One time, three clicks. Windows does not let an app do this alone.</p>
@@ -519,47 +508,52 @@
           notarized binary, Apple charges US$ 99/year, and Gatekeeper blocks unsigned downloads.
         </p>
 
-        <div class="two-col">
-          <div>
+        <div class="build-tabs" role="tablist">
+          <button class="tab" type="button" data-tab="win">Windows</button>
+          <button class="tab" type="button" data-tab="linux">Linux</button>
+          <button class="tab" type="button" data-tab="mac">macOS</button>
+        </div>
+
+        <div class="build-panels">
+          <div class="tab-panel" data-panel="win">
+            <p data-i18n="plat.win.desc">A single 54 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># requires only the csc.exe that ships with Windows</span>
+<span class="cmd">git clone https://github.com/benedetleandro/fenestra.git</span>
+<span class="cmd">cd fenestra</span>
+<span class="cmd">powershell -ExecutionPolicy Bypass -File .\build.ps1</span></pre>
+            </div>
+            <p class="side-note" data-i18n-html="plat.win.build">Build with <code>build.ps1</code> using the <code>csc</code> that ships with Windows.</p>
+          </div>
+
+          <div class="tab-panel" data-panel="linux">
+            <p data-i18n="plat.linux.desc">One static binary, no runtime, for amd64 and arm64.</p>
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmd">git clone https://github.com/benedetleandro/fenestra.git</span>
+<span class="cmd">cd fenestra/linux</span>
+<span class="cmd">CGO_ENABLED=0 go build .</span></pre>
+            </div>
+            <p class="side-note" data-i18n-html="plat.linux.build">Build with <code>CGO_ENABLED=0 go build .</code> inside <code>linux/</code>.</p>
+          </div>
+
+          <div class="tab-panel" data-panel="mac">
             <ol class="def-list">
               <li><b data-i18n="mac.s1t">Install Go</b><br><span data-i18n="mac.s1d">The official installer is signed by Google, so macOS shows no warning. It is the only thing you install.</span></li>
               <li><b data-i18n="mac.s2t">Get the source</b><br><span data-i18n="mac.s2d">git clone, or download the ZIP if you do not have git.</span></li>
               <li><b data-i18n="mac.s3t">Run the build</b><br><span data-i18n="mac.s3d">The script builds the CLI and Fenestra.app, then re-signs the app after editing the bundle.</span></li>
               <li><b data-i18n="mac.s4t">Use it from the Finder</b><br><span data-i18n="mac.s4d">Drag Fenestra.app to /Applications, right-click an index.html, Open with → Fenestra → Always.</span></li>
             </ol>
-
-            <p class="side-note" data-i18n="mac.note">No Xcode, no Apple account, no US$ 99. Tested on a real macOS runner in CI (arm64); on Intel the build is native.</p>
-
-            <p><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/README.md" target="_blank" rel="noopener" data-i18n="mac.readme">Full macOS instructions →</a></p>
-          </div>
-
-          <div>
             <div class="code-block">
               <button class="copy" type="button" data-i18n="code.copy">Copy</button>
               <pre><span class="cmt"># 1. install Go from https://go.dev/dl/</span>
-<span class="cmt"># 2. get the source</span>
 <span class="cmd">git clone https://github.com/benedetleandro/fenestra.git</span>
 <span class="cmd">cd fenestra/macos</span>
-
-<span class="cmt"># 3. build (CLI + Fenestra.app)</span>
-<span class="cmd">./build.command</span>
-
-<span class="cmt"># 4. run</span>
-<span class="cmd">./fenestra ~/projetos/app/dist/index.html</span></pre>
+<span class="cmd">./build.command</span></pre>
             </div>
-
-            <p class="side-note" data-i18n-html="mac.nogit">No git? Download the ZIP, extract, and run <code>bash build.command</code> — the shell reads the script, so Gatekeeper is not involved.</p>
-
-            <h3 data-i18n="mac.brewTitle">Homebrew — CLI only</h3>
-
-            <div class="code-block">
-              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
-              <pre><span class="cmd">brew tap benedetleandro/fenestra</span>
-<span class="cmd">brew trust benedetleandro/fenestra</span>
-<span class="cmd">brew install fenestra</span></pre>
-            </div>
-
-            <p class="side-note" data-i18n="mac.brewNote">Installs the prebuilt CLI for arm64 and Intel. The Finder app still needs the build above.</p>
+            <p class="side-note" data-i18n="mac.note">No Xcode, no Apple account, no US$ 99. Tested on a real macOS runner in CI (arm64); on Intel the build is native.</p>
+            <p><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/README.md" target="_blank" rel="noopener" data-i18n="mac.readme">Full macOS instructions →</a></p>
           </div>
         </div>
       </div>
@@ -696,7 +690,7 @@
     <a href="#faq"><span class="pi-n">11</span><span data-i18n="nav.faq">FAQ</span></a>
   </nav>
 
-  <script src="locales.js?v=3"></script>
-  <script src="app.js?v=0.7.0.12"></script>
+  <script src="locales.js?v=4"></script>
+  <script src="app.js?v=0.7.0.13"></script>
 </body>
 </html>

@@ -157,7 +157,8 @@ window.FENESTRA_LOCALES.es = {
     "footer.license": "Licencia MIT",
     "footer.security": "Seguridad",
     "footer.top": "Volver arriba ↑",
-    "mac.kicker": "Desde el código"
+    "mac.kicker": "Desde el código",
+    "compile.link": "Compilar desde el código →"
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",

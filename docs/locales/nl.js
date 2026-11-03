@@ -157,7 +157,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.license": "MIT-licentie",
     "footer.security": "Beveiliging",
     "footer.top": "Terug naar boven ↑",
-    "mac.kicker": "Vanuit de bron"
+    "mac.kicker": "Vanuit de bron",
+    "compile.link": "Zelf compileren →"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

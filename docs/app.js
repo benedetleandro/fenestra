@@ -15,6 +15,7 @@
     "nav.name": "O nome",
     "nav.manual": "Manual",
     "nav.macos": "Compile você mesmo",
+    "compile.link": "Compilar do código →",
     "index.title": "Menu",
     "skip.label": "Pular para o conteúdo",
 
@@ -426,4 +427,29 @@
   }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
   for (var id in map) obs.observe(document.getElementById(id));
   if (links.length) links[0].classList.add("active");
+})();
+
+/* ------------------------------------------------------------ build tabs */
+(function () {
+  var bars = document.querySelectorAll(".build-tabs");
+  for (var b = 0; b < bars.length; b++) {
+    (function (bar) {
+      var wrap = bar.parentElement;
+      var buttons = bar.querySelectorAll(".tab");
+      var panels = wrap.querySelectorAll(".build-panels .tab-panel");
+      function select(name) {
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].setAttribute("aria-selected", buttons[i].getAttribute("data-tab") === name ? "true" : "false");
+        }
+        for (var j = 0; j < panels.length; j++) {
+          panels[j].classList.toggle("active", panels[j].getAttribute("data-panel") === name);
+        }
+      }
+      for (var k = 0; k < buttons.length; k++) {
+        buttons[k].addEventListener("click", function () { select(this.getAttribute("data-tab")); });
+      }
+      var ua = navigator.userAgent;
+      select(/Mac/i.test(ua) ? "mac" : /Linux/i.test(ua) ? "linux" : "win");
+    })(bars[b]);
+  }
 })();

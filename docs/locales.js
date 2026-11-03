@@ -157,7 +157,8 @@ window.FENESTRA_LOCALES.es = {
     "footer.license": "Licencia MIT",
     "footer.security": "Seguridad",
     "footer.top": "Volver arriba ↑",
-    "mac.kicker": "Desde el código"
+    "mac.kicker": "Desde el código",
+    "compile.link": "Compilar desde el código →"
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",
@@ -348,7 +349,8 @@ window.FENESTRA_LOCALES.fr = {
     "footer.license": "Licence MIT",
     "footer.security": "Sécurité",
     "footer.top": "Haut de page ↑",
-    "mac.kicker": "Depuis les sources"
+    "mac.kicker": "Depuis les sources",
+    "compile.link": "Compiler depuis les sources →"
   },
   "html": {
     "hero.title": "Double-cliquez.<br><span class=\"shine\">Ça tourne, tout simplement.</span>",
@@ -539,7 +541,8 @@ window.FENESTRA_LOCALES.de = {
     "footer.license": "MIT-Lizenz",
     "footer.security": "Sicherheit",
     "footer.top": "Nach oben ↑",
-    "mac.kicker": "Aus dem Quellcode"
+    "mac.kicker": "Aus dem Quellcode",
+    "compile.link": "Aus dem Quellcode bauen →"
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",
@@ -730,7 +733,8 @@ window.FENESTRA_LOCALES.it = {
     "footer.license": "Licenza MIT",
     "footer.security": "Sicurezza",
     "footer.top": "Torna su ↑",
-    "mac.kicker": "Dai sorgenti"
+    "mac.kicker": "Dai sorgenti",
+    "compile.link": "Compila dai sorgenti →"
   },
   "html": {
     "hero.title": "Doppio clic.<br><span class=\"shine\">Funziona e basta.</span>",
@@ -921,7 +925,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.license": "MIT-licentie",
     "footer.security": "Beveiliging",
     "footer.top": "Terug naar boven ↑",
-    "mac.kicker": "Vanuit de bron"
+    "mac.kicker": "Vanuit de bron",
+    "compile.link": "Zelf compileren →"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

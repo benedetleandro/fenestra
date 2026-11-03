@@ -156,7 +156,8 @@
     "footer.license": "MIT License",
     "footer.security": "Security",
     "footer.top": "Back to top ↑",
-    "mac.kicker": "Build from source"
+    "mac.kicker": "Build from source",
+    "compile.link": "Build from source →"
   },
   "html": {
     "hero.title": "Double-click.<br><span class=\"shine\">It just runs.</span>",

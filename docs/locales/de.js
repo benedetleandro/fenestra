@@ -157,7 +157,8 @@ window.FENESTRA_LOCALES.de = {
     "footer.license": "MIT-Lizenz",
     "footer.security": "Sicherheit",
     "footer.top": "Nach oben ↑",
-    "mac.kicker": "Aus dem Quellcode"
+    "mac.kicker": "Aus dem Quellcode",
+    "compile.link": "Aus dem Quellcode bauen →"
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",
