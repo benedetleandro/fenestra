@@ -45,6 +45,9 @@ $manual = [System.IO.File]::ReadAllText($manualTemplate, [System.Text.Encoding]:
 $manual = $manual.Replace('{{BROWSERS}}', $cards.ToString())
 [System.IO.File]::WriteAllText($manualOut, $manual, (New-Object System.Text.UTF8Encoding($false)))
 
+$goManual = Join-Path $root 'linux\manual.html'
+[System.IO.File]::WriteAllText($goManual, $manual, (New-Object System.Text.UTF8Encoding($false)))
+
 $templateBytes = [System.IO.File]::ReadAllBytes($manualTemplate)
 $gzStream = [System.IO.File]::Create($manualGz)
 $gzip = New-Object System.IO.Compression.GZipStream($gzStream, [System.IO.Compression.CompressionMode]::Compress)

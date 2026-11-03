@@ -52,11 +52,14 @@ jobs:
           CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags "-s -w -X main.version=$V" -o ../dist/fenestra-darwin-arm64 .
           CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags "-s -w -X main.version=$V" -o ../dist/fenestra-darwin-amd64 .
           cd ../dist
+          cp ../linux/manual.html manual.html
           mkdir -p arm64 amd64
           cp fenestra-darwin-arm64 arm64/fenestra
           cp fenestra-darwin-amd64 amd64/fenestra
-          tar -czf fenestra-darwin-arm64.tar.gz -C arm64 fenestra
-          tar -czf fenestra-darwin-amd64.tar.gz -C amd64 fenestra
+          cp manual.html arm64/manual.html
+          cp manual.html amd64/manual.html
+          tar -czf fenestra-darwin-arm64.tar.gz -C arm64 fenestra manual.html
+          tar -czf fenestra-darwin-amd64.tar.gz -C amd64 fenestra manual.html
           rm -rf arm64 amd64
           ls -l
 
@@ -88,6 +91,7 @@ jobs:
           mkdir -p out
           cp artifacts/win/Fenestra.exe out/
           cp artifacts/unix/* out/
+          (cd out && sha256sum Fenestra.exe fenestra-* manual.html > SHA256SUMS)
           ls -l out
           gh release create "$GITHUB_REF_NAME" out/* \
             --title "Fenestra ${GITHUB_REF_NAME#v}" \

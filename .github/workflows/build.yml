@@ -157,7 +157,9 @@ jobs:
         run: |
           bash build.command
           test -x fenestra
+          test -f manual.html
           test -d Fenestra.app
+          test -f Fenestra.app/Contents/Resources/manual.html
           file fenestra | grep -q "Mach-O"
           file Fenestra.app/Contents/Resources/fenestra | grep -q "Mach-O"
           /usr/libexec/PlistBuddy -c "Print :CFBundleDocumentTypes:0:LSItemContentTypes:0" Fenestra.app/Contents/Info.plist

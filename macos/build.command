@@ -32,7 +32,9 @@ echo
 echo "building fenestra..."
 (cd ../linux && CGO_ENABLED=0 GOOS=darwin go build -trimpath -ldflags "-s -w -X main.version=$VERSION" -o ../macos/fenestra .)
 chmod +x fenestra
+cp ../linux/manual.html ./manual.html
 echo "ok: $(pwd)/fenestra"
+echo "ok: $(pwd)/manual.html"
 echo
 
 if command -v osacompile >/dev/null 2>&1; then
@@ -45,6 +47,7 @@ if command -v osacompile >/dev/null 2>&1; then
   if osacompile -o "Fenestra.app" droplet.applescript 2>/tmp/fenestra-osacompile.log; then
     cp fenestra "Fenestra.app/Contents/Resources/fenestra"
     chmod +x "Fenestra.app/Contents/Resources/fenestra"
+    cp ../linux/manual.html "Fenestra.app/Contents/Resources/manual.html"
 
     PLIST="Fenestra.app/Contents/Info.plist"
     /usr/libexec/PlistBuddy -c "Add :CFBundleDocumentTypes array" "$PLIST" 2>/dev/null || true

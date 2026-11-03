@@ -7,6 +7,7 @@ package main
 
 import (
 	"bufio"
+	_ "embed"
 	"fmt"
 	"html"
 	"io"
@@ -27,6 +28,9 @@ import (
 )
 
 var version = "0.0.0-dev"
+
+//go:embed manual.html
+var manualHTML []byte
 
 var lastRequest int64 = time.Now().UnixNano()
 var forcedPort int
@@ -55,6 +59,9 @@ func main() {
 		showBrowserSettings()
 	case "--install":
 		install()
+		showManual()
+	case "--manual":
+		showManual()
 	case "--uninstall":
 		uninstall()
 	case "--browser":
@@ -91,6 +98,7 @@ Usage:
   fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
   fenestra --browsers                      list detected browsers
+  fenestra --manual                        open the offline manual
   fenestra --install                       Finder instructions
   fenestra --uninstall                     undo instructions
 
@@ -109,6 +117,7 @@ Usage:
   fenestra --browser firefox               set the preferred browser
   fenestra --browser chrome "~/app/index.html"
   fenestra --browsers                      list detected browsers
+  fenestra --manual                        open the offline manual
   fenestra --install                       register the .html handler
   fenestra --uninstall                     remove it
 
@@ -1035,6 +1044,35 @@ func desktopFileFor(key string) string {
 }
 
 // ---------------------------------------------------------------- misc
+
+func showManual() {
+	target := ""
+	if exe, err := os.Executable(); err == nil {
+		beside := filepath.Join(filepath.Dir(exe), "manual.html")
+		if st, err := os.Stat(beside); err == nil && !st.IsDir() {
+			target = beside
+		}
+	}
+	if target == "" {
+		dir := dataDir()
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			fatal(fmt.Errorf("cannot create %s: %v", dir, err))
+		}
+		target = filepath.Join(dir, "manual.html")
+		if err := os.WriteFile(target, manualHTML, 0o644); err != nil {
+			fatal(fmt.Errorf("cannot write the manual: %v", err))
+		}
+	}
+	var cmd *exec.Cmd
+	if runtime.GOOS == "darwin" {
+		cmd = exec.Command("open", target)
+	} else {
+		cmd = exec.Command("xdg-open", target)
+	}
+	if err := cmd.Start(); err != nil {
+		fatal(fmt.Errorf("cannot open the manual: %v", err))
+	}
+}
 
 func dataDir() string {
 	if runtime.GOOS == "darwin" {
