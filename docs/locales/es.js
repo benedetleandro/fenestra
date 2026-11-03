@@ -167,13 +167,10 @@ window.FENESTRA_LOCALES.es = {
     "privacy.s1t": "Sin cookies, sin seguimiento",
     "privacy.s1d": "No hay cookies, píxeles, huellas digitales del navegador, analíticas ni scripts publicitarios. No se comparte nada con terceros. El único servicio externo implicado es GitHub Pages, que aloja este sitio.",
     "privacy.s2t": "Qué se queda en tu navegador",
-    "privacy.s2d": "Tu navegador puede guardar dos preferencias en <code>localStorage</code>: el idioma que eliges en el menú y el hecho de que hayas descartado el aviso de privacidad. El idioma detectado en tu navegador no se guarda. Puedes borrar ambas en cualquier momento desde la configuración de tu navegador.",
     "privacy.s3t": "Alojamiento",
-    "privacy.s3d": "Este sitio está alojado en GitHub Pages. GitHub puede tratar datos de conexión, como tu dirección IP, por motivos de seguridad y funcionamiento, según <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">la declaración de privacidad de GitHub</a>.",
     "privacy.s4t": "La aplicación",
     "privacy.s4d": "Fenestra se ejecuta en tu equipo. No envía telemetría, datos de uso ni los nombres de tus proyectos. Si se añaden comprobaciones de versión, se describirán aquí antes de activarlas.",
     "privacy.s5t": "Tus opciones",
-    "privacy.s5d": "Puedes borrar las preferencias guardadas en cualquier momento, bloquear el almacenamiento en tu navegador o escribirnos a través de <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Si estás en la UE, también tienes derechos según el GDPR.",
     "privacy.updated": "Última actualización: 3 de noviembre de 2026.",
     "privacy.back": "Volver al sitio →",
     "privacy.link": "Privacidad",
@@ -198,7 +195,10 @@ window.FENESTRA_LOCALES.es = {
     "install.macos": "\n          En macOS no hay binario precompilado: la notarización de Apple cuesta US$ 99 al año.\n          La carpeta <code>macos/</code> es un kit de compilación: instala Go y ejecuta un comando.\n        ",
     "mac.nogit": "¿No tienes git? Descarga el ZIP, descomprímelo y ejecuta <code>bash build.command</code>: es el shell el que lee el script, así que Gatekeeper no interviene.",
     "name.lead": "\n          <em>Fenestra</em> es latín para ventana: la abertura, no la habitación. Esa es toda la idea:\n          Fenestra no renderiza tu sitio, abre una ventana hacia él y deja que tu navegador mire a través.\n        ",
-    "name.p2": "\n          La palabra sobrevive en el italiano <em>finestra</em>, el francés <em>fenêtre</em> y el portugués\n          <em>fenestra</em> (la acepción anatómica), así que suena a \"ventana\" para quien habla una lengua romance y a un\n          nombre propio para el resto. También es un chiste discreto: el navegador es el marco; esto es la abertura.\n        "
+    "name.p2": "\n          La palabra sobrevive en el italiano <em>finestra</em>, el francés <em>fenêtre</em> y el portugués\n          <em>fenestra</em> (la acepción anatómica), así que suena a \"ventana\" para quien habla una lengua romance y a un\n          nombre propio para el resto. También es un chiste discreto: el navegador es el marco; esto es la abertura.\n        ",
+    "privacy.s2d": "Tu navegador puede guardar dos preferencias en <code>localStorage</code>: el idioma que eliges en el menú y el hecho de que hayas descartado el aviso de privacidad. El idioma detectado en tu navegador no se guarda. Puedes borrar ambas en cualquier momento desde la configuración de tu navegador.",
+    "privacy.s3d": "Este sitio está alojado en GitHub Pages. GitHub puede tratar datos de conexión, como tu dirección IP, por motivos de seguridad y funcionamiento, según <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">la declaración de privacidad de GitHub</a>.",
+    "privacy.s5d": "Puedes borrar las preferencias guardadas en cualquier momento, bloquear el almacenamiento en tu navegador o escribirnos a través de <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Si estás en la UE, también tienes derechos según el GDPR."
   },
   "aria": {
     "index.title": "Menú",

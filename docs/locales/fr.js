@@ -167,13 +167,10 @@ window.FENESTRA_LOCALES.fr = {
     "privacy.s1t": "Aucun cookie, aucun suivi",
     "privacy.s1d": "Il n'y a ni cookies, ni pixels, ni empreinte numérique, ni scripts d'analyse d'audience ou de publicité. Rien n'est partagé avec des tiers. Le seul service externe impliqué est GitHub Pages, qui héberge ce site.",
     "privacy.s2t": "Ce qui reste dans votre navigateur",
-    "privacy.s2d": "Votre navigateur peut enregistrer deux préférences dans <code>localStorage</code> : la langue que vous choisissez dans le menu et le fait que vous avez fermé l'avis de confidentialité. La langue détectée à partir de votre navigateur n'est pas enregistrée. Vous pouvez effacer ces deux préférences à tout moment dans les paramètres de votre navigateur.",
     "privacy.s3t": "Hébergement",
-    "privacy.s3d": "Ce site est hébergé sur GitHub Pages. GitHub peut traiter des données de connexion, telles que votre adresse IP, à des fins de sécurité et d'exploitation, conformément à <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">la déclaration de confidentialité de GitHub</a>.",
     "privacy.s4t": "L'application",
     "privacy.s4d": "Fenestra s'exécute sur votre ordinateur. Elle n'envoie ni télémétrie, ni données d'utilisation, ni le nom de vos projets. Si des vérifications de version sont ajoutées, elles seront décrites ici avant d'être activées.",
     "privacy.s5t": "Vos choix",
-    "privacy.s5d": "Vous pouvez à tout moment effacer les préférences enregistrées, bloquer le stockage dans votre navigateur ou nous contacter via <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Si vous êtes dans l'UE, vous disposez également de droits au titre du GDPR.",
     "privacy.updated": "Dernière mise à jour : 3 novembre 2026.",
     "privacy.back": "Retour au site →",
     "privacy.link": "Confidentialité",
@@ -198,7 +195,10 @@ window.FENESTRA_LOCALES.fr = {
     "install.macos": "\n          Sous macOS, pas de binaire précompilé : la notarisation Apple coûte 99 $ US par an.\n          Le dossier <code>macos/</code> est un kit de build — installez Go, lancez une commande.\n        ",
     "mac.nogit": "Pas de git ? Téléchargez le ZIP, extrayez-le et lancez <code>bash build.command</code> — le shell lit le script, Gatekeeper n’entre donc pas en jeu.",
     "name.lead": "\n          <em>Fenestra</em> est le mot latin pour fenêtre : l’ouverture, pas la pièce. Toute l’idée est là —\n          Fenestra ne rend pas votre site, il ouvre une fenêtre sur lui et laisse votre navigateur regarder à travers.\n        ",
-    "name.p2": "\n          Le mot survit en italien <em>finestra</em>, en français <em>fenêtre</em> et en portugais\n          <em>fenestra</em> (le sens anatomique), il se lit donc comme « fenêtre » pour un locuteur roman et comme un\n          nom propre pour les autres. C’est aussi une plaisanterie discrète : le navigateur est le cadre ; Fenestra, l’ouverture.\n        "
+    "name.p2": "\n          Le mot survit en italien <em>finestra</em>, en français <em>fenêtre</em> et en portugais\n          <em>fenestra</em> (le sens anatomique), il se lit donc comme « fenêtre » pour un locuteur roman et comme un\n          nom propre pour les autres. C’est aussi une plaisanterie discrète : le navigateur est le cadre ; Fenestra, l’ouverture.\n        ",
+    "privacy.s2d": "Votre navigateur peut enregistrer deux préférences dans <code>localStorage</code> : la langue que vous choisissez dans le menu et le fait que vous avez fermé l'avis de confidentialité. La langue détectée à partir de votre navigateur n'est pas enregistrée. Vous pouvez effacer ces deux préférences à tout moment dans les paramètres de votre navigateur.",
+    "privacy.s3d": "Ce site est hébergé sur GitHub Pages. GitHub peut traiter des données de connexion, telles que votre adresse IP, à des fins de sécurité et d'exploitation, conformément à <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">la déclaration de confidentialité de GitHub</a>.",
+    "privacy.s5d": "Vous pouvez à tout moment effacer les préférences enregistrées, bloquer le stockage dans votre navigateur ou nous contacter via <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Si vous êtes dans l'UE, vous disposez également de droits au titre du GDPR."
   },
   "aria": {
     "index.title": "Menu",

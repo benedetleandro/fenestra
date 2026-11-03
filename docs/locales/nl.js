@@ -167,13 +167,10 @@ window.FENESTRA_LOCALES.nl = {
     "privacy.s1t": "Geen cookies, geen tracking",
     "privacy.s1d": "Er zijn geen cookies, pixels, fingerprinting, analytics of advertentiescripts. Er wordt niets met derden gedeeld. De enige externe dienst die erbij betrokken is, is GitHub Pages, dat deze site host.",
     "privacy.s2t": "Wat in je browser blijft",
-    "privacy.s2d": "Je browser kan twee voorkeuren opslaan in <code>localStorage</code>: de taal die je in het menu kiest, en het feit dat je de privacyverklaring hebt weggeklikt. De taal die via je browser wordt gedetecteerd, wordt niet opgeslagen. Je kunt beide op elk moment wissen in je browserinstellingen.",
     "privacy.s3t": "Hosting",
-    "privacy.s3d": "Deze site wordt gehost op GitHub Pages. GitHub kan verbindingsgegevens zoals je IP-adres verwerken voor beveiliging en werking, onder <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">de privacyverklaring van GitHub</a>.",
     "privacy.s4t": "De applicatie",
     "privacy.s4d": "Fenestra draait op je computer. Het verstuurt geen telemetrie, gebruiksgegevens of de namen van je projecten. Als er versiecontroles worden toegevoegd, worden die hier beschreven voordat ze worden ingeschakeld.",
     "privacy.s5t": "Jouw keuzes",
-    "privacy.s5d": "Je kunt de opgeslagen voorkeuren op elk moment wissen, opslag in je browser blokkeren, of contact met ons opnemen via <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Als je in de EU bent, heb je ook rechten op grond van de AVG (GDPR).",
     "privacy.updated": "Laatst bijgewerkt: 3 november 2026.",
     "privacy.back": "Terug naar de site →",
     "privacy.link": "Privacy",
@@ -198,7 +195,10 @@ window.FENESTRA_LOCALES.nl = {
     "install.macos": "\n          Op macOS is er geen kant-en-klare binary: notarisatie door Apple kost US$ 99 per jaar.\n          De map <code>macos/</code> is een buildkit — installeer Go, voer één commando uit.\n        ",
     "mac.nogit": "Geen git? Download de ZIP, pak hem uit en voer <code>bash build.command</code> uit — de shell leest het script, dus Gatekeeper komt er niet aan te pas.",
     "name.lead": "\n          <em>Fenestra</em> is Latijn voor venster: de opening, niet de kamer. Dat is het hele idee —\n          Fenestra rendert je site niet, het opent een venster erop en laat je browser meekijken.\n        ",
-    "name.p2": "\n          Het woord leeft voort in het Italiaanse <em>finestra</em>, het Franse <em>fenêtre</em> en het Portugese\n          <em>fenestra</em> (de anatomische variant), dus voor een Romaanse spreker betekent het 'venster'\n          en voor iedereen daarbuiten is het een eigennaam. Het is ook een stille grap: een browser is het kader; dit is de opening.\n        "
+    "name.p2": "\n          Het woord leeft voort in het Italiaanse <em>finestra</em>, het Franse <em>fenêtre</em> en het Portugese\n          <em>fenestra</em> (de anatomische variant), dus voor een Romaanse spreker betekent het 'venster'\n          en voor iedereen daarbuiten is het een eigennaam. Het is ook een stille grap: een browser is het kader; dit is de opening.\n        ",
+    "privacy.s2d": "Je browser kan twee voorkeuren opslaan in <code>localStorage</code>: de taal die je in het menu kiest, en het feit dat je de privacyverklaring hebt weggeklikt. De taal die via je browser wordt gedetecteerd, wordt niet opgeslagen. Je kunt beide op elk moment wissen in je browserinstellingen.",
+    "privacy.s3d": "Deze site wordt gehost op GitHub Pages. GitHub kan verbindingsgegevens zoals je IP-adres verwerken voor beveiliging en werking, onder <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">de privacyverklaring van GitHub</a>.",
+    "privacy.s5d": "Je kunt de opgeslagen voorkeuren op elk moment wissen, opslag in je browser blokkeren, of contact met ons opnemen via <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Als je in de EU bent, heb je ook rechten op grond van de AVG (GDPR)."
   },
   "aria": {
     "index.title": "Menu",
