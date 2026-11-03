@@ -4,7 +4,7 @@
 
 <!-- translation of README.md @ 0.7.0 -->
 
-**Double-cliquez sur un fichier `dist/index.html` local. Il s’ouvre dans votre navigateur comme un site web — parce que Fenestra l’a servi.**
+**Double-cliquez sur un fichier local `dist/index.html`. Il s’ouvre dans votre navigateur comme un site web — parce que Fenestra l’a servi.**
 
 Aucun terminal. Aucun `npx serve`. Aucune extension à activer. Aucune fenêtre de navigateur personnalisée.
 
@@ -69,7 +69,7 @@ Windows n’autorise qu’un seul gestionnaire par extension ; cette confirmatio
 
 ### Navigateurs
 
-**Le navigateur du système est celui par défaut.** Chrome, Firefox, Brave, Vivaldi, Opera et Chromium sont détectés automatiquement, et `--browser edge` impose Edge. Sur macOS, **Safari** figure aussi dans la liste.
+**Le navigateur du système est utilisé par défaut.** Chrome, Firefox, Brave, Vivaldi, Opera et Chromium sont détectés automatiquement, et `--browser edge` impose Edge. Sur macOS, **Safari** figure aussi dans la liste.
 
 ```powershell
 Fenestra.exe --browsers              # what is installed
@@ -77,7 +77,7 @@ Fenestra.exe --browser chrome        # use Chrome from now on
 Fenestra.exe --browser default       # let Windows decide
 ```
 
-Le choix est enregistré dans `%LOCALAPPDATA%\Fenestra\browser.txt` et s’applique à chaque double-clic ; vous n’avez donc plus besoin de répéter l’option.
+Le choix est enregistré dans `%LOCALAPPDATA%\Fenestra\browser.txt` et s’applique à chaque double-clic ; vous n’avez donc pas besoin de préciser à nouveau l’option.
 
 ### Sans interface (tests / CI)
 
@@ -85,7 +85,7 @@ Définissez `FENESTRA_NO_OPEN=1` pour que le serveur démarre sans ouvrir de nav
 
 ## Linux
 
-Une version native distincte se trouve dans [`linux/`](linux) : un binaire statique unique, sans environnement d’exécution, sans Wine. Écrite en Go et compilée de façon croisée pour `linux/amd64` et `linux/arm64`. Guide complet : [linux/README.fr.md](linux/README.fr.md).
+Une version native distincte se trouve dans [`linux/`](linux) : c’est un binaire statique unique, sans environnement d’exécution ni Wine. Il est écrit en Go et compilé de façon croisée pour `linux/amd64` et `linux/arm64`. Guide complet : [linux/README.fr.md](linux/README.fr.md).
 
 ```bash
 chmod +x fenestra-linux-amd64
@@ -121,7 +121,7 @@ brew install fenestra
 
 `brew trust` est une confirmation unique exigée par Homebrew pour les dépôts tiers.
 
-L’**application Finder** (`Fenestra.app`) n’a volontairement pas de binaire précompilé : un bundle non signé est bloqué par Gatekeeper, et la notarisation coûte 99 $ US par an. [`macos/`](macos) constitue le kit de compilation : installez Go (programme d’installation officiel signé, sans avertissement), puis exécutez `git clone` et lancez une commande. Un clonage avec git n’ajoute pas l’attribut de quarantaine ; macOS ne demande donc jamais d’autorisation. Sans git, téléchargez le ZIP et exécutez `bash build.command`. Voir [macos/README.fr.md](macos/README.fr.md).
+L’**application Finder** (`Fenestra.app`) n’a volontairement pas de binaire précompilé : un bundle non signé est bloqué par Gatekeeper, et la notarisation coûte 99 $ US par an. [`macos/`](macos) constitue le kit de compilation : installez Go (programme d’installation officiel signé, sans avertissement), puis clonez le dépôt avec `git clone` et lancez une commande. Un clonage avec git n’ajoute pas l’attribut de quarantaine ; macOS ne vous demande donc jamais d’autorisation. Sans git, téléchargez le ZIP et exécutez `bash build.command`. Voir [macos/README.fr.md](macos/README.fr.md).
 
 Le kit est compilé et testé sur un véritable runner `macos-latest` dans la CI : compilation, `codesign --verify`, réception d’un fichier par le droplet via `open -a`, et réponse HTTP du serveur. Seule l’interface Finder elle-même n’est pas testée (les runners sont sans interface graphique).
 
@@ -129,7 +129,7 @@ Le kit est compilé et testé sur un véritable runner `macos-latest` dans la CI
 
 | Cas | Fonctionne ? | Pourquoi |
 |---|---|---|
-| Build statique (`dist`, `build`, `out`) | **Oui** | HTML/CSS/JS simple |
+| Compilation statique (`dist`, `build`, `out`) | **Oui** | HTML/CSS/JS simple |
 | SPA avec routes côté client | **Oui** | le serveur se replie sur `index.html` pour les chemins sans extension |
 | Fichier HTML unique simple | **Oui** | ouvert via `file://`, sans serveur |
 | Projet source (`/src/main.tsx`) | **Non** | nécessite le serveur de développement du projet pour compiler |
@@ -144,7 +144,7 @@ Un seul fichier C#, aucune dépendance, compilé avec le `csc.exe` fourni avec W
 
 - **Serveur HTTP/1.1** sur un `TcpListener`, lié uniquement à `127.0.0.1`.
 - **Résolution des chemins** : normaliser, rejeter `..`, `:` et `::$DATA`, confiner à la racine servie.
-- **Attribution des ports** : hachage FNV-1a du dossier → port dans `51000-63000`, stocké dans un fichier de verrouillage par dossier et réutilisé à l’exécution suivante.
+- **Attribution des ports** : hachage FNV-1a du dossier → port dans `51000-63000`, stocké dans un fichier de verrouillage par dossier et réutilisé lors de l’exécution suivante.
 - **Repli SPA** : les erreurs 404 sans extension renvoient `index.html`.
 - **Instance unique** : un second double-clic interroge le serveur en cours et ouvre seulement un nouvel onglet de navigateur.
 - **Durée de vie** : le serveur s’arrête quand le processus de navigateur qu’il a lancé se termine, ou après 4 heures d’inactivité si le navigateur était déjà en cours d’exécution.
@@ -155,17 +155,17 @@ Fenestra est un outil local : boucle locale uniquement, pas de TLS, pas d’auth
 
 ## Feuille de route
 
-- [ ] `--root <folder>` pour les builds dont le point d’entrée se trouve dans un sous-dossier
+- [ ] `--root <folder>` pour les compilations dont le point d’entrée se trouve dans un sous-dossier
 - [x] Linux : compilation Go native dans [`linux/`](linux), amd64 et arm64
 - [x] macOS : CLI Homebrew et kit de compilation Finder dans [`macos/`](macos)
-- [ ] Signature du code des versions publiées, pour supprimer l’avertissement SmartScreen
+- [ ] Signature de code des versions publiées, pour supprimer l’avertissement SmartScreen
 - [ ] Mode portable (sans `%LOCALAPPDATA%`)
 - [ ] Davantage de tests : HEAD, ETag, requêtes par plage, chemins UTF-8
 - [ ] Une démonstration vidéo de 15 secondes
 
 ## Confidentialité
 
-Le site web et l’application n’utilisent ni cookies, ni outils d’analyse, ni publicité, ni télémétrie. Le seul stockage local correspond à la langue que vous choisissez et à la notification de confidentialité que vous fermez. Détails : [page de confidentialité](https://benedetleandro.github.io/fenestra/privacy.html).
+Le site web et l’application n’utilisent ni cookies, ni outils d’analyse, ni publicité, ni télémétrie. Les seules données stockées localement sont la langue que vous choisissez et l’avis de confidentialité que vous fermez. Détails : [page de confidentialité](https://benedetleandro.github.io/fenestra/privacy.html).
 
 ## Contribution
 

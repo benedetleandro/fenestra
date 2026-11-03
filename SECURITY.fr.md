@@ -36,7 +36,7 @@ Ce qui n’est **pas** protégé, par conception :
 
 ## Confidentialité
 
-Le site web et l’application n’utilisent ni cookies, ni outils d’analyse, ni publicité, ni télémétrie. Les seules préférences locales sont la langue choisie et la notification de confidentialité fermée. Détails : [page de confidentialité](https://benedetleandro.github.io/fenestra/privacy.html).
+Le site web et l’application n’utilisent ni cookies, ni outils d’analyse, ni publicité, ni télémétrie. Les seules préférences locales sont la langue choisie et l’avis de confidentialité que vous avez fermé. Détails : [page de confidentialité](https://benedetleandro.github.io/fenestra/privacy.html).
 
 ## Périmètre
 

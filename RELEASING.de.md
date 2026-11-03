@@ -11,8 +11,8 @@ Fenestra ist im Alpha-Stadium. Releases sind **Meilensteine**, nicht jeder Commi
 
 - `main` baut immer. Änderungen sammeln sich unter **Unreleased** in
   [`CHANGELOG.md`](CHANGELOG.md).
-- Ein Release erfolgt nur, wenn der Maintainer ihn verlangt, oder zu einem
-  Meilenstein – niemals, weil eine Korrektur gemergt wurde.
+- Ein Release gibt es nur, wenn der Maintainer eines anfordert oder ein Meilenstein
+  erreicht ist – niemals, weil eine Korrektur gemergt wurde.
 - Ein Tag pro Release (`vX.Y.Z`). Niemals ein Tag pro Änderung.
 - Der Tag muss zu `VERSION` passen; die CI erzwingt das.
 - Patch-Releases gibt es nur, um ein fehlerhaftes Release zu reparieren. Eine
