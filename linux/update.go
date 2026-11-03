@@ -57,13 +57,13 @@ func checkForUpdates(force bool) *updateInfo {
 	}
 
 	client := &http.Client{Timeout: 3 * time.Second}
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequest(http.MethodGet, url, nil) // #nosec G704 -- fixed project URL, env override only for tests
 	if err != nil {
 		logf("update check: %v", err)
 		return nil
 	}
 	req.Header.Set("User-Agent", "Fenestra/"+version)
-	resp, err := client.Do(req)
+	resp, err := client.Do(req) // #nosec G704 -- fixed project URL, env override only for tests
 	if err != nil {
 		logf("update check: %v", err)
 		return nil
