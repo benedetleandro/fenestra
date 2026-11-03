@@ -227,7 +227,7 @@
   var SUPPORTED = ["en", "pt", "es", "fr", "de", "it", "nl"];
   var LANG_TAGS = { en: "en", pt: "pt-BR", es: "es", fr: "fr", de: "de", it: "it", nl: "nl" };
 
-  function apply(lang) {
+  function apply(lang, persist) {
     var d = LOCALES[lang] || null;
     var pt = lang === "pt";
 
@@ -266,7 +266,7 @@
       btn.setAttribute("aria-selected", btn.getAttribute("data-lang") === lang ? "true" : "false");
     });
 
-    try { localStorage.setItem("fenestra-lang", lang); } catch (e) { /* private mode */ }
+    if (persist) { try { localStorage.setItem("fenestra-lang", lang); } catch (e) { /* private mode */ } }
   }
 
   var stored = null;
@@ -278,7 +278,7 @@
   else if (stored && SUPPORTED.indexOf(stored) >= 0) initial = stored;
   else if (SUPPORTED.indexOf(nav) >= 0) initial = nav;
 
-  apply(initial);
+  apply(initial, false);
   document.documentElement.classList.remove("i18n-pending");
 
   var langBtn = document.getElementById("langBtn");
@@ -291,7 +291,7 @@
     });
     langPop.querySelectorAll("button").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        apply(btn.getAttribute("data-lang"));
+        apply(btn.getAttribute("data-lang"), true);
         langPop.classList.remove("open");
         langBtn.setAttribute("aria-expanded", "false");
       });

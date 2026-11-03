@@ -1596,7 +1596,7 @@ settings.json   (alleen wanneer je een browser vastzet)</div>
       : (SUPPORTED.indexOf(nav) >= 0 ? nav : "en");
   }
 
-  function apply(l) {
+  function apply(l, persist) {
     document.documentElement.lang = TAGS[l] || l;
     var blocks = document.querySelectorAll("[data-block]");
     for (var i = 0; i < blocks.length; i++) {
@@ -1610,7 +1610,7 @@ settings.json   (alleen wanneer je een browser vastzet)</div>
     if (code) code.textContent = l.toUpperCase();
     var foot = document.getElementById("foot");
     if (foot) foot.textContent = "manual";
-    try { localStorage.setItem("fenestra-manual-lang", l); } catch (e) {}
+    if (persist) { try { localStorage.setItem("fenestra-manual-lang", l); } catch (e) {} }
   }
 
   var langBtn = document.getElementById("langBtn");
@@ -1623,7 +1623,7 @@ settings.json   (alleen wanneer je een browser vastzet)</div>
     });
     langPop.querySelectorAll("[data-set-lang]").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        apply(btn.getAttribute("data-set-lang"));
+        apply(btn.getAttribute("data-set-lang"), true);
         langPop.classList.remove("open");
         langBtn.setAttribute("aria-expanded", "false");
       });
@@ -1641,7 +1641,7 @@ settings.json   (alleen wanneer je een browser vastzet)</div>
       }
     });
   }
-  apply(lang);
+  apply(lang, false);
   document.documentElement.classList.remove("i18n-pending");
 })();
 </script>
