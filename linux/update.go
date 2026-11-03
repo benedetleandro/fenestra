@@ -49,7 +49,7 @@ func checkForUpdates(force bool) *updateInfo {
 	}
 
 	_ = os.MkdirAll(configDir(), 0o750)
-	_ = os.WriteFile(filepath.Join(configDir(), "update-check"), []byte(time.Now().UTC().Format(time.RFC3339)), 0o644)
+	_ = os.WriteFile(filepath.Join(configDir(), "update-check"), []byte(time.Now().UTC().Format(time.RFC3339)), 0o600)
 
 	url := os.Getenv("FENESTRA_UPDATE_URL")
 	if url == "" {
@@ -143,7 +143,7 @@ func maybeOpenUpdateTab(port int) {
 	}
 	launch(fmt.Sprintf("http://127.0.0.1:%d/__fenestra/update", port))
 	_ = os.MkdirAll(configDir(), 0o750)
-	_ = os.WriteFile(filepath.Join(configDir(), "update-tab"), []byte(currentUpdate.Version), 0o644)
+	_ = os.WriteFile(filepath.Join(configDir(), "update-tab"), []byte(currentUpdate.Version), 0o600)
 }
 
 func serveUpdatePage(w http.ResponseWriter) {

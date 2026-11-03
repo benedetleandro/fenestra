@@ -1072,11 +1072,11 @@ func showManual() {
 	}
 	if target == "" {
 		dir := dataDir()
-		if err := os.MkdirAll(dir, 0o755); err != nil {
+		if err := os.MkdirAll(dir, 0o750); err != nil {
 			fatal(fmt.Errorf("cannot create %s: %v", dir, err))
 		}
 		target = filepath.Join(dir, "manual.html")
-		if err := os.WriteFile(target, manualHTML, 0o644); err != nil {
+		if err := os.WriteFile(target, manualHTML, 0o600); err != nil {
 			fatal(fmt.Errorf("cannot write the manual: %v", err))
 		}
 	}
