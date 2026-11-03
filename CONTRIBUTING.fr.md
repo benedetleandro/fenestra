@@ -23,7 +23,7 @@ Le binaire se trouve dans `bin/Fenestra.exe`.
 ./tests/run-tests.ps1
 ```
 
-Le script ne compile rien ; exécutez d’abord `build.ps1`. Il démarre le serveur en mode sans interface (`FENESTRA_NO_OPEN=1`), envoie de véritables requêtes HTTP à une fixture temporaire et indique la réussite ou l’échec avec un code de sortie non nul.
+Le script ne compile rien ; exécutez d’abord `build.ps1`. Il démarre le serveur en mode sans interface (`FENESTRA_NO_OPEN=1`), envoie de véritables requêtes HTTP à un jeu de données de test temporaire et indique la réussite ou l’échec avec un code de sortie non nul.
 
 ## Style de code
 
