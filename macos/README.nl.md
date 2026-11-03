@@ -106,7 +106,7 @@ Als `go build` werkt en `./fenestra` de pagina opent, zit het probleem alleen in
 de verpakking van de `.app` — en is het programma al bruikbaar.
 
 Als `osacompile` faalt (het kan om de Command Line Tools vragen), waarschuwt het
-script en behoudt het het binaire bestand. In dat geval heeft de Finder geen
+script en behoudt het binaire bestand. In dat geval heeft de Finder geen
 koppeling, maar werkt de Terminal wel.
 
 ## Eerlijke beperkingen
@@ -118,7 +118,7 @@ koppeling, maar werkt de Terminal wel.
   met" en de Gatekeeper-dialoog bestaan alleen op een scherm — de runner is
   headless.
 - De `.app` wordt gegenereerd door `osacompile`; als jouw macOS dat hulpmiddel
-  mist, waarschuwt het script en bouwt het alleen het binaire bestand.
+  mist, waarschuwt het script en bouwt alleen het binaire bestand.
 - Iedereen compileert zijn eigen versie. De `.app` via AirDrop naar een andere
   machine sturen voegt quarantaine toe en dan blokkeert Gatekeeper hem opnieuw.
 - Geen ontwikkelaarssignatuur, geen notarisatie, geen US$ 99 per jaar.
