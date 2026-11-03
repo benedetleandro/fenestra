@@ -40,7 +40,7 @@
   }
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0.7.0.10">
+  <link rel="stylesheet" href="styles.css?v=0.7.0.11">
 </head>
 <body id="top">
 
@@ -81,7 +81,7 @@
 
         <a class="header-manual" href="manual.html" data-i18n="nav.manual">Manual</a>
 
-        <a class="header-cta" href="https://github.com/benedetleandro/fenestra/releases/latest" data-i18n="nav.download">Download</a>
+        <a class="header-cta" href="#install" data-i18n="nav.download">Download</a>
 
         <a class="gh-link" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
           <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -131,12 +131,6 @@
           </p>
 
           <div class="cta">
-            <a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra/releases/latest">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/>
-              </svg>
-              <span data-i18n="hero.download">Download v0.7.0</span>
-            </a>
             <a class="btn btn-ghost" href="#how" data-i18n="hero.how">How it works</a>
           </div>
 
@@ -387,43 +381,45 @@
           </a>
         </div>
 
-        <div class="two-col">
-          <div>
+        <div class="install-default">
+          <p class="card-links"><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
+          <h3 data-i18n="install.defTitle">Make it the default for .html</h3>
+          <p class="muted" data-i18n="install.defText">One time, three clicks. Windows does not let an app do this alone.</p>
+          <ol class="def-list">
+            <li data-i18n-html="install.def1">Right-click any index.html and choose <b>Open with → Choose another app</b>.</li>
+            <li data-i18n-html="install.def2">Select <b>Fenestra</b>.</li>
+            <li data-i18n-html="install.def3">Check <b>Always use this app</b> and confirm.</li>
+          </ol>
+          <div class="side-note" data-i18n="install.note">
+            Windows allows exactly one handler per extension. The handler is invisible; the window
+            that opens is Edge.
+          </div>
+        </div>
+
+        <div class="os-notes">
+          <div class="os-note">
             <h3 data-i18n="install.dl">Windows</h3>
             <p class="muted" data-i18n="install.dlText">The 54 KB .exe above runs as-is. No installer, no runtime.</p>
-
             <div class="side-note" data-i18n="install.signNote">
               The binary is not code-signed yet, so Windows SmartScreen will ask for confirmation
               once. That is expected for an alpha build.
             </div>
           </div>
-
-          <div>
-            <p class="card-links"><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
-
-            <h3 data-i18n="install.defTitle">Make it the default for .html</h3>
-            <p class="muted" data-i18n="install.defText">One time, three clicks. Windows does not let an app do this alone.</p>
-            <ol class="def-list">
-              <li data-i18n-html="install.def1">Right-click any index.html and choose <b>Open with → Choose another app</b>.</li>
-              <li data-i18n-html="install.def2">Select <b>Fenestra</b>.</li>
-              <li data-i18n-html="install.def3">Check <b>Always use this app</b> and confirm.</li>
-            </ol>
-            <div class="side-note" data-i18n="install.note">
-              Windows allows exactly one handler per extension. The handler is invisible; the window
-              that opens is Edge.
-            </div>
+          <div class="os-note">
+            <h3>Linux</h3>
+            <p class="side-note" data-i18n-html="install.linux">
+              On Linux there is a native build: one static binary, no Wine, no runtime.
+              Download <code>fenestra-linux-amd64</code> from the release and run it with <code>chmod +x</code>.
+            </p>
+          </div>
+          <div class="os-note">
+            <h3>macOS</h3>
+            <p class="side-note" data-i18n-html="install.macos">
+              On macOS there is no prebuilt binary: Apple notarization costs US$ 99/year.
+              The <code>macos/</code> folder is a build kit — install Go, run one command.
+            </p>
           </div>
         </div>
-
-        <p class="side-note" data-i18n-html="install.linux">
-          On Linux there is a native build: one static binary, no Wine, no runtime.
-          Download <code>fenestra-linux-amd64</code> from the release and run it with <code>chmod +x</code>.
-        </p>
-
-        <p class="side-note" data-i18n-html="install.macos">
-          On macOS there is no prebuilt binary: Apple notarization costs US$ 99/year.
-          The <code>macos/</code> folder is a build kit — install Go, run one command.
-        </p>
 
         <h3 style="margin-top:56px" data-i18n="install.usage">Usage</h3>
         <div class="code-block">
