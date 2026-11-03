@@ -1199,3 +1199,21 @@ footer {
 .btab[aria-selected="true"] { color: var(--text); border-color: #3a4152; background: var(--panel-2); }
 .browser-panels .bpanel { display: none; }
 .browser-panels .bpanel.active { display: block; }
+
+.privacy-wrap { max-width: 920px; margin: 0 auto; }
+.privacy h1 { font-size: clamp(34px, 5vw, 54px); }
+.privacy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 34px; }
+.privacy-grid article { border: 1px solid var(--line); border-radius: 14px; padding: 20px; background: var(--panel); }
+.privacy-grid article.privacy-wide { grid-column: 1 / -1; }
+.privacy-grid h2 { margin: 0 0 8px; font-size: 18px; }
+.privacy-grid p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.7; }
+.privacy-grid code { font-size: 12.5px; }
+.privacy-updated { margin-top: 30px; color: var(--muted-2); font-size: 13px; }
+.privacy-bar { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 220; display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 880px; margin: 0 auto; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; background: #11131a; box-shadow: 0 18px 50px rgba(0,0,0,.55); }
+.privacy-bar[hidden] { display: none; }
+.privacy-bar .pb-text { color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+.privacy-bar .pb-text strong { color: var(--text); margin-right: 6px; }
+.privacy-bar .pb-actions { display: flex; align-items: center; gap: 12px; flex: none; }
+.privacy-bar .pb-actions a { color: var(--muted); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+.privacy-bar .pb-actions button { height: 32px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--text); color: #0b0c10; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+@media (max-width: 760px) { .privacy-grid { grid-template-columns: 1fr; } .privacy-bar { flex-direction: column; align-items: flex-start; } }

@@ -40,7 +40,7 @@
   }
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0.7.0.13">
+  <link rel="stylesheet" href="styles.css?v=0.7.0.14">
 </head>
 <body id="top">
 
@@ -745,6 +745,7 @@
         <a href="https://github.com/benedetleandro/fenestra/releases/latest" target="_blank" rel="noopener" data-i18n="footer.release">Release</a>
         <a href="https://github.com/benedetleandro/fenestra/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">MIT License</a>
         <a href="https://github.com/benedetleandro/fenestra/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.security">Security</a>
+        <a href="privacy.html" data-i18n="privacy.link">Privacy</a>
         <a href="#top" data-i18n="footer.top">Back to top ↑</a>
       </div>
     </div>
@@ -766,7 +767,29 @@
     <a href="#faq"><span class="pi-n">12</span><span data-i18n="nav.faq">FAQ</span></a>
   </nav>
 
-  <script src="locales.js?v=6"></script>
-  <script src="app.js?v=0.7.0.16"></script>
+  <div class="privacy-bar" id="privacyBar" hidden>
+    <div class="pb-text"><strong data-i18n="privacy.kicker">Privacy</strong> <span data-i18n="privacy.notice">No cookies. We only store the language you choose.</span></div>
+    <div class="pb-actions">
+      <a href="privacy.html" data-i18n="privacy.more">Privacy</a>
+      <button type="button" id="privacyOk" data-i18n="privacy.ok">Got it</button>
+    </div>
+  </div>
+
+  <script src="locales.js?v=7"></script>
+  <script src="app.js?v=0.7.0.17"></script>
+  <script>
+  (function () {
+    try { if (localStorage.getItem("fenestra-privacy") === "1") return; } catch (e) {}
+    var bar = document.getElementById("privacyBar");
+    if (!bar) return;
+    bar.hidden = false;
+    var ok = document.getElementById("privacyOk");
+    if (ok) ok.addEventListener("click", function () {
+      bar.hidden = true;
+      try { localStorage.setItem("fenestra-privacy", "1"); } catch (e) {}
+    });
+  })();
+  </script>
+
 </body>
 </html>

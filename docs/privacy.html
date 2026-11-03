@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" class="i18n-pending">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fenestra — Privacy</title>
+  <meta name="description" content="Fenestra privacy: no cookies, no analytics, no advertising and no tracking. Only your chosen language and privacy acknowledgment are stored locally.">
+  <meta name="theme-color" content="#08090c">
+  <link rel="canonical" href="https://benedetleandro.github.io/fenestra/privacy.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxMTEyMTYiLz4KICA8cmVjdCB4PSIxNCIgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzMiIgcng9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q2ZGJlNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHBhdGggZD0iTTE0IDI2aDM2TTI3IDI2djIyIiBzdHJva2U9IiNkNmRiZTUiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjEiIHI9IjEuOCIgZmlsbD0iI2Q2ZGJlNSIvPgo8L3N2Zz4K">
+  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }</style>
+  <noscript><style>html.i18n-pending body { visibility: visible; }</style></noscript>
+  <script>setTimeout(function () { document.documentElement.classList.remove("i18n-pending"); }, 3000);</script>
+  <link rel="stylesheet" href="styles.css?v=0.7.0.14">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Fenestra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+          <path d="M3 9h18M9.5 9v11"/>
+          <circle cx="6" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Fenestra</span>
+      </a>
+
+      <div class="header-right">
+        <div class="lang-menu" id="langMenu">
+          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9Z"/></svg>
+            <span id="langCode">EN</span>
+            <span class="lang-chev">&#9662;</span>
+          </button>
+          <div class="lang-pop" id="langPop" role="listbox" aria-label="Language">
+            <button type="button" data-lang="en" role="option">English</button>
+            <button type="button" data-lang="pt" role="option">Português</button>
+            <button type="button" data-lang="es" role="option">Español</button>
+            <button type="button" data-lang="fr" role="option">Français</button>
+            <button type="button" data-lang="de" role="option">Deutsch</button>
+            <button type="button" data-lang="it" role="option">Italiano</button>
+            <button type="button" data-lang="nl" role="option">Nederlands</button>
+          </div>
+        </div>
+
+        <a class="header-manual" href="manual.html" data-i18n="nav.manual">Manual</a>
+
+        <a class="header-cta" href="index.html#install" data-i18n="nav.download">Download</a>
+
+        <a class="gh-link" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="privacy">
+      <div class="wrap privacy-wrap">
+        <p class="kicker" data-i18n="privacy.kicker">Privacy</p>
+        <h1 data-i18n="privacy.title">Privacy, in plain language</h1>
+        <p class="section-lead" data-i18n="privacy.lead">Fenestra is a local tool. This site does not use cookies, analytics, advertising or tracking.</p>
+
+        <div class="privacy-grid">
+          <article>
+            <h2 data-i18n="privacy.s1t">No cookies, no tracking</h2>
+            <p data-i18n="privacy.s1d">There are no cookies, pixels, fingerprinting, analytics or advertising scripts. Nothing is shared with third parties. The only external service involved is GitHub Pages, which serves this site.</p>
+          </article>
+          <article>
+            <h2 data-i18n="privacy.s2t">What stays in your browser</h2>
+            <p data-i18n-html="privacy.s2d">Your browser may store two preferences in <code>localStorage</code>: the language you choose in the menu, and the fact that you dismissed the privacy notice. The language detected from your browser is not saved. You can clear both at any time in your browser settings.</p>
+          </article>
+          <article>
+            <h2 data-i18n="privacy.s3t">Hosting</h2>
+            <p data-i18n-html="privacy.s3d">This site is hosted on GitHub Pages. GitHub may process connection data such as your IP address for security and operation, under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a>.</p>
+          </article>
+          <article>
+            <h2 data-i18n="privacy.s4t">The application</h2>
+            <p data-i18n="privacy.s4d">Fenestra runs on your computer. It does not send telemetry, usage data or the names of your projects. If version checks are added, they will be described here before being enabled.</p>
+          </article>
+          <article class="privacy-wide">
+            <h2 data-i18n="privacy.s5t">Your choices</h2>
+            <p data-i18n-html="privacy.s5d">You can clear the stored preferences at any time, block storage in your browser, or reach us through <a href="https://github.com/benedetleandro/fenestra/issues" target="_blank" rel="noopener">GitHub Issues</a>. If you are in the EU, you also have rights under the GDPR.</p>
+          </article>
+        </div>
+
+        <p class="privacy-updated" data-i18n="privacy.updated">Last updated: November 3, 2026.</p>
+        <p><a class="src" href="index.html" data-i18n="privacy.back">Back to the site →</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+          <path d="M3 9h18M9.5 9v11"/>
+        </svg>
+        <span data-i18n="footer.tag">Fenestra · made for the double-click</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/benedetleandro/fenestra/releases/latest" target="_blank" rel="noopener" data-i18n="footer.release">Release</a>
+        <a href="https://github.com/benedetleandro/fenestra/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">MIT License</a>
+        <a href="https://github.com/benedetleandro/fenestra/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.security">Security</a>
+        <a href="privacy.html" data-i18n="privacy.link">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="locales.js?v=7"></script>
+  <script src="app.js?v=0.7.0.17"></script>
+</body>
+</html>

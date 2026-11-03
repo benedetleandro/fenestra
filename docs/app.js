@@ -192,6 +192,25 @@
     "footer.security": "Segurança",
     "footer.top": "Voltar ao topo ↑",
 
+    "privacy.kicker": "Privacidade",
+    "privacy.title": "Privacidade, em linguagem simples",
+    "privacy.lead": "O Fenestra é uma ferramenta local. Este site não usa cookies, analytics, publicidade ou rastreamento.",
+    "privacy.s1t": "Sem cookies, sem rastreamento",
+    "privacy.s1d": "Não há cookies, pixels, fingerprinting, scripts de analytics ou publicidade. Nada é compartilhado com terceiros. O único serviço externo envolvido é o GitHub Pages, que hospeda este site.",
+    "privacy.s2t": "O que fica no seu navegador",
+    "privacy.s2d": "Seu navegador pode guardar duas preferências no <code>localStorage</code>: o idioma que você escolher no menu e o fato de ter dispensado o aviso de privacidade. O idioma detectado do navegador não é salvo. Você pode apagar as duas a qualquer momento nas configurações do navegador.",
+    "privacy.s3t": "Hospedagem",
+    "privacy.s3d": "Este site é hospedado no GitHub Pages. O GitHub pode processar dados de conexão, como o endereço IP, por segurança e operação, conforme a <a href=\"https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement\" target=\"_blank\" rel=\"noopener\">declaração de privacidade do GitHub</a>.",
+    "privacy.s4t": "O aplicativo",
+    "privacy.s4d": "O Fenestra roda no seu computador. Ele não envia telemetria, dados de uso ou os nomes dos seus projetos. Se verificações de versão forem adicionadas, elas serão descritas aqui antes de serem ativadas.",
+    "privacy.s5t": "Suas escolhas",
+    "privacy.s5d": "Você pode apagar as preferências salvas a qualquer momento, bloquear armazenamento no navegador ou falar conosco pelo <a href=\"https://github.com/benedetleandro/fenestra/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>. Se você estiver na UE, também tem direitos previstos na GDPR.",
+    "privacy.updated": "Última atualização: 3 de novembro de 2026.",
+    "privacy.back": "Voltar ao site →",
+    "privacy.link": "Privacidade",
+    "privacy.notice": "Sem cookies. Só guardamos o idioma que você escolher.",
+    "privacy.ok": "Entendi",
+    "privacy.more": "Privacidade",
     "code.copy": "Copiar"
   };
 
