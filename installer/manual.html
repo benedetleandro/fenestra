@@ -1,0 +1,1746 @@
+<!doctype html>
+<html lang="pt-BR" class="i18n-pending">
+<head>
+<meta charset="utf-8">
+  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }</style>
+  <noscript><style>html.i18n-pending body { visibility: visible; }</style></noscript>
+  <script>setTimeout(function () { document.documentElement.classList.remove("i18n-pending"); }, 3000);</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxMTEyMTYiLz4KICA8cmVjdCB4PSIxNCIgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzMiIgcng9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q2ZGJlNSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHBhdGggZD0iTTE0IDI2aDM2TTI3IDI2djIyIiBzdHJva2U9IiNkNmRiZTUiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjEiIHI9IjEuOCIgZmlsbD0iI2Q2ZGJlNSIvPgo8L3N2Zz4K">
+<title>Fenestra — manual</title>
+<style>
+  :root {
+    --bg: #08090c; --panel: #12141a; --panel-2: #171a22;
+    --line: #232733; --line-soft: #1a1d26;
+    --text: #e9ebf0; --muted: #9aa1ad; --muted-2: #6f7683;
+    --silver: linear-gradient(135deg, #fff 0%, #d7dbe4 35%, #9aa1b0 70%, #e6e9f0 100%);
+    --ok: #4ade80; --radius: 16px;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: linear-gradient(90deg, #9db4ff, #c9b8ff); z-index: 200; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(900px 500px at 75% -10%, rgba(180,196,230,.10), transparent 60%),
+      radial-gradient(700px 420px at 8% 5%, rgba(120,140,190,.08), transparent 60%);
+  }
+  a { color: inherit; text-decoration: none; }
+  code { font-family: var(--mono); font-size: .9em; background: var(--panel); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; color: #cfd4df; }
+  .wrap { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  header { border-bottom: 1px solid var(--line-soft); background: rgba(8,9,12,.72); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 10; }
+  header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(157,180,255,.35), transparent); }
+  .head { display: flex; align-items: center; height: 64px; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -.01em; }
+  .brand svg { width: 24px; height: 24px; }
+  .pill { margin-left: auto; font-size: 12px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+  .lang { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+  .lang button { display: flex; align-items: center; gap: 6px; border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .06em; padding: 5px 10px; border-radius: 999px; cursor: pointer; }
+  .lang button:hover { color: var(--text); }
+  .lang button svg { width: 20px; height: 14px; border-radius: 3px; }
+  .lang button[aria-pressed="true"] { background: #232733; color: var(--text); }
+  .head .lang { margin-left: auto; }
+  .gh { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 13.5px; flex: none; }
+  .gh:hover { color: var(--text); }
+  .gh svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+  @media (max-width: 420px) { .gh span { display: none; } }
+
+  .head .lang-menu { margin-left: auto; }
+  .lang-menu { position: relative; }
+  .lang-btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer; }
+  .lang-btn:hover { border-color: #333a4a; }
+  .lang-btn .globe { width: 15px; height: 15px; color: var(--muted); }
+  .lang-chev { color: var(--muted-2); font-size: 10px; }
+  .lang-pop { display: none; position: absolute; top: 42px; right: 0; min-width: 168px; padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 18px 50px rgba(0,0,0,.55); z-index: 140; }
+  .lang-pop.open { display: block; }
+  .lang-pop button { display: block; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: inherit; font-size: 13.5px; cursor: pointer; }
+  .lang-pop button:hover { color: var(--text); background: rgba(255,255,255,.05); }
+  .lang-pop button[aria-selected="true"] { color: var(--text); background: rgba(156,196,255,.08); }
+  @media (max-width: 560px) { .lang-pop { right: auto; left: 0; } }
+  .hero { padding: 72px 0 40px; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); background: rgba(18,20,26,.7); padding: 7px 13px; border-radius: 999px; margin-bottom: 24px; }
+  .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 12px rgba(74,222,128,.7); }
+  h1 { font-size: clamp(38px, 5vw, 58px); line-height: 1.04; letter-spacing: -.035em; font-weight: 700; margin: 0 0 18px; }
+  h1 .shine { background: var(--silver); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 640px; margin: 0 0 26px; }
+  section { padding: 34px 0; }
+  h2 { font-size: 26px; letter-spacing: -.02em; margin: 0 0 6px; }
+  .section-lead { color: var(--muted); margin: 0 0 24px; max-width: 700px; }
+  .toc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 6px 0 14px; }
+  .toc-title { grid-column: 1 / -1; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); margin: 0 0 12px; font-weight: 700; }
+  .toc-item { display: block; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--panel); transition: border-color .18s, background .18s, transform .18s; }
+  .toc-item:hover { border-color: #3a4152; background: var(--panel-2); transform: translateY(-1px); }
+  .toc-n { font-size: 11px; color: var(--muted-2); letter-spacing: .12em; }
+  .toc-item strong { display: block; margin: 3px 0 2px; font-size: 14.5px; }
+  .toc-item small { color: var(--muted); font-size: 12.5px; }
+  section[id] { scroll-margin-top: 80px; }
+  @media (max-width: 760px) { .toc { grid-template-columns: 1fr; } }
+  .layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 44px; align-items: start; margin-top: 6px; }
+  .side-toc { position: sticky; top: 92px; padding-top: 6px; }
+  .side-toc.open { display: block; position: fixed; top: 74px; left: 18px; width: 280px; max-height: calc(100vh - 100px); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; z-index: 130; overflow: auto; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+  .st-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-2); margin: 0 0 14px; font-weight: 700; }
+  .side-toc a { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; margin: 0 0 2px -10px; border-left: 2px solid transparent; color: var(--muted); font-size: 13.5px; border-radius: 0 6px 6px 0; transition: color .15s, background .15s, border-color .15s; }
+  .side-toc a:hover { color: var(--text); background: rgba(255,255,255,.03); }
+  .side-toc a.active { color: var(--text); border-left-color: #9cc4ff; background: rgba(156,196,255,.06); }
+  .side-toc .n { color: var(--muted-2); font-size: 10.5px; letter-spacing: .06em; min-width: 18px; }
+  .idx-btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; flex: none; }
+  .idx-btn:hover { color: var(--text); border-color: #333a4a; }
+  .idx-label::after { content: "Menu"; }
+  html[lang^="en"] .idx-label::after { content: "Menu"; }
+  @media (max-width: 420px) { .idx-label { display: none; } }
+  @media (min-width: 981px) { .idx-btn { display: none; } }
+  @media (max-width: 980px) {
+    .layout { display: block; }
+    .side-toc { display: none; }
+    .side-toc.open { display: block; position: fixed; top: 70px; left: 16px; right: 16px; width: auto; max-height: 70vh; z-index: 80; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; overflow: auto; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+    .side-toc.open a { font-size: 14px; padding: 9px 10px; }
+  }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: 8px 0 22px; }
+  .tab { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); font: inherit; font-weight: 600; font-size: 14px; padding: 10px 14px; cursor: pointer; }
+  .tab svg { width: 16px; height: 16px; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: #9cc4ff; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .panel-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 28px; align-items: start; }
+  .panel-grid h3 { margin: 0 0 8px; font-size: 16px; }
+  .panel-grid .mock-win, .panel-grid .mock-linux, .panel-grid .mock-mac { max-width: none; margin-top: 0; }
+  @media (max-width: 760px) { .panel-grid { grid-template-columns: 1fr; } }
+  .sc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .sc-card.win { grid-column: 1 / -1; }
+  .sc-card.win .mock-win { max-width: 640px; margin-top: 6px; }
+  .sc-card { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel); }
+  .sc-card h3 { margin: 0 0 8px; font-size: 16px; }
+  .sc-card ol { margin: 0 0 12px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+  .sc-card li { margin-bottom: 6px; }
+  .mock-settings { background: #202020; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 10.5px; color: #e6e6e6; margin-top: 10px; }
+  .mock-settings .ms-title { background: #2b2b2b; padding: 7px 10px; border-bottom: 1px solid #3a3a3a; font-weight: 600; }
+  .mock-settings .ms-row { display: flex; align-items: center; gap: 8px; padding: 9px 10px; }
+  .mock-settings .ms-row .ext { color: #cfcfcf; }
+  .mock-settings .ms-row strong { margin-left: auto; }
+  .mock-settings .ms-row .chev { color: #9aa1ad; }
+  .mock-term { background: #0c0c0c; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: var(--mono); font-size: 10px; color: #e6e6e6; margin-top: 10px; }
+  .mock-term .mt-title { background: #2b2b2b; padding: 6px 9px; font-family: var(--sans); font-size: 10px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; display: flex; gap: 6px; align-items: center; }
+  .mock-term .lights { display: inline-flex; gap: 4px; }
+  .mock-term .lights i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .mock-term .lights i:nth-child(1) { background: #ff5f57; }
+  .mock-term .lights i:nth-child(2) { background: #febc2e; }
+  .mock-term .lights i:nth-child(3) { background: #28c840; }
+  .mock-term pre { margin: 0; padding: 9px; white-space: pre-wrap; word-break: break-all; }
+  .mock-term .p { color: #7ee787; }
+  .mock-finder { background: #f6f6f6; color: #1b1b1b; border: 1px solid #cfcfcf; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 10px; margin-top: 10px; }
+  .mock-finder .mf-title { background: #e9e9e9; padding: 6px 10px; border-bottom: 1px solid #d6d6d6; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+  .mock-finder .lights { display: inline-flex; gap: 4px; }
+  .mock-finder .lights i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .mock-finder .lights i:nth-child(1) { background: #ff5f57; }
+  .mock-finder .lights i:nth-child(2) { background: #febc2e; }
+  .mock-finder .lights i:nth-child(3) { background: #28c840; }
+  .mock-finder .mf-body { display: grid; grid-template-columns: 62px 1fr; gap: 6px; padding: 8px 10px; align-items: center; }
+  .mock-finder .mf-label { color: #555; }
+  .mock-finder .mf-select { background: #fff; border: 1px solid #c9c9c9; border-radius: 4px; padding: 3px 6px; }
+  .mock-finder .mf-btn { background: #f0f0f0; border: 1px solid #b9b9b9; border-radius: 4px; padding: 2px 8px; text-align: center; }
+  .mock-linux { background: #242424; border: 1px solid #3a3a3a; border-radius: 8px; overflow: hidden; font-family: var(--mono); font-size: 10.5px; color: #e6e6e6; margin-top: 6px; }
+  .mock-linux .ml-title { background: #303030; padding: 6px 10px; font-family: var(--sans); font-size: 10.5px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; }
+  .mock-linux pre { margin: 0; padding: 10px; white-space: pre-wrap; word-break: break-all; }
+  .mock-linux .k { color: #8ab4f8; }
+  .mock-mac { background: #1e1e1e; border: 1px solid #3a3a3a; border-radius: 10px; overflow: hidden; font-family: var(--mono); font-size: 10.5px; color: #e6e6e6; margin-top: 6px; }
+  .mock-mac .mm-title { background: #2d2d2d; padding: 7px 10px; font-family: var(--sans); font-size: 10.5px; color: #cfcfcf; border-bottom: 1px solid #3a3a3a; display: flex; align-items: center; gap: 7px; }
+  .mock-mac .lights { display: inline-flex; gap: 4px; }
+  .mock-mac .lights i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .mock-mac .lights i:nth-child(1) { background: #ff5f57; }
+  .mock-mac .lights i:nth-child(2) { background: #febc2e; }
+  .mock-mac .lights i:nth-child(3) { background: #28c840; }
+  .mock-mac pre { margin: 0; padding: 10px; white-space: pre-wrap; word-break: break-all; }
+  .mock-mac .term { border-top: 1px solid #3a3a3a; padding: 8px 10px; color: #9fe870; }
+  .mock-win { background: #f3f3f3; color: #1b1b1b; border-radius: 8px; overflow: hidden; font-family: "Segoe UI", sans-serif; font-size: 11px; border: 1px solid #cfcfcf; }
+  .mock-title { background: #e9e9e9; padding: 8px 10px; font-weight: 600; font-size: 11px; border-bottom: 1px solid #d6d6d6; }
+  .mock-tabs { display: flex; gap: 2px; padding: 4px 6px 0; background: #ececec; border-bottom: 1px solid #d6d6d6; font-size: 9.5px; }
+  .mock-tabs span { padding: 4px 6px; border-radius: 4px 4px 0 0; color: #555; }
+  .mock-tabs .on { background: #f3f3f3; color: #111; font-weight: 600; }
+  .mock-row { display: grid; grid-template-columns: 78px 1fr; gap: 8px; padding: 7px 10px; border-bottom: 1px solid #e2e2e2; align-items: center; }
+  .mock-row span { color: #444; }
+  .mock-row code { background: #fff; border: 1px solid #c9c9c9; border-radius: 3px; padding: 3px 5px; color: #111; font-size: 10px; white-space: normal; word-break: break-all; display: block; }
+  .mock-row b { color: #0b57d0; font-weight: 600; }
+  .mock-foot { padding: 8px 10px; text-align: right; background: #ececec; }
+  .mock-foot i { display: inline-block; padding: 3px 10px; background: #f7f7f7; border: 1px solid #b9b9b9; border-radius: 3px; font-style: normal; font-size: 9.5px; }
+  .cmd { background: #0b0d12; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-family: var(--mono); font-size: 11.5px; color: #cfd4df; white-space: pre; overflow-x: auto; }
+  .os-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+  .os-card { border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: var(--panel); display: flex; flex-direction: column; }
+  .os-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .os-head svg { width: 22px; height: 22px; color: #cfd4df; flex: none; }
+  .os-head h3 { margin: 0; font-size: 16px; }
+  .os-card p { margin: 0 0 10px; color: var(--muted); font-size: 13.5px; }
+  .os-card ol { margin: 0 0 8px; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+  .os-card li { margin-bottom: 6px; }
+  .os-card .small { color: var(--muted-2); font-size: 12px; margin: 8px 0 0; }
+  .cta-sm { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 8px; background: var(--silver); color: #0a0b0e; font-weight: 700; font-size: 13.5px; margin: 2px 0 12px; }
+  .cta-sm:hover { transform: translateY(-1px); }
+  .setup { background: linear-gradient(180deg, #141821, #0e1118); border: 1px solid #2b3242; border-radius: 20px; padding: 30px; margin: 10px 0 26px; box-shadow: 0 24px 70px rgba(0,0,0,.38); }
+  .kicker { text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; font-weight: 700; color: #9cc4ff; }
+  .setup h2 { font-size: clamp(26px, 3.4vw, 34px); margin: 10px 0 10px; letter-spacing: -.03em; }
+  .lead2 { color: var(--muted); max-width: 660px; margin: 0 0 22px; }
+  .cta { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 24px; border-radius: 11px; background: var(--silver); color: #0a0b0e; font-weight: 700; font-size: 15.5px; box-shadow: 0 10px 34px rgba(200,210,235,.18); transition: transform .15s, box-shadow .15s; }
+  .cta:hover { transform: translateY(-1px); box-shadow: 0 14px 42px rgba(200,210,235,.26); }
+  .cta-note { display: block; color: var(--muted-2); font-size: 12.5px; margin-top: 10px; }
+  .steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 26px 0 8px; }
+  .step3 { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .step3 .n { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--silver); color: #0a0b0e; font-weight: 700; font-size: 13px; margin-bottom: 10px; }
+  .step3 strong { display: block; font-size: 14.5px; margin-bottom: 4px; }
+  .step3 p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .os-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .os-card { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; background: var(--panel); }
+  .os-card h3 { margin: 0 0 6px; font-size: 14.5px; }
+  .os-card p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .os-card code { display: inline-block; margin-top: 8px; font-size: 12.5px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .num { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-weight: 700; font-size: 14px; color: #0a0b0e; background: var(--silver); margin-bottom: 14px; }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .browsers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 24px 0; }
+  .b-card { display: flex; align-items: center; gap: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; transition: border-color .18s, background .18s, transform .18s; }
+  .b-card:hover { border-color: #3a4152; background: var(--panel-2); transform: translateY(-1px); }
+  .b-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-weight: 700; font-size: 15px; color: #0a0b0e; background: #fff; flex: none; background-size: 26px 26px; background-position: center; background-repeat: no-repeat; }
+  .b-ico.chromium { background: var(--silver); }
+  .b-ico.edge { background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImIiIGN4PSIxNjEuOCIgY3k9IjY4LjkiIHI9Ijk1LjQiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLS45NSAwIDI0OC44KSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iLjciIHN0b3Atb3BhY2l0eT0iMCIvPjxzdG9wIG9mZnNldD0iLjkiIHN0b3Atb3BhY2l0eT0iLjUiLz48c3RvcCBvZmZzZXQ9IjEiLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0iZCIgY3g9Ii0zNDAuMyIgY3k9IjYzIiByPSIxNDMuMiIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCguMTUgLS45OSAtLjggLS4xMiAxNzYuNiAtMTI1LjQpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIuOCIgc3RvcC1vcGFjaXR5PSIwIi8+PHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1vcGFjaXR5PSIuNSIvPjxzdG9wIG9mZnNldD0iMSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJlIiBjeD0iMTEzLjQiIGN5PSI1NzAuMiIgcj0iMjAyLjQiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoLS4wNCAxIDIuMTMgLjA4IC0xMTc5LjUgLTEwNi43KSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzM1YzFmMSIvPjxzdG9wIG9mZnNldD0iLjEiIHN0b3AtY29sb3I9IiMzNGMxZWQiLz48c3RvcCBvZmZzZXQ9Ii4yIiBzdG9wLWNvbG9yPSIjMmZjMmRmIi8+PHN0b3Agb2Zmc2V0PSIuMyIgc3RvcC1jb2xvcj0iIzJiYzNkMiIvPjxzdG9wIG9mZnNldD0iLjciIHN0b3AtY29sb3I9IiMzNmM3NTIiLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0iZiIgY3g9IjM3Ni41IiBjeT0iNTY4IiByPSI5Ny4zIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KC4yOCAuOTYgLjc4IC0uMjMgLTMwMy44IC0xNDguNSkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2NmViNmUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM2NmViNmUiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iNjMuMyIgeTE9Ijg0IiB4Mj0iMjQxLjciIHkyPSI4NCIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAwIDI2NikiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwYzU5YTQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxMTRhOGIiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iYyIgeDE9IjE1Ny4zIiB5MT0iMTYxLjQiIHgyPSI0NiIgeTI9IjQwLjEiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSAwIDAgLTEgMCAyNjYpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMWI5ZGUyIi8+PHN0b3Agb2Zmc2V0PSIuMiIgc3RvcC1jb2xvcj0iIzE1OTVkZiIvPjxzdG9wIG9mZnNldD0iLjciIHN0b3AtY29sb3I9IiMwNjgwZDciLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMDc4ZDQiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMjM1LjcgMTk1LjVhOTMuNyA5My43IDAgMCAxLTEwLjYgNC43IDEwMS45IDEwMS45IDAgMCAxLTM1LjkgNi40Yy00Ny4zIDAtODguNS0zMi41LTg4LjUtNzQuM2EzMS41IDMxLjUgMCAwIDEgMTYuNC0yNy4zYy00Mi44IDEuOC01My44IDQ2LjQtNTMuOCA3Mi41IDAgNzQgNjguMSA4MS40IDgyLjggODEuNCA3LjkgMCAxOS44LTIuMyAyNy00LjZsMS4zLS40YTEyOC4zIDEyOC4zIDAgMCAwIDY2LjYtNTIuOCA0IDQgMCAwIDAtNS4zLTUuNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00LjYgLTUpIiBzdHlsZT0iZmlsbDp1cmwoI2EpIi8+PHBhdGggZD0iTTIzNS43IDE5NS41YTkzLjcgOTMuNyAwIDAgMS0xMC42IDQuNyAxMDEuOSAxMDEuOSAwIDAgMS0zNS45IDYuNGMtNDcuMyAwLTg4LjUtMzIuNS04OC41LTc0LjNhMzEuNSAzMS41IDAgMCAxIDE2LjQtMjcuM2MtNDIuOCAxLjgtNTMuOCA0Ni40LTUzLjggNzIuNSAwIDc0IDY4LjEgODEuNCA4Mi44IDgxLjQgNy45IDAgMTkuOC0yLjMgMjctNC42bDEuMy0uNGExMjguMyAxMjguMyAwIDAgMCA2Ni42LTUyLjggNCA0IDAgMCAwLTUuMy01LjZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC42IC01KSIgc3R5bGU9Imlzb2xhdGlvbjppc29sYXRlO29wYWNpdHk6LjM1O2ZpbGw6dXJsKCNiKSIvPjxwYXRoIGQ9Ik0xMTAuMyAyNDYuM0E3OS4yIDc5LjIgMCAwIDEgODcuNiAyMjVhODAuNyA4MC43IDAgMCAxIDI5LjUtMTIwYzMuMi0xLjUgOC41LTQuMSAxNS42LTRhMzIuNCAzMi40IDAgMCAxIDI1LjcgMTMgMzEuOSAzMS45IDAgMCAxIDYuMyAxOC43YzAtLjIgMjQuNS03OS42LTgwLTc5LjYtNDMuOSAwLTgwIDQxLjYtODAgNzguMmExMzAuMiAxMzAuMiAwIDAgMCAxMi4xIDU2IDEyOCAxMjggMCAwIDAgMTU2LjQgNjcgNzUuNSA3NS41IDAgMCAxLTYyLjgtOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00LjYgLTUpIiBzdHlsZT0iZmlsbDp1cmwoI2MpIi8+PHBhdGggZD0iTTExMC4zIDI0Ni4zQTc5LjIgNzkuMiAwIDAgMSA4Ny42IDIyNWE4MC43IDgwLjcgMCAwIDEgMjkuNS0xMjBjMy4yLTEuNSA4LjUtNC4xIDE1LjYtNGEzMi40IDMyLjQgMCAwIDEgMjUuNyAxMyAzMS45IDMxLjkgMCAwIDEgNi4zIDE4LjdjMC0uMiAyNC41LTc5LjYtODAtNzkuNi00My45IDAtODAgNDEuNi04MCA3OC4yYTEzMC4yIDEzMC4yIDAgMCAwIDEyLjEgNTYgMTI4IDEyOCAwIDAgMCAxNTYuNCA2NyA3NS41IDc1LjUgMCAwIDEtNjIuOC04WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQuNiAtNSkiIHN0eWxlPSJvcGFjaXR5Oi40MTtmaWxsOnVybCgjZCk7aXNvbGF0aW9uOmlzb2xhdGUiLz48cGF0aCBkPSJNMTU3IDE1My44Yy0uOSAxLTMuNCAyLjUtMy40IDUuNiAwIDIuNiAxLjcgNS4yIDQuOCA3LjMgMTQuMyAxMCA0MS40IDguNiA0MS41IDguNmE1OS42IDU5LjYgMCAwIDAgMzAuMy04LjMgNjEuNCA2MS40IDAgMCAwIDMwLjQtNTIuOWMuMy0yMi40LTgtMzcuMy0xMS4zLTQzLjlDMjI4IDI4LjggMTgyLjMgNSAxMzIuNiA1YTEyOCAxMjggMCAwIDAtMTI4IDEyNi4yYy41LTM2LjUgMzYuOC02NiA4MC02NiAzLjUgMCAyMy41LjMgNDIgMTBhNzIuNiA3Mi42IDAgMCAxIDMwLjkgMjkuM2M2LjEgMTAuNiA3LjIgMjQuMSA3LjIgMjkuNXMtMi43IDEzLjMtNy44IDE5LjlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC42IC01KSIgc3R5bGU9ImZpbGw6dXJsKCNlKSIvPjxwYXRoIGQ9Ik0xNTcgMTUzLjhjLS45IDEtMy40IDIuNS0zLjQgNS42IDAgMi42IDEuNyA1LjIgNC44IDcuMyAxNC4zIDEwIDQxLjQgOC42IDQxLjUgOC42YTU5LjYgNTkuNiAwIDAgMCAzMC4zLTguMyA2MS40IDYxLjQgMCAwIDAgMzAuNC01Mi45Yy4zLTIyLjQtOC0zNy4zLTExLjMtNDMuOUMyMjggMjguOCAxODIuMyA1IDEzMi42IDVhMTI4IDEyOCAwIDAgMC0xMjggMTI2LjJjLjUtMzYuNSAzNi44LTY2IDgwLTY2IDMuNSAwIDIzLjUuMyA0MiAxMGE3Mi42IDcyLjYgMCAwIDEgMzAuOSAyOS4zYzYuMSAxMC42IDcuMiAyNC4xIDcuMiAyOS41cy0yLjcgMTMuMy03LjggMTkuOVoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00LjYgLTUpIiBzdHlsZT0iZmlsbDp1cmwoI2YpIi8+PC9zdmc+Cg=="); }
+  .b-ico.chrome { background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNDggNDgiIGhlaWdodD0iNDgiIHdpZHRoPSI0OCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMy4yMTczIiB5MT0iMTUiIHgyPSI0NC43ODEyIiB5Mj0iMTUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNkOTMwMjUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNlYTQzMzUiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDE9IjIwLjcyMTkiIHkxPSI0Ny42NzkxIiB4Mj0iNDEuNTAzOSIgeTI9IjExLjY4MzciIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmY2M5MzQiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNmYmJjMDQiLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iYyIgeDE9IjI2LjU5ODEiIHkxPSI0Ni41MDE1IiB4Mj0iNS44MTYxIiB5Mj0iMTAuNTA2IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMWU4ZTNlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMzRhODUzIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PGNpcmNsZSBjeD0iMjQiIGN5PSIyMy45OTQ3IiByPSIxMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0zLjIxNTQsMzZBMjQsMjQsMCwxLDAsMTIsMy4yMTU0LDI0LDI0LDAsMCwwLDMuMjE1NCwzNlpNMzQuMzkyMywxOEExMiwxMiwwLDEsMSwxOCwxMy42MDc3LDEyLDEyLDAsMCwxLDM0LjM5MjMsMThaIiBzdHlsZT0iZmlsbDpub25lIi8+PHBhdGggZD0iTTI0LDEySDQ0Ljc4MTJhMjMuOTkzOSwyMy45OTM5LDAsMCwwLTQxLjU2MzkuMDAyOUwxMy42MDc5LDMwbC4wMDkzLS4wMDI0QTExLjk4NTIsMTEuOTg1MiwwLDAsMSwyNCwxMloiIHN0eWxlPSJmaWxsOnVybCgjYSkiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjI0IiByPSI5LjUiIHN0eWxlPSJmaWxsOiMxYTczZTgiLz48cGF0aCBkPSJNMzQuMzkxMywzMC4wMDI5LDI0LjAwMDcsNDhBMjMuOTk0LDIzLjk5NCwwLDAsMCw0NC43OCwxMi4wMDMxSDIzLjk5ODlsLS4wMDI1LjAwOTNBMTEuOTg1LDExLjk4NSwwLDAsMSwzNC4zOTEzLDMwLjAwMjlaIiBzdHlsZT0iZmlsbDp1cmwoI2IpIi8+PHBhdGggZD0iTTEzLjYwODYsMzAuMDAzMSwzLjIxOCwxMi4wMDZBMjMuOTk0LDIzLjk5NCwwLDAsMCwyNC4wMDI1LDQ4TDM0LjM5MzEsMzAuMDAyOWwtLjAwNjctLjAwNjhhMTEuOTg1MiwxMS45ODUyLDAsMCwxLTIwLjc3NzguMDA3WiIgc3R5bGU9ImZpbGw6dXJsKCNjKSIvPjwvc3ZnPg=="); }
+  .b-ico.firefox { background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIj48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9ImciIGN4PSIyMTAlIiBjeT0iLTEwMCUiIHI9IjI5MCUiPjxzdG9wIG9mZnNldD0iLjEiIHN0b3AtY29sb3I9IiNmZmUyMjYiLz48c3RvcCBvZmZzZXQ9Ii43OSIgc3RvcC1jb2xvcj0iI2ZmNzEzOSIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJjIiBjeD0iNDklIiBjeT0iNDAlIiByPSIxMjglIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KC44MiAwIDAgMSAuMDg4IDApIj48c3RvcCBvZmZzZXQ9Ii4zIiBzdG9wLWNvbG9yPSIjOTYwZTE4Ii8+PHN0b3Agb2Zmc2V0PSIuMzUiIHN0b3AtY29sb3I9IiNiMTE5MjciIHN0b3Atb3BhY2l0eT0iLjc0Ii8+PHN0b3Agb2Zmc2V0PSIuNDMiIHN0b3AtY29sb3I9IiNkYjI5M2QiIHN0b3Atb3BhY2l0eT0iLjM0Ii8+PHN0b3Agb2Zmc2V0PSIuNSIgc3RvcC1jb2xvcj0iI2Y1MzM0YiIgc3RvcC1vcGFjaXR5PSIuMDkiLz48c3RvcCBvZmZzZXQ9Ii41MyIgc3RvcC1jb2xvcj0iI2ZmMzc1MCIgc3RvcC1vcGFjaXR5PSIwIi8+PC9yYWRpYWxHcmFkaWVudD48cmFkaWFsR3JhZGllbnQgaWQ9ImQiIGN4PSI0OCUiIGN5PSItMTIlIiByPSIxNDAlIj48c3RvcCBvZmZzZXQ9Ii4xMyIgc3RvcC1jb2xvcj0iI2ZmZjQ0ZiIvPjxzdG9wIG9mZnNldD0iLjUzIiBzdG9wLWNvbG9yPSIjZmY5ODBlIi8+PC9yYWRpYWxHcmFkaWVudD48cmFkaWFsR3JhZGllbnQgaWQ9ImUiIGN4PSIyMi43NiUiIGN5PSIxMTAuMTElIiByPSIxMDAlIj48c3RvcCBvZmZzZXQ9Ii4zNSIgc3RvcC1jb2xvcj0iIzNhOGVlNiIvPjxzdG9wIG9mZnNldD0iLjY3IiBzdG9wLWNvbG9yPSIjOTA1OWZmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjYzEzOWU2Ii8+PC9yYWRpYWxHcmFkaWVudD48cmFkaWFsR3JhZGllbnQgaWQ9ImYiIGN4PSI1MiUiIGN5PSIzMyUiIHI9IjU5JSIgZ3JhZGllbnRUcmFuc2Zvcm09InNjYWxlKC45IDEpIj48c3RvcCBvZmZzZXQ9Ii4yMSIgc3RvcC1jb2xvcj0iIzkwNTlmZiIgc3RvcC1vcGFjaXR5PSIwIi8+PHN0b3Agb2Zmc2V0PSIuOTciIHN0b3AtY29sb3I9IiM2ZTAwOGIiIHN0b3Atb3BhY2l0eT0iLjYiLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0iYiIgY3g9Ijg3LjQlIiBjeT0iLTEyLjklIiByPSIxMjglIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KC44IDAgMCAxIC4xNzggLjEyOSkiPjxzdG9wIG9mZnNldD0iLjEzIiBzdG9wLWNvbG9yPSIjZmZiZDRmIi8+PHN0b3Agb2Zmc2V0PSIuMjgiIHN0b3AtY29sb3I9IiNmZjk4MGUiLz48c3RvcCBvZmZzZXQ9Ii40NyIgc3RvcC1jb2xvcj0iI2ZmMzc1MCIvPjxzdG9wIG9mZnNldD0iLjc4IiBzdG9wLWNvbG9yPSIjZWIwODc4Ii8+PHN0b3Agb2Zmc2V0PSIuODYiIHN0b3AtY29sb3I9IiNlNTAwODAiLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0iaCIgY3g9Ijg0JSIgY3k9Ii00MSUiIHI9IjE4MCUiPjxzdG9wIG9mZnNldD0iLjExIiBzdG9wLWNvbG9yPSIjZmZmNDRmIi8+PHN0b3Agb2Zmc2V0PSIuNDYiIHN0b3AtY29sb3I9IiNmZjk4MGUiLz48c3RvcCBvZmZzZXQ9Ii43MiIgc3RvcC1jb2xvcj0iI2ZmMzY0NyIvPjxzdG9wIG9mZnNldD0iLjkiIHN0b3AtY29sb3I9IiNlMzE1ODciLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0iaSIgY3g9IjE2LjElIiBjeT0iLTE4LjYlIiByPSIzNDguOCUiIGdyYWRpZW50VHJhbnNmb3JtPSJzY2FsZSgxIC40Nykgcm90YXRlKDg0IC4yNzkgLS4yOTcpIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmY0NGYiLz48c3RvcCBvZmZzZXQ9Ii4zIiBzdG9wLWNvbG9yPSIjZmY5ODBlIi8+PHN0b3Agb2Zmc2V0PSIuNTciIHN0b3AtY29sb3I9IiNmZjM2NDciLz48c3RvcCBvZmZzZXQ9Ii43NCIgc3RvcC1jb2xvcj0iI2UzMTU4NyIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJqIiBjeD0iMTguOSUiIGN5PSItNDIuNSUiIHI9IjIzOC40JSI+PHN0b3Agb2Zmc2V0PSIuMTQiIHN0b3AtY29sb3I9IiNmZmY0NGYiLz48c3RvcCBvZmZzZXQ9Ii40OCIgc3RvcC1jb2xvcj0iI2ZmOTgwZSIvPjxzdG9wIG9mZnNldD0iLjY2IiBzdG9wLWNvbG9yPSIjZmYzNjQ3Ii8+PHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iI2UzMTU4NyIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJrIiBjeD0iMTU5LjMlIiBjeT0iLTQ0LjcyJSIgcj0iMzEzLjElIj48c3RvcCBvZmZzZXQ9Ii4wOSIgc3RvcC1jb2xvcj0iI2ZmZjQ0ZiIvPjxzdG9wIG9mZnNldD0iLjYzIiBzdG9wLWNvbG9yPSIjZmY5ODBlIi8+PC9yYWRpYWxHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSI4Ny4yNSUiIHkxPSIxNS41JSIgeDI9IjkuNCUiIHkyPSI5My4xJSI+PHN0b3Agb2Zmc2V0PSIuMDUiIHN0b3AtY29sb3I9IiNmZmY0NGYiLz48c3RvcCBvZmZzZXQ9Ii4zNyIgc3RvcC1jb2xvcj0iI2ZmOTgwZSIvPjxzdG9wIG9mZnNldD0iLjUzIiBzdG9wLWNvbG9yPSIjZmYzNjQ3Ii8+PHN0b3Agb2Zmc2V0PSIuNyIgc3RvcC1jb2xvcj0iI2UzMTU4NyIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsIiB4MT0iODAlIiB5MT0iMTQlIiB4Mj0iMTglIiB5Mj0iODQlIj48c3RvcCBvZmZzZXQ9Ii4xNyIgc3RvcC1jb2xvcj0iI2ZmZjQ0ZiIgc3RvcC1vcGFjaXR5PSIuOCIvPjxzdG9wIG9mZnNldD0iLjYiIHN0b3AtY29sb3I9IiNmZmY0NGYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxwYXRoIGQ9Ik00NzguNzExIDE2Ni4zNTNjLTEwLjQ0NS0yNS4xMjQtMzEuNi01Mi4yNDgtNDguMjEyLTYwLjgyMSAxMy41MiAyNi41MDUgMjEuMzQ1IDUzLjA5MyAyNC4zMzUgNzIuOTM2IDAgLjAzOS4wMTUuMTM2LjA0Ny40QzQyNy43MDYgMTExLjEzNSAzODEuNjI3IDgzLjgyMyAzNDQgMjQuMzU1Yy0xLjktMy4wMDctMy44MDUtNi4wMjItNS42NjEtOS4yYTczLjcxNiA3My43MTYgMCAwMS0yLjY0Ni00Ljk3MkE0My43IDQzLjcgMCAwMTMzMi4xLjY3N2EuNjI2LjYyNiAwIDAwLS41NDYtLjY0NC44MTguODE4IDAgMDAtLjQ1MSAwYy0uMDM0LjAxMi0uMDg0LjA1MS0uMTIuMDY1LS4wNTMuMDIxLS4xMi4wNjktLjE3Ni4xLjAyNy0uMDM2LjA4My0uMTE3LjEtLjEzNi02MC4zNyAzNS4zNTYtODAuODUgMTAwLjc2MS04Mi43MzIgMTMzLjQ4NGExMjAuMjQ5IDEyMC4yNDkgMCAwMC02Ni4xNDIgMjUuNDg4IDcxLjM1NSA3MS4zNTUgMCAwMC02LjIyNS00LjcgMTExLjMzOCAxMTEuMzM4IDAgMDEtLjY3NC01OC43MzJjLTI0LjY4OCAxMS4yNDEtNDMuODkgMjkuMDEtNTcuODUgNDQuN2gtLjExMWMtOS41MjctMTIuMDY3LTguODU1LTUxLjg3My04LjMxMi02MC4xODQtLjExNC0uNTE1LTcuMTA3IDMuNjMtOC4wMjMgNC4yNTVhMTc1LjA3MyAxNzUuMDczIDAgMDAtMjMuNDg2IDIwLjEyIDIxMC40NzggMjEwLjQ3OCAwIDAwLTIyLjQ0MiAyNi45MTNjMCAuMDEyLS4wMDcuMDI2LS4wMTEuMDM4IDAtLjAxMy4wMDctLjAyNi4wMTEtLjAzOGEyMDIuODM4IDIwMi44MzggMCAwMC0zMi4yNDcgNzIuODA1Yy0uMTE1LjUyMS0uMjEyIDEuMDYxLS4zMjQgMS41ODYtLjQ1MiAyLjExNi0yLjA4IDEyLjctMi4zNjUgMTUtLjAyMi4xNzctLjAzMi4zNDctLjA1My41MjRhMjI5LjA2NiAyMjkuMDY2IDAgMDAtMy45IDMzLjE1N2MwIC40MS0uMDI1LjgxNi0uMDI1IDEuMjI3QzE2IDM4OC40MTggMTIzLjYgNDk2IDI1Ni4zMjQgNDk2YzExOC44NjUgMCAyMTcuNTYtODYuMjg4IDIzNi44ODItMTk5LjYzLjQwNy0zLjA3Ni43MzMtNi4xNjggMS4wOTItOS4yNzEgNC43NzctNDEuMjEtLjUzLTg0LjUyNS0xNS41ODctMTIwLjc0NnpNMjAxLjcxNiAzNTQuNDQ3YzEuMTI0LjUzNyAyLjE4IDEuMTI0IDMuMzM0IDEuNjM5LjA0OC4wMzMuMTE0LjA3LjE2My4xYTEyNi4xOTEgMTI2LjE5MSAwIDAxLTMuNDk3LTEuNzM5em01NS4wNTMtMTQ0Ljkzem0xOTguMTMxLTMwLjU5bC0uMDMyLS4yMzNjLjAxMi4wODUuMDI3LjE3NC4wNC4yNTl6IiBmaWxsPSJ1cmwoI2EpIi8+PHBhdGggZD0iTTQ3OC43MTEgMTY2LjM1M2MtMTAuNDQ1LTI1LjEyNC0zMS42LTUyLjI0OC00OC4yMTItNjAuODIxIDEzLjUyIDI2LjUwNSAyMS4zNDUgNTMuMDkzIDI0LjMzNSA3Mi45MzYgMC0uMDU4LjAxMS4wNDguMDM2LjIyNi4wMTIuMDg1LjAyNy4xNzQuMDQuMjU5IDIyLjY3NSA2MS40NyAxMC4zMjIgMTIzLjk3OC03LjQ3OSAxNjIuMTc1LTI3LjUzOSA1OS4xLTk0LjIxNSAxMTkuNjctMTk4LjU3NiAxMTYuNzE2QzEzNi4xIDQ1NC42NTEgMzYuNzY2IDM3MC45ODggMTguMjIzIDI2MS40MWMtMy4zNzktMTcuMjggMC0yNi4wNTQgMS43LTQwLjA4NC0yLjA3MSAxMC44MTYtMi44NiAxMy45NC0zLjkgMzMuMTU3IDAgLjQxLS4wMjUuODE2LS4wMjUgMS4yMjdDMTYgMzg4LjQxOCAxMjMuNiA0OTYgMjU2LjMyNCA0OTZjMTE4Ljg2NSAwIDIxNy41Ni04Ni4yODggMjM2Ljg4Mi0xOTkuNjMuNDA3LTMuMDc2LjczMy02LjE2OCAxLjA5Mi05LjI3MSA0Ljc3Ny00MS4yMS0uNTMtODQuNTI1LTE1LjU4Ny0xMjAuNzQ2eiIgZmlsbD0idXJsKCNiKSIvPjxwYXRoIGQ9Ik00NzguNzExIDE2Ni4zNTNjLTEwLjQ0NS0yNS4xMjQtMzEuNi01Mi4yNDgtNDguMjEyLTYwLjgyMSAxMy41MiAyNi41MDUgMjEuMzQ1IDUzLjA5MyAyNC4zMzUgNzIuOTM2IDAtLjA1OC4wMTEuMDQ4LjAzNi4yMjYuMDEyLjA4NS4wMjcuMTc0LjA0LjI1OSAyMi42NzUgNjEuNDcgMTAuMzIyIDEyMy45NzgtNy40NzkgMTYyLjE3NS0yNy41MzkgNTkuMS05NC4yMTUgMTE5LjY3LTE5OC41NzYgMTE2LjcxNkMxMzYuMSA0NTQuNjUxIDM2Ljc2NiAzNzAuOTg4IDE4LjIyMyAyNjEuNDFjLTMuMzc5LTE3LjI4IDAtMjYuMDU0IDEuNy00MC4wODQtMi4wNzEgMTAuODE2LTIuODYgMTMuOTQtMy45IDMzLjE1NyAwIC40MS0uMDI1LjgxNi0uMDI1IDEuMjI3QzE2IDM4OC40MTggMTIzLjYgNDk2IDI1Ni4zMjQgNDk2YzExOC44NjUgMCAyMTcuNTYtODYuMjg4IDIzNi44ODItMTk5LjYzLjQwNy0zLjA3Ni43MzMtNi4xNjggMS4wOTItOS4yNzEgNC43NzctNDEuMjEtLjUzLTg0LjUyNS0xNS41ODctMTIwLjc0NnoiIGZpbGw9InVybCgjYykiLz48cGF0aCBkPSJNMzYxLjkyMiAxOTQuNmMuNTI0LjM2OCAxIC43MzQgMS40OTMgMS4xYTEzMC43MDYgMTMwLjcwNiAwIDAwLTIyLjMxLTI5LjExMkMyNjYuNCA5MS44OTIgMzIxLjUxNiA0LjYyNiAzMzAuODExLjE5NGMuMDI3LS4wMzYuMDgzLS4xMTcuMS0uMTM2LTYwLjM3IDM1LjM1Ni04MC44NSAxMDAuNzYxLTgyLjczMiAxMzMuNDg0IDIuOC0uMTk0IDUuNTkyLS40MjkgOC40NDItLjQyOSA0NS4wNTEgMCA4NC4yODkgMjQuNzcgMTA1LjMwMSA2MS40ODd6IiBmaWxsPSJ1cmwoI2QpIi8+PHBhdGggZD0iTTI1Ni43NzIgMjA5LjUxNGMtLjM5MyA1Ljk3OC0yMS41MTQgMjYuNTkzLTI4LjkgMjYuNTkzLTY4LjMzOSAwLTc5LjQzMiA0MS4zMzUtNzkuNDMyIDQxLjMzNSAzLjAyNyAzNC44MSAyNy4yNjEgNjMuNDc1IDU2LjYxMSA3OC42NDMgMS4zMzkuNjkyIDIuNjk0IDEuMzE3IDQuMDUgMS45MzVhMTMyLjc2OCAxMzIuNzY4IDAgMDA3LjA1OSAyLjg4NiAxMDYuNzQzIDEwNi43NDMgMCAwMDMxLjI3MSA2LjAzMWMxMTkuNzggNS42MTggMTQyLjk4Ni0xNDMuMTk0IDU2LjU0NS0xODYuNDA4IDIyLjEzNy0zLjg1IDQ1LjExNSA1LjA1MyA1Ny45NDcgMTQuMDY3LTIxLjAxMi0zNi43MTQtNjAuMjUtNjEuNDg0LTEwNS4zLTYxLjQ4NC0yLjg1IDAtNS42NDEuMjM1LTguNDQyLjQyOWExMjAuMjQ5IDEyMC4yNDkgMCAwMC02Ni4xNDIgMjUuNDg4YzMuNjY0IDMuMSA3LjggNy4yNDQgMTYuNTE0IDE1LjgyOCAxNi4zMDIgMTYuMDY3IDU4LjEzIDMyLjcwNSA1OC4yMTkgMzQuNjU3eiIgZmlsbD0idXJsKCNlKSIvPjxwYXRoIGQ9Ik0yNTYuNzcyIDIwOS41MTRjLS4zOTMgNS45NzgtMjEuNTE0IDI2LjU5My0yOC45IDI2LjU5My02OC4zMzkgMC03OS40MzIgNDEuMzM1LTc5LjQzMiA0MS4zMzUgMy4wMjcgMzQuODEgMjcuMjYxIDYzLjQ3NSA1Ni42MTEgNzguNjQzIDEuMzM5LjY5MiAyLjY5NCAxLjMxNyA0LjA1IDEuOTM1YTEzMi43NjggMTMyLjc2OCAwIDAwNy4wNTkgMi44ODYgMTA2Ljc0MyAxMDYuNzQzIDAgMDAzMS4yNzEgNi4wMzFjMTE5Ljc4IDUuNjE4IDE0Mi45ODYtMTQzLjE5NCA1Ni41NDUtMTg2LjQwOCAyMi4xMzctMy44NSA0NS4xMTUgNS4wNTMgNTcuOTQ3IDE0LjA2Ny0yMS4wMTItMzYuNzE0LTYwLjI1LTYxLjQ4NC0xMDUuMy02MS40ODQtMi44NSAwLTUuNjQxLjIzNS04LjQ0Mi40MjlhMTIwLjI0OSAxMjAuMjQ5IDAgMDAtNjYuMTQyIDI1LjQ4OGMzLjY2NCAzLjEgNy44IDcuMjQ0IDE2LjUxNCAxNS44MjggMTYuMzAyIDE2LjA2NyA1OC4xMyAzMi43MDUgNTguMjE5IDM0LjY1N3oiIGZpbGw9InVybCgjZikiLz48cGF0aCBkPSJNMTcwLjgyOSAxNTEuMDM2YTI0NC4wNDIgMjQ0LjA0MiAwIDAxNC45ODEgMy4zIDExMS4zMzggMTExLjMzOCAwIDAxLS42NzQtNTguNzMyYy0yNC42ODggMTEuMjQxLTQzLjg5IDI5LjAxLTU3Ljg1IDQ0LjcgMS4xNTUtLjAzMyAzNi4wMTQtLjY2IDUzLjU0MyAxMC43MzJ6IiBmaWxsPSJ1cmwoI2cpIi8+PHBhdGggZD0iTTE4LjIyMyAyNjEuNDFDMzYuNzY2IDM3MC45ODggMTM2LjEgNDU0LjY1MSAyNDguODU1IDQ1Ny44NDRjMTA0LjM2MSAyLjk1NCAxNzEuMDM3LTU3LjYyIDE5OC41NzYtMTE2LjcxNiAxNy44LTM4LjIgMzAuMTU0LTEwMC43IDcuNDc5LTE2Mi4xNzVsLS4wMDgtLjAyNi0uMDMyLS4yMzNjLS4wMjUtLjE3OC0uMDQtLjI4NC0uMDM2LS4yMjYgMCAuMDM5LjAxNS4xMzYuMDQ3LjQgOC41MjQgNTUuNjYxLTE5Ljc5IDEwOS41ODQtNjQuMDUxIDE0Ni4wNDRsLS4xMzMuMzEzYy04Ni4yNDUgNzAuMjIzLTE2OC43NzQgNDIuMzY4LTE4NS40ODQgMzAuOTY2YTE0NC4xMDggMTQ0LjEwOCAwIDAxLTMuNS0xLjc0M2MtNTAuMjgyLTI0LjAyOS03MS4wNTQtNjkuODM4LTY2LjYtMTA5LjEyNC00Mi40NTcgMC01Ni45MzQtMzUuODA5LTU2LjkzNC0zNS44MDlzMzguMTE5LTI3LjE3OSA4OC4zNTgtMy41NDFjNDYuNTMgMjEuODkzIDkwLjIyOCAzLjU0MyA5MC4yMzMgMy41NDEtLjA4OS0xLjk1Mi00MS45MTctMTguNTktNTguMjIzLTM0LjY1Ni04LjcxMy04LjU4NC0xMi44NS0xMi43MjMtMTYuNTE0LTE1LjgyOGE3MS4zNTUgNzEuMzU1IDAgMDAtNi4yMjUtNC43IDI4Mi45MjkgMjgyLjkyOSAwIDAwLTQuOTgxLTMuM2MtMTcuNTI4LTExLjM5Mi01Mi4zODgtMTAuNzY1LTUzLjU0My0xMC43MzVoLS4xMTFjLTkuNTI3LTEyLjA2Ny04Ljg1NS01MS44NzMtOC4zMTItNjAuMTg0LS4xMTQtLjUxNS03LjEwNyAzLjYzLTguMDIzIDQuMjU1YTE3NS4wNzMgMTc1LjA3MyAwIDAwLTIzLjQ4NiAyMC4xMiAyMTAuNDc4IDIxMC40NzggMCAwMC0yMi40NDIgMjYuOTE5YzAgLjAxMi0uMDA3LjAyNi0uMDExLjAzOCAwLS4wMTMuMDA3LS4wMjYuMDExLS4wMzhhMjAyLjgzOCAyMDIuODM4IDAgMDAtMzIuMjQ3IDcyLjgwNWMtLjExNS41MjEtOC42NSAzNy44NDItNC40NCA1Ny4xOTl6IiBmaWxsPSJ1cmwoI2gpIi8+PHBhdGggZD0iTTM0MS4xMDUgMTY2LjU4N2ExMzAuNzA2IDEzMC43MDYgMCAwMTIyLjMxIDI5LjExMmMxLjMyMy45OTQgMi41NTkgMS45ODUgMy42MDggMi45NTIgNTQuNDgyIDUwLjIgMjUuOTM2IDEyMS4yIDIzLjgwNyAxMjYuMjYgNDQuMjYxLTM2LjQ2IDcyLjU3NS05MC4zODMgNjQuMDUxLTE0Ni4wNDRDNDI3LjcwNiAxMTEuMTM1IDM4MS42MjcgODMuODIzIDM0NCAyNC4zNTVjLTEuOS0zLjAwNy0zLjgwNS02LjAyMi01LjY2MS05LjJhNzMuNzE2IDczLjcxNiAwIDAxLTIuNjQ2LTQuOTcyQTQzLjcgNDMuNyAwIDAxMzMyLjEuNjc3YS42MjYuNjI2IDAgMDAtLjU0Ni0uNjQ0LjgxOC44MTggMCAwMC0uNDUxIDBjLS4wMzQuMDEyLS4wODQuMDUxLS4xMi4wNjUtLjA1My4wMjEtLjEyLjA2OS0uMTc2LjEtOS4yOTEgNC40MjgtNjQuNDA3IDkxLjY5NCAxMC4yOTggMTY2LjM4OXoiIGZpbGw9InVybCgjaSkiLz48cGF0aCBkPSJNMzY3LjAyMyAxOTguNjUxYy0xLjA0OS0uOTY3LTIuMjg1LTEuOTU4LTMuNjA4LTIuOTUyLS40ODktLjM2OC0uOTY5LS43MzQtMS40OTMtMS4xLTEyLjgzMi05LjAxNC0zNS44MS0xNy45MTctNTcuOTQ3LTE0LjA2NyA4Ni40NDEgNDMuMjE0IDYzLjIzNSAxOTIuMDI2LTU2LjU0NSAxODYuNDA4YTEwNi43NDMgMTA2Ljc0MyAwIDAxLTMxLjI3MS02LjAzMSAxMzQuNTEgMTM0LjUxIDAgMDEtNy4wNTktMi44ODZjLTEuMzU2LS42MTgtMi43MTEtMS4yNDMtNC4wNS0xLjkzNS4wNDguMDMzLjExNC4wNy4xNjMuMSAxNi43MSAxMS40IDk5LjIzOSAzOS4yNTcgMTg1LjQ4NC0zMC45NjZsLjEzMy0uMzEzYzIuMTI5LTUuMDU0IDMwLjY3NS03Ni4wNTctMjMuODA3LTEyNi4yNTh6IiBmaWxsPSJ1cmwoI2opIi8+PHBhdGggZD0iTTE0OC40MzkgMjc3LjQ0M3MxMS4wOTMtNDEuMzM1IDc5LjQzMi00MS4zMzVjNy4zODggMCAyOC41MDktMjAuNjE1IDI4LjktMjYuNTkzcy00My43IDE4LjM1Mi05MC4yMzMtMy41NDFjLTUwLjIzOS0yMy42MzgtODguMzU4IDMuNTQxLTg4LjM1OCAzLjU0MXMxNC40NzcgMzUuODA5IDU2LjkzNCAzNS44MDljLTQuNDUzIDM5LjI4NiAxNi4zMTkgODUuMSA2Ni42IDEwOS4xMjQgMS4xMjQuNTM3IDIuMTggMS4xMjQgMy4zMzQgMS42MzktMjkuMzQ4LTE1LjE2OS01My41ODItNDMuODM0LTU2LjYwOS03OC42NDR6IiBmaWxsPSJ1cmwoI2spIi8+PHBhdGggZD0iTTQ3OC43MTEgMTY2LjM1M2MtMTAuNDQ1LTI1LjEyNC0zMS42LTUyLjI0OC00OC4yMTItNjAuODIxIDEzLjUyIDI2LjUwNSAyMS4zNDUgNTMuMDkzIDI0LjMzNSA3Mi45MzYgMCAuMDM5LjAxNS4xMzYuMDQ3LjRDNDI3LjcwNiAxMTEuMTM1IDM4MS42MjcgODMuODIzIDM0NCAyNC4zNTVjLTEuOS0zLjAwNy0zLjgwNS02LjAyMi01LjY2MS05LjJhNzMuNzE2IDczLjcxNiAwIDAxLTIuNjQ2LTQuOTcyQTQzLjcgNDMuNyAwIDAxMzMyLjEuNjc3YS42MjYuNjI2IDAgMDAtLjU0Ni0uNjQ0LjgxOC44MTggMCAwMC0uNDUxIDBjLS4wMzQuMDEyLS4wODQuMDUxLS4xMi4wNjUtLjA1My4wMjEtLjEyLjA2OS0uMTc2LjEuMDI3LS4wMzYuMDgzLS4xMTcuMS0uMTM2LTYwLjM3IDM1LjM1Ni04MC44NSAxMDAuNzYxLTgyLjczMiAxMzMuNDg0IDIuOC0uMTk0IDUuNTkyLS40MjkgOC40NDItLjQyOSA0NS4wNTMgMCA4NC4yOTEgMjQuNzcgMTA1LjMgNjEuNDg0LTEyLjgzMi05LjAxNC0zNS44MS0xNy45MTctNTcuOTQ3LTE0LjA2NyA4Ni40NDEgNDMuMjE0IDYzLjIzNSAxOTIuMDI2LTU2LjU0NSAxODYuNDA4YTEwNi43NDMgMTA2Ljc0MyAwIDAxLTMxLjI3MS02LjAzMSAxMzQuNTEgMTM0LjUxIDAgMDEtNy4wNTktMi44ODZjLTEuMzU2LS42MTgtMi43MTEtMS4yNDMtNC4wNS0xLjkzNS4wNDguMDMzLjExNC4wNy4xNjMuMWExNDQuMTA4IDE0NC4xMDggMCAwMS0zLjUtMS43NDNjMS4xMjQuNTM3IDIuMTggMS4xMjQgMy4zMzQgMS42MzktMjkuMzUtMTUuMTY4LTUzLjU4NC00My44MzMtNTYuNjExLTc4LjY0MyAwIDAgMTEuMDkzLTQxLjMzNSA3OS40MzItNDEuMzM1IDcuMzg4IDAgMjguNTA5LTIwLjYxNSAyOC45LTI2LjU5My0uMDg5LTEuOTUyLTQxLjkxNy0xOC41OS01OC4yMjMtMzQuNjU2LTguNzEzLTguNTg0LTEyLjg1LTEyLjcyMy0xNi41MTQtMTUuODI4YTcxLjM1NSA3MS4zNTUgMCAwMC02LjIyNS00LjcgMTExLjMzOCAxMTEuMzM4IDAgMDEtLjY3NC01OC43MzJjLTI0LjY4OCAxMS4yNDEtNDMuODkgMjkuMDEtNTcuODUgNDQuN2gtLjExMWMtOS41MjctMTIuMDY3LTguODU1LTUxLjg3My04LjMxMi02MC4xODQtLjExNC0uNTE1LTcuMTA3IDMuNjMtOC4wMjMgNC4yNTVhMTc1LjA3MyAxNzUuMDczIDAgMDAtMjMuNDg2IDIwLjEyIDIxMC40NzggMjEwLjQ3OCAwIDAwLTIyLjQzNSAyNi45MTZjMCAuMDEyLS4wMDcuMDI2LS4wMTEuMDM4IDAtLjAxMy4wMDctLjAyNi4wMTEtLjAzOGEyMDIuODM4IDIwMi44MzggMCAwMC0zMi4yNDcgNzIuODA1Yy0uMTE1LjUyMS0uMjEyIDEuMDYxLS4zMjQgMS41ODYtLjQ1MiAyLjExNi0yLjQ4NiAxMi44NTMtMi43NyAxNS4xNTYtLjAyMi4xNzcuMDIxLS4xNzYgMCAwYTI3OS41NjUgMjc5LjU2NSAwIDAwLTMuNTQ0IDMzLjUzYzAgLjQxLS4wMjUuODE2LS4wMjUgMS4yMjdDMTYgMzg4LjQxOCAxMjMuNiA0OTYgMjU2LjMyNCA0OTZjMTE4Ljg2NSAwIDIxNy41Ni04Ni4yODggMjM2Ljg4Mi0xOTkuNjMuNDA3LTMuMDc2LjczMy02LjE2OCAxLjA5Mi05LjI3MSA0Ljc3Ny00MS4yMS0uNTMtODQuNTI1LTE1LjU4Ny0xMjAuNzQ2em0tMjMuODQxIDEyLjM0MWMuMDEyLjA4NS4wMjcuMTc0LjA0LjI1OWwtLjAwOC0uMDI2LS4wMzItLjIzM3oiIGZpbGw9InVybCgjbCkiLz48L3N2Zz4="); }
+  .b-ico.brave { background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRkI1NDJCIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QnJhdmU8L3RpdGxlPjxwYXRoIGQ9Ik0xNS42OCAwbDIuMDk2IDIuMzhzMS44NC0uNTEyIDIuNzA5LjM1OGMuODY4Ljg3IDEuNTg0IDEuNjM4IDEuNTg0IDEuNjM4bC0uNTYyIDEuMzgxLjcxNSAyLjA0N3MtMi4xMDQgNy45OC0yLjM1IDguOTU1Yy0uNDg2IDEuOTE5LS44MTggMi42Ni0yLjE5OCAzLjYzMy0xLjM4Ljk3Mi0zLjg4NCAyLjY2LTQuMjkzIDIuOTE2LS40MDkuMjU2LS45Mi42OTItMS4zOC42OTItLjQ2IDAtLjk3LS40MzYtMS4zOC0uNjkyYTE4NS43OTYgMTg1Ljc5NiAwIDAxLTQuMjkzLTIuOTE2Yy0xLjM4LS45NzMtMS43MTItMS43MTQtMi4xOTctMy42MzMtLjI0Ny0uOTc1LTIuMzUxLTguOTU1LTIuMzUxLTguOTU1bC43MTUtMi4wNDctLjU2Mi0xLjM4MXMuNzE2LS43NjggMS41ODUtMS42MzhjLjg2OC0uODcgMi43MDgtLjM1OCAyLjcwOC0uMzU4TDguMzIxIDBoNy4zNnptLTMuNjc5IDE0LjkzNmMtLjE0IDAtMS4wMzguMzE3LTEuNzU4LjY5LS43Mi4zNzMtMS4yNDIuNjM3LTEuNDA5Ljc0Mi0uMTY3LjEwNC0uMDY1LjMwMS4wODcuNDA5LjE1Mi4xMDcgMi4xOTQgMS42OSAyLjM5MyAxLjg2Ni4xOTguMTc1LjQ4OS40NjQuNjg3LjQ2NC4xOTggMCAuNDktLjI5LjY4OC0uNDY0LjE5OC0uMTc1IDIuMjQtMS43NTkgMi4zOTItMS44NjYuMTUyLS4xMDguMjU0LS4zMDUuMDg3LS40MS0uMTY3LS4xMDQtLjY4OS0uMzY4LTEuNDEtLjc0MS0uNzItLjM3My0xLjYxNy0uNjktMS43NTctLjY5em0wLTExLjI3OHMtLjQwOS4wMDEtMS4wMjIuMjA2LTEuMjc4LjQ2LTEuNTg0LjQ2Yy0uMzA3IDAtMi41ODEtLjQzNC0yLjU4MS0uNDM0UzQuMTE5IDcuMTUyIDQuMTE5IDcuODQ5YzAgLjY5Ny4zMzkuODgxLjY4IDEuMjQzbDIuMDIgMi4xNDljLjE5Mi4yMDMuNTkuNTExLjM1NiAxLjA2Ni0uMjM1LjU1NS0uNTggMS4yNi0uMTk2IDEuOTc3LjM4NC43MTYgMS4wNDIgMS4xOTQgMS40NjQgMS4xMTUuNDIxLS4wOCAxLjQxMi0uNTk4IDEuNzc2LS44MzQuMzY0LS4yMzcgMS41MTgtMS4xOSAxLjUxOC0xLjU1NCAwLS4zNjUtMS4xOTMtMS4wMi0xLjQxMy0xLjE2OC0uMjItLjE1LTEuMjI2LS43MjUtMS4yNDctLjk1LS4wMi0uMjI3LS4wMTItLjI5My4yODQtLjg1MS4yOTctLjU1OS44MzEtMS4zMDQuNzQyLTEuOC0uMDg5LS40OTUtLjk1LS43NTMtMS41NjUtLjk4Ni0uNjE1LS4yMzItMS43OTktLjY3MS0xLjk0Ny0uNzQtLjE0OC0uMDY4LS4xMS0uMTMzLjMzOS0uMTc1LjQ0OC0uMDQzIDEuNzE5LS4yMTIgMi4yOTItLjA1Mi41NzMuMTYgMS41NTIuNDAzIDEuNjMyLjUzMi4wNzkuMTMuMTQ5LjEzNC4wNjcuNTc5LS4wODEuNDQ1LS41IDIuNTgxLS41NDEgMi45Ni0uMDQuMzgtLjEyLjYzLjI4OC43MjQuNDA5LjA5NCAxLjA5Ny4yNTYgMS4zMzMuMjU2cy45MjQtLjE2MiAxLjMzMy0uMjU2Yy40MDgtLjA5My4zMjktLjM0NC4yODgtLjcyMy0uMDQtLjM4LS40Ni0yLjUxNi0uNTQxLTIuOTYxLS4wODItLjQ0NS0uMDEyLS40NS4wNjctLjU3OS4wOC0uMTI5IDEuMDU5LS4zNzIgMS42MzItLjUzMi41NzMtLjE2IDEuODQ1LjAwOSAyLjI5Mi4wNTIuNDQ5LjA0Mi40ODcuMTA3LjMzOS4xNzUtLjE0OC4wNjktMS4zMzIuNTA4LTEuOTQ3Ljc0LS42MTUuMjMzLTEuNDc2LjQ5LTEuNTY1Ljk4Ni0uMDkuNDk2LjQ0NSAxLjI0MS43NDIgMS44LjI5Ny41NTguMzA0LjYyNC4yODQuODUtLjAyLjIyNi0xLjAyNi44MDItMS4yNDcuOTUtLjIyLjE1LTEuNDEzLjgwNC0xLjQxMyAxLjE2OSAwIC4zNjQgMS4xNTQgMS4zMTcgMS41MTggMS41NTQuMzY0LjIzNiAxLjM1NS43NTUgMS43NzYuODM0LjQyMi4wNzkgMS4wOC0uNCAxLjQ2NC0xLjExNS4zODQtLjcxNi4wMzktMS40MjItLjE5NS0xLjk3Ny0uMjM1LS41NTUuMTYzLS44NjMuMzU1LTEuMDY2bDIuMDItMi4xNDljLjM0MS0uMzYyLjY4LS41NDYuNjgtMS4yNDMgMC0uNjk3LTIuNjk1LTMuOTYtMi42OTUtMy45NnMtMi4yNzQuNDM2LTIuNTguNDM2Yy0uMzA3IDAtLjk3Mi0uMjU2LTEuNTg1LS40NjEtLjYxMy0uMjA1LTEuMDIyLS4yMDYtMS4wMjItLjIwNnoiLz48L3N2Zz4="); }
+  .b-ico.vivaldi { background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRUYzOTM5IiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+Vml2YWxkaTwvdGl0bGU+PHBhdGggZD0iTTEyIDBDNi43NSAwIDMuODE3IDAgMS45MTIgMS45MDQuMDA3IDMuODEgMCA2Ljc1IDAgMTJzMCA4LjE3NSAxLjkxMiAxMC4wOEMzLjgyNSAyMy45ODUgNi43NSAyNCAxMiAyNGM1LjI1IDAgOC4xODMgMCAxMC4wODgtMS45MDRDMjMuOTkzIDIwLjE5IDI0IDE3LjI1IDI0IDEyczAtOC4xNzUtMS45MTItMTAuMDhDMjAuMTc1LjAxNSAxNy4yNSAwIDEyIDB6bS0uMTY4IDNhOSA5IDAgMDE2LjQ5IDIuNjQ4IDkgOSAwIDAxMCAxMi43MDRBOSA5IDAgMTExMS44MzIgM3pNNy41NjggNy40OTZhMS40MzMgMS40MzMgMCAwMC0uMTQyLjAwNEExLjUgMS41IDAgMDA2LjIxIDkuNzVsMS43MDEgM2MuOTMgMS41ODIgMS44MzkgMy4yMDIgMi43OTEgNC44MjJhMS40MTcgMS40MTcgMCAwMDEuNDEuNzUgMS41IDEuNSAwIDAwMS4yMjMtLjgxbDQuNDQ3LTcuNzYyQTEuNTYgMS41NiAwIDAwMTggOC43NjhhMS41IDEuNSAwIDEwLTIuODI4LjkxNCAyLjUxMyAyLjUxMyAwIDAxLjI1NiAxLjExOXYuMjQ2YTIuMzkzIDIuMzkzIDAgMDEtMi41MiAyLjEzIDIuMzQ4IDIuMzQ4IDAgMDEtMS45NjUtMS4yMTRjLS4zMDctLjUxLS42LTEuMDM1LS45LTEuNTUzLS40Mi0uNzItLjgyNi0xLjQxLTEuMjQ2LTIuMTZhMS40MzMgMS40MzMgMCAwMC0xLjIyOS0uNzU0WiIvPjwvc3ZnPg=="); }
+  .b-ico.opera { background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNzUuNTkxIDc1LjU5MSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxsaW5lYXJHcmFkaWVudCBpZD0iYSIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgwIC01NC45NDQgLTU0Ljk0NCAwIDIzLjYyIDc5LjQ3NCkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4Mj0iMSI+CjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmMWIyZCIvPgo8c3RvcCBvZmZzZXQ9Ii4zIiBzdG9wLWNvbG9yPSIjZmYxYjJkIi8+CjxzdG9wIG9mZnNldD0iLjYxNCIgc3RvcC1jb2xvcj0iI2ZmMWIyZCIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNhNzAwMTQiLz4KPC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJiIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDAgLTQ4LjU5NSAtNDguNTk1IDAgMzcuODU0IDc2LjIzNSkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4Mj0iMSI+CjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzljMDAwMCIvPgo8c3RvcCBvZmZzZXQ9Ii43IiBzdG9wLWNvbG9yPSIjZmY0YjRiIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmNGI0YiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLjMzMzMgMCAwIC0xLjMzMzMgMCAxMDcuMikiPgo8cGF0aCBkPSJtMjguMzQ2IDgwLjM5OGMtMTUuNjU1IDAtMjguMzQ2LTEyLjY5MS0yOC4zNDYtMjguMzQ2IDAtMTUuMjAyIDExLjk2OC0yNy42MDkgMjYuOTk2LTI4LjMxMy40NDg0OC0uMDIxMTUuODk3NjYtLjAzMzE0IDEuMzUwNC0uMDMzMTQgNy4yNTc0IDAgMTMuODc2IDIuNzI4OSAxOC44OTEgNy4yMTM3LTMuMzIyNy0yLjIwMzYtNy4yMDc0LTMuNDcxNS0xMS4zNTktMy40NzE1LTYuNzUwNCAwLTEyLjc5NiAzLjM0ODgtMTYuODYyIDguNjI5Ny0zLjEzNDQgMy42OTk5LTUuMTY0NSA5LjE2OTEtNS4zMDI4IDE1LjMwN3YxLjMzNDljLjEzODIxIDYuMTM3NyAyLjE2ODMgMTEuNjA4IDUuMzAyIDE1LjMwNyA0LjA2NjYgNS4yODA5IDEwLjExMiA4LjYyOTcgMTYuODYyIDguNjI5NyA0LjE1MjYgMCA4LjAzOC0xLjI2NzkgMTEuMzYxLTMuNDcyOS00Ljk5MDQgNC40NjQzLTExLjU2OSA3LjE4NzYtMTguNzg2IDcuMjE0NC0uMDM1OTYgMC0uMDcxMjIuMDAxNC0uMTA3MTguMDAxNHoiIGZpbGw9InVybCgjYSkiLz4KPHBhdGggZD0ibTE5LjAxNiA2OC4wMjVjMi42MDEzIDMuMDcwOSA1Ljk2MDcgNC45MjI3IDkuNjMxIDQuOTIyNyA4LjI1MjQgMCAxNC45NDEtOS4zNTYgMTQuOTQxLTIwLjg5N3MtNi42ODkxLTIwLjg5Ny0xNC45NDEtMjAuODk3Yy0zLjY3MDMgMC03LjAyOTcgMS44NTEtOS42MzAzIDQuOTIyIDQuMDY1OS01LjI4MDkgMTAuMTExLTguNjI5NyAxNi44NjItOC42Mjk3IDQuMTUxOSAwIDguMDM2NiAxLjI2NzkgMTEuMzU5IDMuNDcxNSA1LjgwMiA1LjE5MDYgOS40NTU0IDEyLjczNSA5LjQ1NTQgMjEuMTMzIDAgOC4zOTctMy42NTI3IDE1Ljk0MS05LjQ1MzMgMjEuMTMxLTMuMzIzNCAyLjIwNS03LjIwODggMy40NzI5LTExLjM2MSAzLjQ3MjktNi43NTA0IDAtMTIuNzk2LTMuMzQ4OC0xNi44NjItOC42Mjk3IiBmaWxsPSJ1cmwoI2IpIi8+CjwvZz4KPC9zdmc+"); }
+  .b-txt { display: flex; align-items: center; gap: 10px; width: 100%; }
+  .b-txt strong { font-size: 15px; }
+  .b-use { margin-left: auto; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; color: var(--muted-2); border: 1px solid var(--line); padding: 4px 9px; border-radius: 999px; }
+  .b-card:hover .b-use { color: #0a0b0e; background: var(--silver); border-color: transparent; }
+  html[lang^="pt"] .b-use::after { content: "usar"; }
+  html[lang^="en"] .b-use::after { content: "use"; }
+  .b-arrow { margin-left: auto; color: var(--muted-2); font-size: 18px; }
+  .note { background: rgba(18,20,26,.7); border: 1px solid var(--line); border-left: 3px solid #9cc4ff; border-radius: 10px; padding: 14px 18px; color: var(--muted); margin: 22px 0; font-size: 14.5px; }
+  .note strong { color: var(--text); }
+  .code { background: #0b0d12; border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; font-family: var(--mono); font-size: 13.5px; color: #cfd4df; overflow-x: auto; white-space: pre; }
+  .refresh { margin: -8px 0 0; font-size: 13px; }
+  .refresh a { color: #9cc4ff; }
+  .meta { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted-2); font-size: 13px; margin-top: 18px; }
+  footer { border-top: 1px solid var(--line-soft); margin-top: 30px; padding: 26px 0 40px; color: var(--muted-2); font-size: 13px; }
+  footer a { color: #9cc4ff; }
+  @media (max-width: 760px) {
+    .steps, .browsers, .steps3, .os-grid, .os-cards, .sc-grid { grid-template-columns: 1fr; }
+    .hero { padding-top: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+        <path d="M3 9h18M9.5 9v11"/>
+        <circle cx="6" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>Fenestra</span>
+    </a>
+    <button class="idx-btn" id="tocBtn" type="button" aria-label="Contents">&#9776;<span class="idx-label"></span></button>
+    <div class="lang-menu">
+      <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+        <svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9Z"/></svg>
+        <span id="langCode">PT</span>
+        <span class="lang-chev">&#9662;</span>
+      </button>
+      <div class="lang-pop" id="langPop" role="listbox" aria-label="Language">
+        <button type="button" data-set-lang="en">English</button>
+        <button type="button" data-set-lang="pt">Português</button>
+        <button type="button" data-set-lang="es">Español</button>
+        <button type="button" data-set-lang="fr">Français</button>
+        <button type="button" data-set-lang="de">Deutsch</button>
+        <button type="button" data-set-lang="it">Italiano</button>
+        <button type="button" data-set-lang="nl">Nederlands</button>
+      </div>
+    </div>
+    <a class="gh" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <span>GitHub</span>
+    </a>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+
+  <div data-block="en" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In this manual">
+        <p class="st-title">Menu</p>
+        <a href="#how-en"><span class="n">01</span>How it works</a>
+        <a href="#default-en"><span class="n">02</span>Make it the default</a>
+        <a href="#browser-en"><span class="n">03</span>Choose the browser</a>
+        <a href="#usage-en"><span class="n">04</span>Every day</a>
+        <a href="#shortcut-en"><span class="n">05</span>Create a shortcut</a>
+        <a href="#files-en"><span class="n">06</span>Where things live</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> installed and ready</span>
+      <h1>Your HTML, in a <span class="shine">real browser</span>.</h1>
+      <p class="lead">Fenestra opens the port on <code>127.0.0.1</code> and hands the site to your browser. It is not a browser — it is the window between your folder and the browser you already use.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>no cloud</span><span>no account</span></div>
+    </div>
+    <section id="how-en">
+      <h2>How it works</h2>
+      <p class="section-lead">Three steps, no configuration.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>You open the HTML</h3><p>Double-click a <code>.html</code> or a build folder.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra serves it</h3><p>A local server starts on <code>127.0.0.1</code>, with a stable port per folder.</p></div>
+        <div class="card"><div class="num">3</div><h3>The browser shows it</h3><p>The page opens in the browser you pick below.</p></div>
+      </div>
+    </section>
+
+    <section id="default-en">
+      <div class="setup">
+        <span class="kicker">one essential step</span>
+        <h2>Make Fenestra the default for .html</h2>
+        <p class="lead2">Every system has its own way. Pick yours:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Through Windows Settings:</p>
+            <ol>
+              <li>Open <strong>Settings</strong> (Win + I).</li>
+              <li>Go to <strong>Apps → Default apps</strong>.</li>
+              <li>Search <code>.html</code> and choose <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Shortcut: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Settings — Default apps</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Register the handler once:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Undo with <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>No terminal needed — use Finder:</p>
+            <ol>
+              <li>Right-click an <code>.html</code> → <strong>Get Info</strong>.</li>
+              <li><strong>Open with</strong> → <strong>Fenestra</strong>.</li>
+              <li>Click <strong>Change All…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Info</div>
+              <div class="mf-body">
+                <div class="mf-label">Open with</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Change All…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-en">
+      <div class="setup picker">
+        <span class="kicker">browser choice</span>
+        <h2>Choose Fenestra's browser</h2>
+        <p class="lead2">This is not a list. Click a browser to tell Fenestra which one to open — the choice applies to the next <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Refresh list</a></p>
+        <p class="small">Windows asks for confirmation the first time. The list updates on every run.</p>
+      </div>
+    </section>
+
+    <section id="usage-en">
+      <h2>Every day</h2>
+      <p class="section-lead">The commands that matter.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Double-click <code>Fenestra.exe</code> with no file to open the settings screen. <code>--diagnose</code> shows which browser Windows is handing over.</div>
+    </section>
+
+    <section id="shortcut-en">
+      <h2>Create a shortcut for a site</h2>
+      <p class="section-lead">A shortcut is not just a link to the .html: it must start Fenestra with the file as an argument.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Right-click the Desktop → <strong>New → Shortcut</strong>.</li>
+                <li>In “Type the location of the item”, paste:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Click <strong>Next</strong>, name it <em>Example</em>, and finish.</li>
+                <li>Optional: <strong>Properties → Start in</strong> = the <code>dist</code> folder.</li>
+                <li>Double-click it to test.</li>
+              </ol>
+              <p class="small">Windows expands <code>%LOCALAPPDATA%</code> and <code>%USERPROFILE%</code>. Keep the quotes around the .html path.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Example Properties</div>
+              <div class="mock-tabs"><span>General</span><span class="on">Shortcut</span><span>Details</span></div>
+              <div class="mock-row"><span>Target</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Start in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Run</span><code>Normal window</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Create <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Mark it trusted or run <code>update-desktop-database</code>. Linux does not expand <code>$HOME</code> in <code>.desktop</code> files — use an absolute path or a wrapper script.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Text Editor</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Save <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Run <code>chmod +x Example.command</code> once, then double-click it.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-en">
+      <h2>Where things live</h2>
+      <p class="section-lead">Everything in one folder: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (only when you pin a browser)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="pt">
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="Neste manual">
+        <p class="st-title">Menu</p>
+        <a href="#how-pt"><span class="n">01</span>Como funciona</a>
+        <a href="#default-pt"><span class="n">02</span>Torne o Fenestra o padrão</a>
+        <a href="#browser-pt"><span class="n">03</span>Escolha o navegador</a>
+        <a href="#usage-pt"><span class="n">04</span>No dia a dia</a>
+        <a href="#shortcut-pt"><span class="n">05</span>Crie um atalho</a>
+        <a href="#files-pt"><span class="n">06</span>Onde ficam as coisas</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> instalado e pronto</span>
+      <h1>Seu HTML, no <span class="shine">navegador de verdade</span>.</h1>
+      <p class="lead">O Fenestra abre a porta em <code>127.0.0.1</code> e entrega o site para o seu navegador. Ele não é um navegador — é a janela entre a sua pasta e o navegador que você já usa.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>sem nuvem</span><span>sem conta</span></div>
+    </div>
+    <section id="how-pt">
+      <h2>Como funciona</h2>
+      <p class="section-lead">Três passos, sem configuração.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Você abre o HTML</h3><p>Duplo clique em um <code>.html</code> ou em uma pasta de build.</p></div>
+        <div class="card"><div class="num">2</div><h3>O Fenestra serve</h3><p>Um servidor local sobe em <code>127.0.0.1</code>, com porta estável por pasta.</p></div>
+        <div class="card"><div class="num">3</div><h3>O navegador mostra</h3><p>A página abre no navegador que você escolher aqui embaixo.</p></div>
+      </div>
+    </section>
+
+    <section id="default-pt">
+      <div class="setup">
+        <span class="kicker">um passo essencial</span>
+        <h2>Torne o Fenestra o padrão para .html</h2>
+        <p class="lead2">Cada sistema tem o seu jeito. Escolha o seu:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Pelas Configurações do Windows:</p>
+            <ol>
+              <li>Abra <strong>Configurações</strong> (Win + I).</li>
+              <li>Vá em <strong>Aplicativos → Aplicativos padrão</strong>.</li>
+              <li>Procure <code>.html</code> e escolha <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Atalho: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Configurações — Aplicativos padrão</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registre o handler uma vez:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Desfaça com <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">voce@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Sem terminal — pelo Finder:</p>
+            <ol>
+              <li>Botão direito no <code>.html</code> → <strong>Obter informações</strong>.</li>
+              <li><strong>Abrir com</strong> → <strong>Fenestra</strong>.</li>
+              <li>Clique em <strong>Alterar tudo…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Exemplo.html — Informações</div>
+              <div class="mf-body">
+                <div class="mf-label">Abrir com</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Alterar tudo…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-pt">
+      <div class="setup picker">
+        <span class="kicker">escolha do navegador</span>
+        <h2>Escolha o navegador do Fenestra</h2>
+        <p class="lead2">Isto não é uma lista. Clique em um navegador para dizer ao Fenestra qual abrir — a escolha vale no próximo <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Atualizar lista</a></p>
+        <p class="small">O Windows pede confirmação na primeira vez. A lista é atualizada a cada execução.</p>
+      </div>
+    </section>
+
+    <section id="usage-pt">
+      <h2>No dia a dia</h2>
+      <p class="section-lead">Os comandos que importam.</p>
+      <div class="code">Fenestra.exe "C:\projeto\dist\index.html"
+Fenestra.exe "C:\projeto\dist"
+Fenestra.exe --port 8080 "C:\projeto\dist"</div>
+      <div class="note">Duplo clique no <code>Fenestra.exe</code> sem arquivo abre a tela de configuração. O <code>--diagnose</code> mostra qual navegador o Windows está entregando.</div>
+    </section>
+
+    <section id="shortcut-pt">
+      <h2>Crie um atalho para um site</h2>
+      <p class="section-lead">Atalho não é só um link para o .html: ele precisa iniciar o Fenestra com o arquivo como argumento.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Botão direito na Área de Trabalho → <strong>Novo → Atalho</strong>.</li>
+                <li>Em “Digite o local do item”, cole:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></li>
+                <li>Clique em <strong>Avançar</strong>, dê o nome <em>Exemplo</em> e conclua.</li>
+                <li>Opcional: <strong>Propriedades → Executar em</strong> = a pasta <code>dist</code>.</li>
+                <li>Dê duplo clique para testar.</li>
+              </ol>
+              <p class="small">O Windows expande <code>%LOCALAPPDATA%</code> e <code>%USERPROFILE%</code>. Mantenha as aspas no caminho do .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Propriedades de Exemplo</div>
+              <div class="mock-tabs"><span>Geral</span><span class="on">Atalho</span><span>Detalhes</span></div>
+              <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Exemplo\dist\index.html"</code></div>
+              <div class="mock-row"><span>Executar em</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Executar</span><code>Janela normal</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Crie <code>~/.local/share/applications/exemplo.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Exemplo
+Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</div>
+              <p class="small">Marque como confiável ou rode <code>update-desktop-database</code>. O Linux não expande <code>$HOME</code> em <code>.desktop</code> — use caminho absoluto ou um script wrapper.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">exemplo.desktop — Text Editor</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Exemplo
+Exec=/home/voce/.local/bin/fenestra "/home/voce/Exemplo/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Salve <code>Exemplo.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Exemplo/dist/index.html"</div>
+              <p class="small">Rode <code>chmod +x Exemplo.command</code> uma vez e dê duplo clique.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Exemplo.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Exemplo/dist/index.html"</pre>
+              <div class="term">$ chmod +x Exemplo.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-pt">
+      <h2>Onde ficam as coisas</h2>
+      <p class="section-lead">Tudo em uma pasta só: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (só quando você fixa um navegador)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="es" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="En este manual">
+        <p class="st-title">Menú</p>
+        <a href="#how-es"><span class="n">01</span>Cómo funciona</a>
+        <a href="#default-es"><span class="n">02</span>Hazlo predeterminado</a>
+        <a href="#browser-es"><span class="n">03</span>Elige el navegador</a>
+        <a href="#usage-es"><span class="n">04</span>El día a día</a>
+        <a href="#shortcut-es"><span class="n">05</span>Crea un acceso directo</a>
+        <a href="#files-es"><span class="n">06</span>Dónde se guarda todo</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> instalado y listo</span>
+      <h1>Tu HTML, en un <span class="shine">navegador de verdad</span>.</h1>
+      <p class="lead">Fenestra abre el puerto en <code>127.0.0.1</code> y le pasa el sitio a tu navegador. No es un navegador: es la ventana entre tu carpeta y el navegador que ya usas.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>sin nube</span><span>sin cuenta</span></div>
+    </div>
+    <section id="how-es">
+      <h2>Cómo funciona</h2>
+      <p class="section-lead">Tres pasos, sin configuración.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Tú abres el HTML</h3><p>Haz doble clic en un <code>.html</code> o en una carpeta de compilación.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra lo sirve</h3><p>Se inicia un servidor local en <code>127.0.0.1</code>, con un puerto estable para cada carpeta.</p></div>
+        <div class="card"><div class="num">3</div><h3>El navegador lo muestra</h3><p>La página se abre en el navegador que elijas más abajo.</p></div>
+      </div>
+    </section>
+
+    <section id="default-es">
+      <div class="setup">
+        <span class="kicker">un paso imprescindible</span>
+        <h2>Haz que Fenestra sea el predeterminado para .html</h2>
+        <p class="lead2">Cada sistema tiene su propio método. Elige el tuyo:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Desde la configuración de Windows:</p>
+            <ol>
+              <li>Abre <strong>Configuración</strong> (Win + I).</li>
+              <li>Ve a <strong>Aplicaciones → Aplicaciones predeterminadas</strong>.</li>
+              <li>Busca <code>.html</code> y elige <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Atajo: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Configuración — Aplicaciones predeterminadas</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registra el controlador una sola vez:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Deshazlo con <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>No hace falta la terminal; usa Finder:</p>
+            <ol>
+              <li>Haz clic derecho en un <code>.html</code> → <strong>Obtener información</strong>.</li>
+              <li><strong>Abrir con</strong> → <strong>Fenestra</strong>.</li>
+              <li>Haz clic en <strong>Cambiar todo…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Información</div>
+              <div class="mf-body">
+                <div class="mf-label">Abrir con</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Cambiar todo…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-es">
+      <div class="setup picker">
+        <span class="kicker">elección de navegador</span>
+        <h2>Elige el navegador de Fenestra</h2>
+        <p class="lead2">Esto no es una lista. Haz clic en un navegador para indicarle a Fenestra cuál debe abrir: la elección se aplica al siguiente <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Actualizar la lista</a></p>
+        <p class="small">Windows pide confirmación la primera vez. La lista se actualiza en cada ejecución.</p>
+      </div>
+    </section>
+
+    <section id="usage-es">
+      <h2>El día a día</h2>
+      <p class="section-lead">Los comandos que importan.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Haz doble clic en <code>Fenestra.exe</code> sin ningún archivo para abrir la pantalla de ajustes. <code>--diagnose</code> muestra a qué navegador está pasando Windows el archivo.</div>
+    </section>
+
+    <section id="shortcut-es">
+      <h2>Crea un acceso directo para un sitio</h2>
+      <p class="section-lead">Un acceso directo no es solo un enlace al .html: debe iniciar Fenestra con el archivo como argumento.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Haz clic derecho en el escritorio → <strong>Nuevo → Acceso directo</strong>.</li>
+                <li>En «Escribe la ubicación del elemento», pega:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Haz clic en <strong>Siguiente</strong>, ponle el nombre <em>Example</em> y termina.</li>
+                <li>Opcional: <strong>Propiedades → Iniciar en</strong> = la carpeta <code>dist</code>.</li>
+                <li>Haz doble clic para probarlo.</li>
+              </ol>
+              <p class="small">Windows expande <code>%LOCALAPPDATA%</code> y <code>%USERPROFILE%</code>. Mantén las comillas alrededor de la ruta del .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Propiedades de Example</div>
+              <div class="mock-tabs"><span>General</span><span class="on">Acceso directo</span><span>Detalles</span></div>
+              <div class="mock-row"><span>Destino</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Iniciar en</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Ejecutar</span><code>Ventana normal</code></div>
+              <div class="mock-foot"><i>Aceptar</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Crea <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Márcalo como de confianza o ejecuta <code>update-desktop-database</code>. Linux no expande <code>$HOME</code> en los archivos <code>.desktop</code>: usa una ruta absoluta o un script envoltorio.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Editor de texto</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Guarda <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Ejecuta <code>chmod +x Example.command</code> una vez y luego haz doble clic en él.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-es">
+      <h2>Dónde se guarda todo</h2>
+      <p class="section-lead">Todo en una sola carpeta: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (solo cuando fijas un navegador)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="fr" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="Dans ce manuel">
+        <p class="st-title">Menu</p>
+        <a href="#how-fr"><span class="n">01</span>Comment ça marche</a>
+        <a href="#default-fr"><span class="n">02</span>En faire le navigateur par défaut</a>
+        <a href="#browser-fr"><span class="n">03</span>Choisir le navigateur</a>
+        <a href="#usage-fr"><span class="n">04</span>Au quotidien</a>
+        <a href="#shortcut-fr"><span class="n">05</span>Créer un raccourci</a>
+        <a href="#files-fr"><span class="n">06</span>Où vivent les fichiers</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> installé et prêt</span>
+      <h1>Votre HTML, dans un <span class="shine">vrai navigateur</span>.</h1>
+      <p class="lead">Fenestra ouvre le port sur <code>127.0.0.1</code> et confie le site à votre navigateur. Ce n'est pas un navigateur — c'est la fenêtre entre votre dossier et le navigateur que vous utilisez déjà.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>sans cloud</span><span>sans compte</span></div>
+    </div>
+    <section id="how-fr">
+      <h2>Comment ça marche</h2>
+      <p class="section-lead">Trois étapes, aucune configuration.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Vous ouvrez le HTML</h3><p>Double-cliquez sur un <code>.html</code> ou sur un dossier de build.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra le sert</h3><p>Un serveur local démarre sur <code>127.0.0.1</code>, avec un port stable par dossier.</p></div>
+        <div class="card"><div class="num">3</div><h3>Le navigateur l'affiche</h3><p>La page s'ouvre dans le navigateur que vous choisissez ci-dessous.</p></div>
+      </div>
+    </section>
+
+    <section id="default-fr">
+      <div class="setup">
+        <span class="kicker">une étape essentielle</span>
+        <h2>Faire de Fenestra le programme par défaut pour .html</h2>
+        <p class="lead2">Chaque système a sa propre méthode. Choisissez la vôtre :</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Via les paramètres de Windows :</p>
+            <ol>
+              <li>Ouvrez <strong>Paramètres</strong> (Win + I).</li>
+              <li>Allez dans <strong>Applications → Applications par défaut</strong>.</li>
+              <li>Recherchez <code>.html</code> et choisissez <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Raccourci : <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Paramètres — Applications par défaut</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Enregistrez le gestionnaire une seule fois :</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Annulez avec <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Aucun terminal nécessaire — passez par le Finder :</p>
+            <ol>
+              <li>Clic droit sur un <code>.html</code> → <strong>Lire les informations</strong>.</li>
+              <li><strong>Ouvrir avec</strong> → <strong>Fenestra</strong>.</li>
+              <li>Cliquez sur <strong>Tout modifier…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Informations</div>
+              <div class="mf-body">
+                <div class="mf-label">Ouvrir avec</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Tout modifier…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-fr">
+      <div class="setup picker">
+        <span class="kicker">choix du navigateur</span>
+        <h2>Choisir le navigateur de Fenestra</h2>
+        <p class="lead2">Ce n'est pas une liste. Cliquez sur un navigateur pour indiquer à Fenestra lequel ouvrir — le choix s'applique au prochain <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Actualiser la liste</a></p>
+        <p class="small">Windows demande une confirmation la première fois. La liste est mise à jour à chaque exécution.</p>
+      </div>
+    </section>
+
+    <section id="usage-fr">
+      <h2>Au quotidien</h2>
+      <p class="section-lead">Les commandes qui comptent.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Double-cliquez sur <code>Fenestra.exe</code> sans fichier pour ouvrir l'écran des paramètres. <code>--diagnose</code> indique à quel navigateur Windows transmet la page.</div>
+    </section>
+
+    <section id="shortcut-fr">
+      <h2>Créer un raccourci pour un site</h2>
+      <p class="section-lead">Un raccourci n'est pas un simple lien vers le .html : il doit lancer Fenestra avec le fichier en argument.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Clic droit sur le Bureau → <strong>Nouveau → Raccourci</strong>.</li>
+                <li>Dans « Entrez l'emplacement de l'élément », collez :<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Cliquez sur <strong>Suivant</strong>, nommez-le <em>Example</em>, puis terminez.</li>
+                <li>Facultatif : <strong>Propriétés → Démarrer dans</strong> = le dossier <code>dist</code>.</li>
+                <li>Double-cliquez dessus pour tester.</li>
+              </ol>
+              <p class="small">Windows développe <code>%LOCALAPPDATA%</code> et <code>%USERPROFILE%</code>. Conservez les guillemets autour du chemin du .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Propriétés de Example</div>
+              <div class="mock-tabs"><span>Général</span><span class="on">Raccourci</span><span>Détails</span></div>
+              <div class="mock-row"><span>Cible</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Démarrer dans</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Exécuter</span><code>Fenêtre normale</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Créez <code>~/.local/share/applications/example.desktop</code> :</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Marquez-le comme fiable ou exécutez <code>update-desktop-database</code>. Linux ne développe pas <code>$HOME</code> dans les fichiers <code>.desktop</code> — utilisez un chemin absolu ou un script d'enveloppe.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Éditeur de texte</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Enregistrez <code>Example.command</code> :</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Exécutez <code>chmod +x Example.command</code> une fois, puis double-cliquez dessus.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-fr">
+      <h2>Où vivent les fichiers</h2>
+      <p class="section-lead">Tout dans un seul dossier : <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (only when you pin a browser)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="de" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In diesem Handbuch">
+        <p class="st-title">Menü</p>
+        <a href="#how-de"><span class="n">01</span>So funktioniert es</a>
+        <a href="#default-de"><span class="n">02</span>Zum Standard machen</a>
+        <a href="#browser-de"><span class="n">03</span>Browser auswählen</a>
+        <a href="#usage-de"><span class="n">04</span>Im Alltag</a>
+        <a href="#shortcut-de"><span class="n">05</span>Verknüpfung erstellen</a>
+        <a href="#files-de"><span class="n">06</span>Speicherorte</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> installiert und bereit</span>
+      <h1>Ihr HTML, in einem <span class="shine">echten Browser</span>.</h1>
+      <p class="lead">Fenestra öffnet den Port auf <code>127.0.0.1</code> und übergibt die Seite an Ihren Browser. Es ist kein Browser — es ist das Fenster zwischen Ihrem Ordner und dem Browser, den Sie bereits verwenden.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>keine Cloud</span><span>kein Konto</span></div>
+    </div>
+    <section id="how-de">
+      <h2>So funktioniert es</h2>
+      <p class="section-lead">Drei Schritte, keine Konfiguration.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Sie öffnen das HTML</h3><p>Doppelklicken Sie auf eine <code>.html</code> oder einen Build-Ordner.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra stellt es bereit</h3><p>Ein lokaler Server startet auf <code>127.0.0.1</code>, mit einem festen Port pro Ordner.</p></div>
+        <div class="card"><div class="num">3</div><h3>Der Browser zeigt es an</h3><p>Die Seite öffnet sich in dem Browser, den Sie unten auswählen.</p></div>
+      </div>
+    </section>
+
+    <section id="default-de">
+      <div class="setup">
+        <span class="kicker">ein wesentlicher Schritt</span>
+        <h2>Fenestra zum Standard für .html machen</h2>
+        <p class="lead2">Jedes System hat seinen eigenen Weg. Wählen Sie Ihren:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Über die Windows-Einstellungen:</p>
+            <ol>
+              <li>Öffnen Sie <strong>Einstellungen</strong> (Win + I).</li>
+              <li>Gehen Sie zu <strong>Apps → Standard-Apps</strong>.</li>
+              <li>Suchen Sie nach <code>.html</code> und wählen Sie <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Abkürzung: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Einstellungen — Standard-Apps</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registrieren Sie den Handler einmalig:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Rückgängig machen mit <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Kein Terminal nötig — verwenden Sie den Finder:</p>
+            <ol>
+              <li>Klicken Sie mit der rechten Maustaste auf eine <code>.html</code> → <strong>Informationen</strong>.</li>
+              <li><strong>Öffnen mit</strong> → <strong>Fenestra</strong>.</li>
+              <li>Klicken Sie auf <strong>Alle ändern …</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Informationen</div>
+              <div class="mf-body">
+                <div class="mf-label">Öffnen mit</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Alle ändern …</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-de">
+      <div class="setup picker">
+        <span class="kicker">Browser-Auswahl</span>
+        <h2>Fenestras Browser auswählen</h2>
+        <p class="lead2">Dies ist keine Liste. Klicken Sie auf einen Browser, um festzulegen, welchen Fenestra öffnen soll — die Auswahl gilt für die nächste <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Liste aktualisieren</a></p>
+        <p class="small">Windows fragt beim ersten Mal nach einer Bestätigung. Die Liste wird bei jedem Start aktualisiert.</p>
+      </div>
+    </section>
+
+    <section id="usage-de">
+      <h2>Im Alltag</h2>
+      <p class="section-lead">Die Befehle, auf die es ankommt.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Doppelklicken Sie <code>Fenestra.exe</code> ohne Datei, um den Einstellungsbildschirm zu öffnen. <code>--diagnose</code> zeigt, welchen Browser Windows übergibt.</div>
+    </section>
+
+    <section id="shortcut-de">
+      <h2>Eine Verknüpfung für eine Website erstellen</h2>
+      <p class="section-lead">Eine Verknüpfung ist nicht nur ein Link zur .html: Sie muss Fenestra mit der Datei als Argument starten.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Klicken Sie mit der rechten Maustaste auf den Desktop → <strong>Neu → Verknüpfung</strong>.</li>
+                <li>Fügen Sie unter „Geben Sie den Speicherort des Elements ein“ Folgendes ein:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Klicken Sie auf <strong>Weiter</strong>, geben Sie <em>Example</em> als Namen ein und schließen Sie ab.</li>
+                <li>Optional: <strong>Eigenschaften → Ausführen in</strong> = der Ordner <code>dist</code>.</li>
+                <li>Doppelklicken Sie zum Testen darauf.</li>
+              </ol>
+              <p class="small">Windows erweitert <code>%LOCALAPPDATA%</code> und <code>%USERPROFILE%</code>. Behalten Sie die Anführungszeichen um den .html-Pfad bei.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Eigenschaften von Example</div>
+              <div class="mock-tabs"><span>Allgemein</span><span class="on">Verknüpfung</span><span>Details</span></div>
+              <div class="mock-row"><span>Ziel</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Ausführen in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Ausführen</span><code>Normales Fenster</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Erstellen Sie <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Markieren Sie die Datei als vertrauenswürdig oder führen Sie <code>update-desktop-database</code> aus. Linux erweitert <code>$HOME</code> in <code>.desktop</code>-Dateien nicht — verwenden Sie einen absoluten Pfad oder ein Wrapper-Skript.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Texteditor</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Speichern Sie <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Führen Sie <code>chmod +x Example.command</code> einmal aus und doppelklicken Sie dann darauf.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-de">
+      <h2>Speicherorte</h2>
+      <p class="section-lead">Alles in einem Ordner: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (nur wenn Sie einen Browser festlegen)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="it" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In questo manuale">
+        <p class="st-title">Menu</p>
+        <a href="#how-it"><span class="n">01</span>Come funziona</a>
+        <a href="#default-it"><span class="n">02</span>Rendilo predefinito</a>
+        <a href="#browser-it"><span class="n">03</span>Scegli il browser</a>
+        <a href="#usage-it"><span class="n">04</span>Ogni giorno</a>
+        <a href="#shortcut-it"><span class="n">05</span>Crea una scorciatoia</a>
+        <a href="#files-it"><span class="n">06</span>Dove si trovano i file</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> installato e pronto</span>
+      <h1>Il tuo HTML, in un <span class="shine">browser vero</span>.</h1>
+      <p class="lead">Fenestra apre la porta su <code>127.0.0.1</code> e consegna il sito al tuo browser. Non è un browser — è la finestra tra la tua cartella e il browser che usi già.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>nessun cloud</span><span>nessun account</span></div>
+    </div>
+    <section id="how-it">
+      <h2>Come funziona</h2>
+      <p class="section-lead">Tre passaggi, nessuna configurazione.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Apri l'HTML</h3><p>Fai doppio clic su un file <code>.html</code> o su una cartella di build.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra lo serve</h3><p>Un server locale si avvia su <code>127.0.0.1</code>, con una porta stabile per ogni cartella.</p></div>
+        <div class="card"><div class="num">3</div><h3>Il browser lo mostra</h3><p>La pagina si apre nel browser che scegli qui sotto.</p></div>
+      </div>
+    </section>
+
+    <section id="default-it">
+      <div class="setup">
+        <span class="kicker">un passaggio essenziale</span>
+        <h2>Rendi Fenestra il predefinito per .html</h2>
+        <p class="lead2">Ogni sistema ha il suo modo. Scegli il tuo:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Dalle Impostazioni di Windows:</p>
+            <ol>
+              <li>Apri <strong>Impostazioni</strong> (Win + I).</li>
+              <li>Vai su <strong>App → App predefinite</strong>.</li>
+              <li>Cerca <code>.html</code> e scegli <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Scorciatoia: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Impostazioni — App predefinite</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registra il gestore una sola volta:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Annulla con <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminale</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Nessun terminale necessario — usa Finder:</p>
+            <ol>
+              <li>Fai clic destro su un <code>.html</code> → <strong>Ottieni informazioni</strong>.</li>
+              <li><strong>Apri con</strong> → <strong>Fenestra</strong>.</li>
+              <li>Fai clic su <strong>Cambia tutto…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Informazioni</div>
+              <div class="mf-body">
+                <div class="mf-label">Apri con</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Cambia tutto…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-it">
+      <div class="setup picker">
+        <span class="kicker">scelta del browser</span>
+        <h2>Scegli il browser di Fenestra</h2>
+        <p class="lead2">Questa non è una lista. Fai clic su un browser per dire a Fenestra quale aprire — la scelta vale per il prossimo <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Aggiorna l'elenco</a></p>
+        <p class="small">Windows chiede conferma la prima volta. L'elenco si aggiorna a ogni avvio.</p>
+      </div>
+    </section>
+
+    <section id="usage-it">
+      <h2>Ogni giorno</h2>
+      <p class="section-lead">I comandi che contano.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Fai doppio clic su <code>Fenestra.exe</code> senza file per aprire la schermata delle impostazioni. <code>--diagnose</code> mostra a quale browser Windows sta passando il file.</div>
+    </section>
+
+    <section id="shortcut-it">
+      <h2>Crea una scorciatoia per un sito</h2>
+      <p class="section-lead">Una scorciatoia non è solo un collegamento all'.html: deve avviare Fenestra con il file come argomento.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Fai clic destro sul desktop → <strong>Nuovo → Collegamento</strong>.</li>
+                <li>In “Digita il percorso dell'elemento”, incolla:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Fai clic su <strong>Avanti</strong>, chiamala <em>Example</em> e completa.</li>
+                <li>Facoltativo: <strong>Proprietà → Esegui in</strong> = la cartella <code>dist</code>.</li>
+                <li>Fai doppio clic per provarla.</li>
+              </ol>
+              <p class="small">Windows espande <code>%LOCALAPPDATA%</code> e <code>%USERPROFILE%</code>. Mantieni le virgolette attorno al percorso dell'.html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Proprietà di Example</div>
+              <div class="mock-tabs"><span>Generale</span><span class="on">Collegamento</span><span>Dettagli</span></div>
+              <div class="mock-row"><span>Destinazione</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Esegui in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Esegui</span><code>Finestra normale</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Crea <code>~/.local/share/applications/example.desktop</code>:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Rendilo attendibile o esegui <code>update-desktop-database</code>. Linux non espande <code>$HOME</code> nei file <code>.desktop</code> — usa un percorso assoluto o uno script wrapper.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Editor di testo</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Salva <code>Example.command</code>:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Esegui <code>chmod +x Example.command</code> una volta, poi fai doppio clic.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-it">
+      <h2>Dove si trovano i file</h2>
+      <p class="section-lead">Tutto in una cartella: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (solo quando fissi un browser)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+  <div data-block="nl" hidden>
+    
+
+    <div class="layout">
+      <aside class="side-toc" aria-label="In deze handleiding">
+        <p class="st-title">Menu</p>
+        <a href="#how-nl"><span class="n">01</span>Hoe het werkt</a>
+        <a href="#default-nl"><span class="n">02</span>Maak het de standaard</a>
+        <a href="#browser-nl"><span class="n">03</span>Kies de browser</a>
+        <a href="#usage-nl"><span class="n">04</span>Elke dag</a>
+        <a href="#shortcut-nl"><span class="n">05</span>Maak een snelkoppeling</a>
+        <a href="#files-nl"><span class="n">06</span>Waar alles staat</a>
+      </aside>
+      <div class="content">
+      <div class="hero">
+      <span class="badge"><span class="dot"></span> geïnstalleerd en klaar</span>
+      <h1>Je HTML, in een <span class="shine">echte browser</span>.</h1>
+      <p class="lead">Fenestra opent de poort op <code>127.0.0.1</code> en geeft de site aan je browser. Het is geen browser — het is het venster tussen je map en de browser die je al gebruikt.</p>
+      <div class="meta"><span>Windows · Linux · macOS</span><span>geen cloud</span><span>geen account</span></div>
+    </div>
+    <section id="how-nl">
+      <h2>Hoe het werkt</h2>
+      <p class="section-lead">Drie stappen, geen configuratie.</p>
+      <div class="steps">
+        <div class="card"><div class="num">1</div><h3>Je opent de HTML</h3><p>Dubbelklik op een <code>.html</code> of een buildmap.</p></div>
+        <div class="card"><div class="num">2</div><h3>Fenestra serveert het</h3><p>Een lokale server start op <code>127.0.0.1</code>, met een vaste poort per map.</p></div>
+        <div class="card"><div class="num">3</div><h3>De browser toont het</h3><p>De pagina opent in de browser die je hieronder kiest.</p></div>
+      </div>
+    </section>
+
+    <section id="default-nl">
+      <div class="setup">
+        <span class="kicker">één essentiële stap</span>
+        <h2>Maak Fenestra de standaard voor .html</h2>
+        <p class="lead2">Elk systeem heeft zijn eigen aanpak. Kies de jouwe:</p>
+        <div class="os-cards">
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
+            <p>Via de Instellingen van Windows:</p>
+            <ol>
+              <li>Open <strong>Instellingen</strong> (Win + I).</li>
+              <li>Ga naar <strong>Apps → Standaard-apps</strong>.</li>
+              <li>Zoek <code>.html</code> en kies <strong>Fenestra</strong>.</li>
+            </ol>
+            <p class="small">Snelkoppeling: <code>ms-settings:defaultapps</code>.</p>
+            <div class="mock-settings">
+              <div class="ms-title">Instellingen — Standaard-apps</div>
+              <div class="ms-row"><span class="ext">.html</span><strong>Fenestra</strong><span class="chev">›</span></div>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><h3>Linux</h3></div>
+            <p>Registreer de handler één keer:</p>
+            <ol>
+              <li><code>fenestra --install</code></li>
+              <li><code>xdg-mime default fenestra.desktop text/html</code></li>
+            </ol>
+            <p class="small">Ongedaan maken met <code>fenestra --uninstall</code>.</p>
+            <div class="mock-term">
+              <div class="mt-title"><span class="lights"><i></i><i></i><i></i></span> Terminal</div>
+              <pre><span class="p">user@linux:~$</span> xdg-mime default fenestra.desktop text/html</pre>
+            </div>
+          </div>
+          <div class="os-card">
+            <div class="os-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg><h3>macOS</h3></div>
+            <p>Geen terminal nodig — gebruik Finder:</p>
+            <ol>
+              <li>Rechtsklik op een <code>.html</code> → <strong>Toon info</strong>.</li>
+              <li><strong>Open met</strong> → <strong>Fenestra</strong>.</li>
+              <li>Klik op <strong>Wijzig alles…</strong>.</li>
+            </ol>
+            <div class="mock-finder">
+              <div class="mf-title"><span class="lights"><i></i><i></i><i></i></span> Example.html — Info</div>
+              <div class="mf-body">
+                <div class="mf-label">Open met</div><div class="mf-select">Fenestra ▾</div>
+                <div></div><div class="mf-btn">Wijzig alles…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser-nl">
+      <div class="setup picker">
+        <span class="kicker">browserkeuze</span>
+        <h2>Kies de browser van Fenestra</h2>
+        <p class="lead2">Dit is geen lijst. Klik op een browser om Fenestra te laten weten welke hij moet openen — de keuze geldt voor de volgende <code>.html</code>.</p>
+        <div class="browsers">{{BROWSERS}}</div>
+        <p class="refresh"><a href="fenestra://manual">&#8635; Lijst vernieuwen</a></p>
+        <p class="small">Windows vraagt de eerste keer om bevestiging. De lijst wordt bij elke uitvoering bijgewerkt.</p>
+      </div>
+    </section>
+
+    <section id="usage-nl">
+      <h2>Elke dag</h2>
+      <p class="section-lead">De commando's die ertoe doen.</p>
+      <div class="code">Fenestra.exe "C:\project\dist\index.html"
+Fenestra.exe "C:\project\dist"
+Fenestra.exe --port 8080 "C:\project\dist"</div>
+      <div class="note">Dubbelklik op <code>Fenestra.exe</code> zonder bestand om het instellingenscherm te openen. <code>--diagnose</code> laat zien welke browser Windows doorgeeft.</div>
+    </section>
+
+    <section id="shortcut-nl">
+      <h2>Maak een snelkoppeling voor een site</h2>
+      <p class="section-lead">Een snelkoppeling is niet zomaar een link naar de .html: hij moet Fenestra starten met het bestand als argument.</p>
+      <div class="tabs" role="tablist"><button class="tab" data-tab="win" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button><button class="tab" data-tab="linux" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button><button class="tab" data-tab="mac" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button></div>
+      <div class="tab-panels">
+        <div class="tab-panel" data-panel="win" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Windows</h3>
+              <ol>
+                <li>Rechtsklik op het bureaublad → <strong>Nieuw → Snelkoppeling</strong>.</li>
+                <li>Plak bij “Typ de locatie van het item” het volgende:<br>
+                  <code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></li>
+                <li>Klik op <strong>Volgende</strong>, noem het <em>Example</em> en rond af.</li>
+                <li>Optioneel: <strong>Eigenschappen → Uitvoeren in</strong> = de map <code>dist</code>.</li>
+                <li>Dubbelklik erop om te testen.</li>
+              </ol>
+              <p class="small">Windows vult <code>%LOCALAPPDATA%</code> en <code>%USERPROFILE%</code> in. Houd de aanhalingstekens rond het pad naar de .html.</p>
+            </div>
+            <div class="mock-win">
+              <div class="mock-title">Eigenschappen van Example</div>
+              <div class="mock-tabs"><span>Algemeen</span><span class="on">Snelkoppeling</span><span>Details</span></div>
+              <div class="mock-row"><span>Doel</span><code>%LOCALAPPDATA%\Fenestra\Fenestra.exe "%USERPROFILE%\Documents\Example\dist\index.html"</code></div>
+              <div class="mock-row"><span>Uitvoeren in</span><code>C:\...\dist</code></div>
+              <div class="mock-row"><span>Uitvoeren</span><code>Normaal venster</code></div>
+              <div class="mock-foot"><i>OK</i></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="linux" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>Linux</h3>
+              <p>Maak <code>~/.local/share/applications/example.desktop</code> aan:</p>
+              <div class="cmd">[Desktop Entry]
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</div>
+              <p class="small">Markeer het als vertrouwd of voer <code>update-desktop-database</code> uit. Linux vult <code>$HOME</code> niet in bij <code>.desktop</code>-bestanden — gebruik een absoluut pad of een wrapper-script.</p>
+            </div>
+            <div class="mock-linux">
+              <div class="ml-title">example.desktop — Teksteditor</div>
+              <pre><span class="k">[Desktop Entry]</span>
+Type=Application
+Name=Example
+Exec=/home/you/.local/bin/fenestra "/home/you/Example/dist/index.html"</pre>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="mac" role="tabpanel">
+          <div class="panel-grid">
+            <div>
+              <h3>macOS</h3>
+              <p>Sla <code>Example.command</code> op:</p>
+              <div class="cmd">#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</div>
+              <p class="small">Voer <code>chmod +x Example.command</code> één keer uit en dubbelklik er daarna op.</p>
+            </div>
+            <div class="mock-mac">
+              <div class="mm-title"><span class="lights"><i></i><i></i><i></i></span> Example.command</div>
+              <pre>#!/bin/sh
+exec "$HOME/Applications/fenestra" \
+  "$HOME/Example/dist/index.html"</pre>
+              <div class="term">$ chmod +x Example.command</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="files-nl">
+      <h2>Waar alles staat</h2>
+      <p class="section-lead">Alles in één map: <code>%LOCALAPPDATA%\Fenestra</code>.</p>
+      <div class="code">Fenestra.exe
+manual.html
+settings.json   (alleen wanneer je een browser vastzet)</div>
+    </section>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Fenestra · <span id="foot">manual local</span> · <a href="https://benedetleandro.github.io/fenestra/">site do projeto</a> · <a href="https://benedetleandro.github.io/fenestra/privacy.html" target="_blank" rel="noopener">Privacy</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var saved = null;
+  try { saved = localStorage.getItem("fenestra-manual-lang"); } catch (e) {}
+  var SUPPORTED = ["en", "pt", "es", "fr", "de", "it", "nl"];
+  var TAGS = { en: "en", pt: "pt-BR", es: "es", fr: "fr", de: "de", it: "it", nl: "nl" };
+  var nav = ((navigator.language || "en").toLowerCase().split("-")[0]);
+  var lang = params.get("lang");
+  if (!lang || SUPPORTED.indexOf(lang) < 0) {
+    lang = (saved && SUPPORTED.indexOf(saved) >= 0) ? saved
+      : (SUPPORTED.indexOf(nav) >= 0 ? nav : "en");
+  }
+
+  function apply(l, persist) {
+    document.documentElement.lang = TAGS[l] || l;
+    var blocks = document.querySelectorAll("[data-block]");
+    for (var i = 0; i < blocks.length; i++) {
+      blocks[i].hidden = blocks[i].getAttribute("data-block") !== l;
+    }
+    var buttons = document.querySelectorAll("#langPop [data-set-lang]");
+    for (var j = 0; j < buttons.length; j++) {
+      buttons[j].setAttribute("aria-selected", buttons[j].getAttribute("data-set-lang") === l ? "true" : "false");
+    }
+    var code = document.getElementById("langCode");
+    if (code) code.textContent = l.toUpperCase();
+    var foot = document.getElementById("foot");
+    if (foot) foot.textContent = "manual";
+    if (persist) { try { localStorage.setItem("fenestra-manual-lang", l); } catch (e) {} }
+  }
+
+  var langBtn = document.getElementById("langBtn");
+  var langPop = document.getElementById("langPop");
+  if (langBtn && langPop) {
+    langBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      langPop.classList.toggle("open");
+      langBtn.setAttribute("aria-expanded", langPop.classList.contains("open") ? "true" : "false");
+    });
+    langPop.querySelectorAll("[data-set-lang]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        apply(btn.getAttribute("data-set-lang"), true);
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+    document.addEventListener("click", function (e) {
+      if (!langPop.contains(e.target) && e.target !== langBtn) {
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        langPop.classList.remove("open");
+        langBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+  apply(lang, false);
+  document.documentElement.classList.remove("i18n-pending");
+})();
+</script>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll(".tabs");
+  for (var t = 0; t < tabs.length; t++) {
+    (function (bar) {
+      var section = bar.parentElement;
+      var buttons = bar.querySelectorAll(".tab");
+      var panels = section.querySelectorAll(".tab-panel");
+      function select(name) {
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].setAttribute("aria-selected", buttons[i].getAttribute("data-tab") === name ? "true" : "false");
+        }
+        for (var j = 0; j < panels.length; j++) {
+          panels[j].className = "tab-panel" + (panels[j].getAttribute("data-panel") === name ? " active" : "");
+        }
+      }
+      for (var b = 0; b < buttons.length; b++) {
+        buttons[b].addEventListener("click", function () { select(this.getAttribute("data-tab")); });
+      }
+      var ua = navigator.userAgent;
+      select(/Mac/i.test(ua) ? "mac" : /Linux/i.test(ua) ? "linux" : "win");
+    })(tabs[t]);
+  }
+})();
+</script>
+<script>
+(function () {
+  var tocs = document.querySelectorAll(".side-toc");
+  for (var t = 0; t < tocs.length; t++) {
+    (function (toc) {
+      var links = toc.querySelectorAll("a");
+      var map = {};
+      for (var i = 0; i < links.length; i++) {
+        var id = links[i].getAttribute("href").slice(1);
+        var sec = document.getElementById(id);
+        if (sec) map[id] = links[i];
+      }
+      if ("IntersectionObserver" in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          for (var e = 0; e < entries.length; e++) {
+            if (!entries[e].isIntersecting) continue;
+            for (var l = 0; l < links.length; l++) links[l].classList.remove("active");
+            var a = map[entries[e].target.id];
+            if (a) a.classList.add("active");
+          }
+        }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+        for (var id in map) obs.observe(document.getElementById(id));
+        if (!toc.querySelector("a.active") && links.length) links[0].classList.add("active");
+      }
+      for (var k = 0; k < links.length; k++) {
+        links[k].addEventListener("click", function () { toc.classList.remove("open"); });
+      }
+    })(tocs[t]);
+  }
+  var btn = document.getElementById("tocBtn");
+  function visibleToc() {
+    var block = document.querySelector("[data-block]:not([hidden])");
+    return block && block.querySelector(".side-toc");
+  }
+  if (btn) {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var toc = visibleToc();
+      if (toc) toc.classList.toggle("open");
+    });
+    document.addEventListener("click", function (e) {
+      var toc = visibleToc();
+      if (toc && !toc.contains(e.target) && e.target !== btn) toc.classList.remove("open");
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        var toc = visibleToc();
+        if (toc) toc.classList.remove("open");
+      }
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 980) {
+        var toc = visibleToc();
+        if (toc) toc.classList.remove("open");
+      }
+    });
+  }
+})();
+</script>
+<script>
+(function () {
+  var bar = document.getElementById("progress");
+  function paint() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var ratio = max > 0 ? doc.scrollTop / max : 0;
+    if (bar) bar.style.width = (ratio * 100).toFixed(2) + "%";
+  }
+  window.addEventListener("scroll", paint, { passive: true });
+  window.addEventListener("resize", paint);
+  paint();
+})();
+</script>
+</body>
+</html>

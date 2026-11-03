@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -31,10 +32,17 @@ namespace Fenestra
             try
             {
                 args = ExtractPort(args);
+                WriteManual();
+                if (args.Length == 1 && args[0].StartsWith("fenestra://", StringComparison.OrdinalIgnoreCase))
+                {
+                    HandleUri(args[0]);
+                    return;
+                }
                 if (args.Length == 0) { ShowBrowserSettings(); return; }
 
                 string a = args[0];
                 if (Eq(a, "--settings")) { ShowBrowserSettings(); return; }
+                if (Eq(a, "--manual")) { OpenManual(); return; }
                 if (Eq(a, "--diagnose")) { Diagnose(); return; }
                 if (Eq(a, "--set-default")) { OpenDefaultApps(); return; }
                 if (Eq(a, "--associate")) { Associate(); return; }
@@ -111,6 +119,11 @@ namespace Fenestra
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "Fenestra", "handler.txt");
                 if (File.Exists(handler)) File.Delete(handler);
+
+                string log = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Fenestra", "fenestra.log");
+                if (File.Exists(log)) File.Delete(log);
             }
             catch (Exception ex) { Log("cleanup handler: " + ex.Message); }
 
@@ -343,6 +356,32 @@ namespace Fenestra
             catch (Exception ex) { Log("association UI failed: " + ex.Message); }
         }
 
+        private static void HandleUri(string uri)
+        {
+            string rest = uri.Substring("fenestra://".Length).TrimEnd('/');
+            if (rest.Equals("associate", StringComparison.OrdinalIgnoreCase))
+            {
+                Associate();
+                return;
+            }
+            if (rest.Equals("manual", StringComparison.OrdinalIgnoreCase))
+            {
+                WriteManual();
+                Process.Start(new ProcessStartInfo(ManualPath()) { UseShellExecute = true });
+                return;
+            }
+            if (!rest.StartsWith("browser/", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+            string key = rest.Substring("browser/".Length).Trim().ToLowerInvariant();
+            if (SetBrowser(key, false))
+            {
+                MessageBox.Show("Fenestra will use " + key + ".",
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private static void OpenDefaultApps()
         {
             try
@@ -399,23 +438,7 @@ namespace Fenestra
             string chosen = ShowBrowserPicker(false, current);
             if (chosen == null) return;
 
-            try
-            {
-                if (chosen == "default")
-                {
-                    if (File.Exists(BrowserPrefPath())) File.Delete(BrowserPrefPath());
-                }
-                else
-                {
-                    File.WriteAllText(BrowserPrefPath(), chosen);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Could not save the preference: " + ex.Message,
-                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            SaveBrowserPref(chosen);
 
             Log("browser preference changed: " + chosen);
             string label = chosen == "default" ? "the system default browser" : chosen;
@@ -427,8 +450,8 @@ namespace Fenestra
 
         private static string ShowBrowserPicker(bool firstRun, string current)
         {
-            string[] keys = { "default", "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
-            string[] labels = { "System default browser", "Microsoft Edge", "Google Chrome", "Firefox", "Brave", "Vivaldi", "Opera", "Chromium" };
+            string[] keys = { "edge", "chrome", "firefox", "brave", "vivaldi", "opera", "chromium" };
+            string[] labels = { "Microsoft Edge", "Google Chrome", "Firefox", "Brave", "Vivaldi", "Opera", "Chromium" };
             string sysExe = ReadHandlerPref();
             if (sysExe == null) sysExe = SystemDefaultBrowserExe();
             if (sysExe != null && !IsSelf(sysExe))
@@ -552,12 +575,11 @@ namespace Fenestra
                 _entry = null;
             }
 
-            string dataDir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fenestra");
-            Directory.CreateDirectory(Path.Combine(dataDir, "sessions"));
+            string dataDir = Path.Combine(Path.GetTempPath(), "Fenestra");
+            Directory.CreateDirectory(dataDir);
 
             string key = Hash(_root);
-            _lockFile = Path.Combine(dataDir, "sessions", key + ".txt");
+            _lockFile = Path.Combine(dataDir, key + ".txt");
 
             TcpListener listener;
             int port;
@@ -1249,6 +1271,8 @@ namespace Fenestra
 
         private static void Log(string message)
         {
+            // Off by default: no fenestra.log in the user's folder.
+            if (Environment.GetEnvironmentVariable("FENESTRA_LOG") != "1") return;
             try
             {
                 string dir = Path.Combine(
@@ -1374,13 +1398,56 @@ namespace Fenestra
             return key + ".exe";
         }
 
+        private static string NewestExe(string root, string name)
+        {
+            try
+            {
+                if (!Directory.Exists(root)) return null;
+                string direct = Path.Combine(root, name);
+                if (File.Exists(direct)) return direct;
+
+                string[] dirs = Directory.GetDirectories(root);
+                Array.Sort(dirs);
+                Array.Reverse(dirs);
+                for (int i = 0; i < dirs.Length; i++)
+                {
+                    string exe = Path.Combine(dirs[i], name);
+                    if (File.Exists(exe)) return exe;
+                }
+            }
+            catch { }
+            return null;
+        }
+
         private static string FindBrowser(string key)
         {
+            if (key == "opera")
+            {
+                string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                string[] operaRoots = {
+                    Path.Combine(local, "Programs", "Opera"),
+                    Path.Combine(local, "Programs", "Opera GX"),
+                    Path.Combine(pf, "Opera"),
+                    Path.Combine(pf86, "Opera")
+                };
+                for (int i = 0; i < operaRoots.Length; i++)
+                {
+                    string exe = NewestExe(operaRoots[i], "opera.exe");
+                    if (exe != null) return exe;
+                }
+            }
+
             string[] paths = BrowserCandidates(key);
             for (int i = 0; i < paths.Length; i++)
             {
                 if (File.Exists(paths[i])) return paths[i];
             }
+
+            // Chrome and Chromium share chrome.exe, so App Paths always points
+            // at Chrome. Chromium is only trusted from its own install folder.
+            if (key == "chromium") return null;
 
             string exeName = BrowserExeName(key);
 
@@ -1421,12 +1488,108 @@ namespace Fenestra
             return null;
         }
 
+        private static string ManualPath()
+        {
+            string exeDir = Path.GetDirectoryName(Application.ExecutablePath);
+            string beside = Path.Combine(exeDir, "manual.html");
+            if (File.Exists(beside)) return beside;
+
+            string dir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fenestra");
+            Directory.CreateDirectory(dir);
+            return Path.Combine(dir, "manual.html");
+        }
+
+        private static void OpenManual()
+        {
+            WriteManual();
+            string path = ManualPath();
+            if (!File.Exists(path))
+            {
+                MessageBox.Show(
+                    "The manual could not be created.\r\n\r\n" +
+                    "Run Fenestra once from its folder, or reinstall it.",
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+        }
+
+        // The manual is embedded as a gzip resource, so a portable .exe has
+        // the manual even if the installer never wrote it.
+        private static bool ExtractManualTemplate(string path)
+        {
+            try
+            {
+                using (Stream s = typeof(Program).Assembly.GetManifestResourceStream("manual.template.html.gz"))
+                {
+                    if (s == null) return false;
+                    using (GZipStream gz = new GZipStream(s, CompressionMode.Decompress))
+                    using (StreamReader r = new StreamReader(gz, Encoding.UTF8))
+                    {
+                        File.WriteAllText(path, r.ReadToEnd(), new UTF8Encoding(false));
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log("could not extract manual template: " + ex.Message);
+                return false;
+            }
+        }
+
+        // Rebuilds manual.html from manual.template.html with the browsers
+        // installed right now, so a newly installed browser shows up.
+        private static void WriteManual()
+        {
+            try
+            {
+                string dir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fenestra");
+                Directory.CreateDirectory(dir);
+                string template = Path.Combine(dir, "manual.template.html");
+                if (!File.Exists(template) && !ExtractManualTemplate(template)) return;
+
+                string[] keys = { "edge", "chrome", "chromium", "firefox", "brave", "vivaldi", "opera" };
+                string[] labels = { "Microsoft Edge", "Google Chrome", "Chromium", "Mozilla Firefox", "Brave", "Vivaldi", "Opera" };
+
+                StringBuilder cards = new StringBuilder();
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    if (FindBrowser(keys[i]) == null) continue;
+                    cards.Append("<a class=\"b-card\" href=\"fenestra://browser/").Append(keys[i])
+                        .Append("\"><span class=\"b-ico ").Append(keys[i]).Append("\">")
+                        .Append(keys[i] == "chromium" ? "C" : "")
+                        .Append("</span><span class=\"b-txt\"><strong>").Append(labels[i])
+                        .Append("</strong><span class=\"b-use\"></span></span></a>");
+                }
+
+                string html = File.ReadAllText(template)
+                    .Replace("{{BROWSERS}}", cards.ToString());
+                string outPath = Path.Combine(dir, "manual.html");
+                File.WriteAllText(outPath, html, new UTF8Encoding(false));
+
+                try
+                {
+                    string exeDir = Path.GetDirectoryName(Application.ExecutablePath);
+                    string beside = Path.Combine(exeDir, "manual.html");
+                    if (!string.Equals(Path.GetFullPath(beside), Path.GetFullPath(outPath), StringComparison.OrdinalIgnoreCase))
+                    {
+                        File.WriteAllText(beside, html, new UTF8Encoding(false));
+                    }
+                }
+                catch { /* read-only install folder: the data copy is enough */ }
+            }
+            catch (Exception ex) { Log("could not refresh manual: " + ex.Message); }
+        }
+
         private static string BrowserPrefPath()
         {
             string dir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Fenestra");
             Directory.CreateDirectory(dir);
-            return Path.Combine(dir, "browser.txt");
+            return Path.Combine(dir, "settings.json");
         }
 
         private static string ReadBrowserPref()
@@ -1435,10 +1598,29 @@ namespace Fenestra
             {
                 string path = BrowserPrefPath();
                 if (!File.Exists(path)) return "default";
-                string value = File.ReadAllText(path).Trim().ToLowerInvariant();
+                string text = File.ReadAllText(path);
+                Match m = Regex.Match(text, "\"browser\"\\s*:\\s*\"([^\"]+)\"");
+                if (!m.Success) return "default";
+                string value = m.Groups[1].Value.Trim().ToLowerInvariant();
                 return value.Length == 0 ? "default" : value;
             }
             catch { return "default"; }
+        }
+
+        private static void SaveBrowserPref(string name)
+        {
+            try
+            {
+                string path = BrowserPrefPath();
+                if (name == "default")
+                {
+                    if (File.Exists(path)) File.Delete(path);
+                    return;
+                }
+                File.WriteAllText(path,
+                    "{\n  \"browser\": \"" + name + "\"\n}\n");
+            }
+            catch (Exception ex) { Log("could not save settings: " + ex.Message); }
         }
 
         private static string HandlerPrefPath()
@@ -1526,23 +1708,7 @@ namespace Fenestra
                 return false;
             }
 
-            try
-            {
-                if (name == "default")
-                {
-                    if (File.Exists(BrowserPrefPath())) File.Delete(BrowserPrefPath());
-                }
-                else
-                {
-                    File.WriteAllText(BrowserPrefPath(), name);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Could not save the preference: " + ex.Message,
-                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+            SaveBrowserPref(name);
 
             if (showMessage)
             {
@@ -1692,6 +1858,12 @@ namespace Fenestra
                 k.SetValue("", "\"" + exe + "\" \"%1\"");
             }
 
+            using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Applications\Fenestra.exe"))
+            {
+                k.SetValue("FriendlyAppName", "Fenestra");
+                k.SetValue("ApplicationCompany", "Fenestra");
+            }
+
             using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\Applications\Fenestra.exe\SupportedTypes"))
             {
                 k.SetValue(".html", "");
@@ -1730,6 +1902,8 @@ namespace Fenestra
                 "when needed and your browser shows the page.\r\n\r\n" +
                 "To undo: Fenestra.exe --uninstall",
                 "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            OpenManual();
         }
 
         private static void AddOpenWith(string ext)
