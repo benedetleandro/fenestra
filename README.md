@@ -1,5 +1,7 @@
 # Fenestra
 
+[English](README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Nederlands](README.nl.md)
+
 **Double-click a local `dist/index.html`. It opens in your browser like a website — because Fenestra served it.**
 
 No terminal. No `npx serve`. No extension to enable. No custom browser window.
@@ -8,7 +10,7 @@ No terminal. No `npx serve`. No extension to enable. No custom browser window.
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![platform](https://img.shields.io/badge/platform-Windows%2010%2F11-lightgrey.svg)
 
-[**Website →**](https://benedetleandro.github.io/fenestra/) · [Privacy](https://benedetleandro.github.io/fenestra/privacy.html) · [Português](README.pt-BR.md)
+[**Website →**](https://benedetleandro.github.io/fenestra/) · [Privacy](https://benedetleandro.github.io/fenestra/privacy.html)
 
 > **Status: alpha.** The HTTP server and the browser integration work. The file
 > association requires a one-time confirmation from the user — Windows does not

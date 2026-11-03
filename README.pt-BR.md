@@ -1,5 +1,7 @@
 # Fenestra
 
+[English](README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Nederlands](README.nl.md)
+
 **Dois cliques em qualquer `dist/index.html`. Ele abre no seu navegador como um site —
 porque o Fenestra serviu o arquivo em localhost.**
 
@@ -10,7 +12,7 @@ falsa.
 > do `.html` exige uma confirmação única do usuário — o Windows não permite que
 > um programa se torne o manipulador padrão sozinho.
 
-[**Site →**](https://benedetleandro.github.io/fenestra/) · [Privacidade](https://benedetleandro.github.io/fenestra/privacy.html) · [English](README.md)
+[**Site →**](https://benedetleandro.github.io/fenestra/) · [Privacidade](https://benedetleandro.github.io/fenestra/privacy.html)
 
 ## O problema
 

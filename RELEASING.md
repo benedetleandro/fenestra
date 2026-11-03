@@ -1,6 +1,7 @@
 # Releasing
 
-English · [Português](RELEASING.pt-BR.md)
+[English](RELEASING.md) · [Português](RELEASING.pt-BR.md) · [Español](RELEASING.es.md) · [Français](RELEASING.fr.md) · [Deutsch](RELEASING.de.md) · [Italiano](RELEASING.it.md) · [Nederlands](RELEASING.nl.md)
+
 
 Fenestra is alpha. Releases are **milestones**, not every commit.
 

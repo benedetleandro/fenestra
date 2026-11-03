@@ -1,6 +1,7 @@
 # Política de segurança
 
-[English](SECURITY.md) · Português
+[English](SECURITY.md) · [Português](SECURITY.pt-BR.md) · [Español](SECURITY.es.md) · [Français](SECURITY.fr.md) · [Deutsch](SECURITY.de.md) · [Italiano](SECURITY.it.md) · [Nederlands](SECURITY.nl.md)
+
 
 ## Versões suportadas
 

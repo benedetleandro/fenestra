@@ -1,6 +1,7 @@
 # Como contribuir
 
-[English](CONTRIBUTING.md) · Português
+[English](CONTRIBUTING.md) · [Português](CONTRIBUTING.pt-BR.md) · [Español](CONTRIBUTING.es.md) · [Français](CONTRIBUTING.fr.md) · [Deutsch](CONTRIBUTING.de.md) · [Italiano](CONTRIBUTING.it.md) · [Nederlands](CONTRIBUTING.nl.md)
+
 
 Obrigado por considerar. É uma ferramenta pequena de propósito — mantenha pequena.
 

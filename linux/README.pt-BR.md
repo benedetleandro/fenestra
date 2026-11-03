@@ -1,6 +1,7 @@
 # Fenestra no Linux
 
-[English](README.md) · Português
+[English](README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Nederlands](README.nl.md)
+
 
 O Fenestra para Linux é um único binário Go estático. Sem runtime, sem GUI, sem root.
 

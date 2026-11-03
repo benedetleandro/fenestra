@@ -1,6 +1,7 @@
 # Releases
 
-[English](RELEASING.md) · Português
+[English](RELEASING.md) · [Português](RELEASING.pt-BR.md) · [Español](RELEASING.es.md) · [Français](RELEASING.fr.md) · [Deutsch](RELEASING.de.md) · [Italiano](RELEASING.it.md) · [Nederlands](RELEASING.nl.md)
+
 
 O Fenestra é alpha. Releases são **marcos**, não cada commit.
 

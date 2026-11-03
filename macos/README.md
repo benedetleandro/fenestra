@@ -1,6 +1,7 @@
 # Fenestra on macOS
 
-English · [Português](README.pt-BR.md)
+[English](README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Nederlands](README.nl.md)
+
 
 This folder is the build kit. You compile on your machine — there is no prebuilt
 binary to download, and that is on purpose: an app built locally never goes

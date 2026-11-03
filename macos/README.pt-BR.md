@@ -1,6 +1,7 @@
 # Fenestra no macOS
 
-[English](README.md) · Português
+[English](README.md) · [Português](README.pt-BR.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [Nederlands](README.nl.md)
+
 
 Esta pasta é o kit de montagem. Você compila na sua máquina — não existe binário
 pronto para baixar, e isso é de propósito: um app compilado localmente não passa

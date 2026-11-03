@@ -1,6 +1,7 @@
 # Contributing
 
-English · [Português](CONTRIBUTING.pt-BR.md)
+[English](CONTRIBUTING.md) · [Português](CONTRIBUTING.pt-BR.md) · [Español](CONTRIBUTING.es.md) · [Français](CONTRIBUTING.fr.md) · [Deutsch](CONTRIBUTING.de.md) · [Italiano](CONTRIBUTING.it.md) · [Nederlands](CONTRIBUTING.nl.md)
+
 
 Thanks for considering it. This is a small tool on purpose — keep it small.
 
