@@ -51,6 +51,11 @@ func main() {
 	switch args[0] {
 	case "--version":
 		fmt.Println("Fenestra " + version + " (" + runtime.GOOS + ")")
+		if info := checkForUpdates(false); info != nil {
+			fmt.Println("Update available: " + info.Version)
+		}
+	case "--check-update":
+		checkUpdateCommand()
 	case "--help", "-h":
 		usage()
 	case "--browsers":
@@ -185,7 +190,9 @@ func run(target string, force bool) {
 		writeLock(lock, port)
 	} else {
 		if p, ok := readLock(lock); ok && ping(p, root) {
+			checkForUpdates(false)
 			launch(fmt.Sprintf("http://127.0.0.1:%d/%s", p, urlPath(entry)))
+			maybeOpenUpdateTab(p)
 			return
 		}
 		ln, port = listen(root)
@@ -205,8 +212,14 @@ func run(target string, force bool) {
 
 	go idleWatch()
 
+	if !force {
+		checkForUpdates(false)
+	}
 	url := fmt.Sprintf("http://127.0.0.1:%d/%s", port, urlPath(entry))
 	cmd := launch(url)
+	if !force {
+		maybeOpenUpdateTab(port)
+	}
 	if cmd != nil {
 		go func() {
 			done := make(chan error, 1)
@@ -277,6 +290,10 @@ func handler(root, defaultDoc string) http.Handler {
 
 		if r.URL.Path == "/__fenestra/ping" {
 			writeString(w, "fenestra-ok\n"+root)
+			return
+		}
+		if r.URL.Path == "/__fenestra/update" {
+			serveUpdatePage(w)
 			return
 		}
 

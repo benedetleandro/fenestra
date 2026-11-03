@@ -68,6 +68,7 @@ $cscArgs.Add('/r:System.Core.dll')
 $cscArgs.Add('/r:System.Drawing.dll')
 $cscArgs.Add('/r:System.Windows.Forms.dll')
 $cscArgs.Add('/resource:' + $manualGz + ',manual.template.html.gz')
+$cscArgs.Add('/resource:' + (Join-Path $root 'installer\update.html') + ',update.html')
 $cscArgs.Add((Join-Path $root 'src\Fenestra.cs'))
 $cscArgs.Add($buildInfo)
 

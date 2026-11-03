@@ -25,6 +25,8 @@ namespace Fenestra
         private static long _lastRequest = DateTime.UtcNow.Ticks;
         private static int _forcedPort;
         private static System.Threading.Timer _idleTimer;
+        private static UpdateInfo _update;
+        private static bool _updateChecked;
 
         [STAThread]
         private static void Main(string[] args)
@@ -43,6 +45,7 @@ namespace Fenestra
                 string a = args[0];
                 if (Eq(a, "--settings")) { ShowBrowserSettings(); return; }
                 if (Eq(a, "--manual")) { OpenManual(); return; }
+                if (Eq(a, "--check-update")) { CheckUpdateCommand(); return; }
                 if (Eq(a, "--diagnose")) { Diagnose(); return; }
                 if (Eq(a, "--set-default")) { OpenDefaultApps(); return; }
                 if (Eq(a, "--associate")) { Associate(); return; }
@@ -50,7 +53,10 @@ namespace Fenestra
                 if (Eq(a, "--uninstall")) { Uninstall(); return; }
                 if (Eq(a, "--version"))
                 {
-                    MessageBox.Show("Fenestra " + BuildInfo.Version, "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UpdateInfo info = CheckForUpdates(false);
+                    string message = "Fenestra " + BuildInfo.Version;
+                    if (info != null) message += "\r\n\r\nUpdate available: " + info.Version;
+                    MessageBox.Show(message, "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -599,7 +605,9 @@ namespace Fenestra
                 int existing = ReadLockPort();
                 if (existing > 0 && Ping(existing, _root))
                 {
+                    CheckForUpdates(false);
                     OpenBrowser(existing);
+                    if (!force) MaybeOpenUpdateTab(existing);
                     return;
                 }
 
@@ -617,7 +625,9 @@ namespace Fenestra
 
             _idleTimer = new System.Threading.Timer(IdleCheck, null, 60000, 60000);
 
+            CheckForUpdates(false);
             Process browser = OpenBrowser(port);
+            if (!force) MaybeOpenUpdateTab(port);
             WatchBrowser(browser);
 
             while (true) Thread.Sleep(1000);
@@ -798,6 +808,15 @@ namespace Fenestra
                     string target = parts[1];
                     int q = target.IndexOf('?');
                     if (q >= 0) target = target.Substring(0, q);
+
+                    if (target == "/__fenestra/update")
+                    {
+                        if (_update == null) { SendText(ns, 404, "No update available"); return; }
+                        byte[] page = Encoding.UTF8.GetBytes(UpdatePageHtml());
+                        Respond(ns, 200, "text/html; charset=utf-8", page, head,
+                            "Cache-Control: no-store\r\n");
+                        return;
+                    }
 
                     if (target == "/__fenestra/ping")
                     {
@@ -1486,6 +1505,193 @@ namespace Fenestra
             }
 
             return null;
+        }
+
+        private sealed class UpdateInfo
+        {
+            public string Version;
+            public string Notes;
+            public string Download;
+            public string Sha256;
+        }
+
+        // Checks at most once every 7 days. No identifier is sent: this is a
+        // plain GET for a static version.json on the project site.
+        private static UpdateInfo CheckForUpdates(bool force)
+        {
+            if (_updateChecked && !force) return _update;
+            _updateChecked = true;
+            if (force) _update = null;
+
+            if (!force)
+            {
+                if (Environment.GetEnvironmentVariable("FENESTRA_NO_UPDATE_TAB") == "1") return null;
+                if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return null;
+                string last = ReadSetting("lastUpdateCheck");
+                DateTime when;
+                if (!string.IsNullOrEmpty(last) &&
+                    DateTime.TryParse(last, CultureInfo.InvariantCulture,
+                        DateTimeStyles.RoundtripKind, out when) &&
+                    (DateTime.UtcNow - when.ToUniversalTime()).TotalDays < 7)
+                {
+                    return null;
+                }
+            }
+
+            SaveSetting("lastUpdateCheck", DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture));
+
+            try
+            {
+                string url = Environment.GetEnvironmentVariable("FENESTRA_UPDATE_URL");
+                if (string.IsNullOrEmpty(url)) url = "https://benedetleandro.github.io/fenestra/version.json";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = 3000;
+                request.ReadWriteTimeout = 3000;
+                request.UserAgent = "Fenestra/" + BuildInfo.Version;
+
+                string json;
+                using (WebResponse response = request.GetResponse())
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    json = reader.ReadToEnd();
+                }
+
+                string version = JsonField(json, "version");
+                if (string.IsNullOrEmpty(version) || CompareVersions(version, BuildInfo.Version) <= 0) return null;
+
+                _update = new UpdateInfo();
+                _update.Version = version;
+                _update.Notes = JsonField(json, "notes");
+                _update.Download = JsonField(json, "download");
+                _update.Sha256 = JsonField(json, "sha256");
+                Log("update available: " + version);
+                return _update;
+            }
+            catch (Exception ex)
+            {
+                Log("update check failed: " + ex.Message);
+                return null;
+            }
+        }
+
+        private static string JsonField(string json, string key)
+        {
+            Match m = Regex.Match(json, "\"" + Regex.Escape(key) + "\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+            if (!m.Success) return null;
+            return Regex.Unescape(m.Groups[1].Value);
+        }
+
+        private static int CompareVersions(string a, string b)
+        {
+            string[] x = a.Split('.');
+            string[] y = b.Split('.');
+            int n = Math.Max(x.Length, y.Length);
+            for (int i = 0; i < n; i++)
+            {
+                int xi = 0, yi = 0;
+                if (i < x.Length) int.TryParse(x[i], out xi);
+                if (i < y.Length) int.TryParse(y[i], out yi);
+                if (xi != yi) return xi < yi ? -1 : 1;
+            }
+            return 0;
+        }
+
+        private static void CheckUpdateCommand()
+        {
+            UpdateInfo info = CheckForUpdates(true);
+            if (info == null)
+            {
+                MessageBox.Show("Fenestra " + BuildInfo.Version + " is up to date.",
+                    "Fenestra", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string text = "Fenestra " + info.Version + " is available.\\r\\n\\r\\n" +
+                "You are running " + BuildInfo.Version + ".\\r\\n\\r\\n" +
+                "Open the download page now?";
+            if (MessageBox.Show(text, "Fenestra update",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes &&
+                !string.IsNullOrEmpty(info.Download))
+            {
+                Launch(info.Download);
+            }
+        }
+
+        private static void MaybeOpenUpdateTab(int port)
+        {
+            if (_update == null) return;
+            if (Environment.GetEnvironmentVariable("FENESTRA_NO_UPDATE_TAB") == "1") return;
+            if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
+            if (ReadSetting("lastUpdateTabVersion") == _update.Version) return;
+
+            Launch("http://127.0.0.1:" + port + "/__fenestra/update");
+            SaveSetting("lastUpdateTabVersion", _update.Version);
+        }
+
+        private static string UpdatePageHtml()
+        {
+            string html = null;
+            using (Stream s = typeof(Program).Assembly.GetManifestResourceStream("update.html"))
+            {
+                if (s != null)
+                using (StreamReader r = new StreamReader(s, Encoding.UTF8))
+                {
+                    html = r.ReadToEnd();
+                }
+            }
+            if (html == null)
+            {
+                html = "<!doctype html><meta charset=\"utf-8\"><title>Fenestra update</title>" +
+                    "<body style=\"font:16px system-ui;background:#0b0c10;color:#eee;padding:40px\">" +
+                    "<h1>Fenestra {{VERSION}} is available</h1>" +
+                    "<p>You are running {{CURRENT}}.</p><p><a href=\"{{DOWNLOAD}}\">Download</a></p></body>";
+            }
+            return html.Replace("{{VERSION}}", _update.Version)
+                .Replace("{{CURRENT}}", BuildInfo.Version)
+                .Replace("{{NOTES}}", _update.Notes ?? "")
+                .Replace("{{DOWNLOAD}}", _update.Download ?? "")
+                .Replace("{{SHA}}", _update.Sha256 ?? "");
+        }
+
+        private static string ReadSetting(string key)
+        {
+            try
+            {
+                string path = BrowserPrefPath();
+                if (!File.Exists(path)) return null;
+                Match m = Regex.Match(File.ReadAllText(path),
+                    "\"" + Regex.Escape(key) + "\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+                return m.Success ? Regex.Unescape(m.Groups[1].Value) : null;
+            }
+            catch { return null; }
+        }
+
+        private static void SaveSetting(string key, string value)
+        {
+            try
+            {
+                string path = BrowserPrefPath();
+                string text = File.Exists(path) ? File.ReadAllText(path) : "{\n}\n";
+                string escaped = value.Replace("\\", "\\\\").Replace("\"", "\\\"");
+                string pattern = "\"" + Regex.Escape(key) + "\"\\s*:\\s*\"(?:[^\"\\\\]|\\\\.)*\"";
+                if (Regex.IsMatch(text, pattern))
+                {
+                    text = Regex.Replace(text, pattern,
+                        "\"" + key + "\": \"" + escaped + "\"");
+                }
+                else
+                {
+                    int close = text.LastIndexOf('}');
+                    if (close < 0) { text = "{\n}\n"; close = text.LastIndexOf('}'); }
+                    string before = text.Substring(0, close).TrimEnd();
+                    string insert = "\"" + key + "\": \"" + escaped + "\"";
+                    if (before.EndsWith("{")) text = before + "\n  " + insert + "\n" + text.Substring(close);
+                    else text = before + ",\n  " + insert + "\n" + text.Substring(close);
+                }
+                File.WriteAllText(path, text, new UTF8Encoding(false));
+            }
+            catch (Exception ex) { Log("could not save setting " + key + ": " + ex.Message); }
         }
 
         private static string ManualPath()

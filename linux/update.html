@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fenestra update</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #08090c; color: #e9ebf0; font: 16px/1.6 "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
+  .kicker { color: #9cc4ff; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 14px 0 16px; letter-spacing: -.02em; }
+  p { color: #a8b0c0; margin: 0 0 24px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  a.btn, button.btn { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 9px; font: inherit; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; }
+  .primary { background: #e9ebf0; color: #0b0c10; }
+  .ghost { border: 1px solid #2a2f3a; color: #e9ebf0; background: transparent; }
+  .sha { margin-top: 28px; color: #6f7788; font-size: 12px; word-break: break-all; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div data-lang="en">
+    <p class="kicker">Update available</p>
+    <h1>Fenestra {{VERSION}} is available</h1>
+    <p>You are running {{CURRENT}}. Download the new version or read the release notes.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Download</a><a class="btn ghost" href="{{NOTES}}">Release notes</a><button class="btn ghost" type="button" onclick="window.close()">Later</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+  <div data-lang="pt" hidden>
+    <p class="kicker">Atualização disponível</p>
+    <h1>O Fenestra {{VERSION}} está disponível</h1>
+    <p>Você está usando {{CURRENT}}. Baixe a nova versão ou leia as notas.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Baixar</a><a class="btn ghost" href="{{NOTES}}">Notas da versão</a><button class="btn ghost" type="button" onclick="window.close()">Depois</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+  <div data-lang="es" hidden>
+    <p class="kicker">Actualización disponible</p>
+    <h1>Fenestra {{VERSION}} está disponible</h1>
+    <p>Estás usando {{CURRENT}}. Descarga la nueva versión o lee las notas.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Descargar</a><a class="btn ghost" href="{{NOTES}}">Notas de la versión</a><button class="btn ghost" type="button" onclick="window.close()">Más tarde</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+  <div data-lang="fr" hidden>
+    <p class="kicker">Mise à jour disponible</p>
+    <h1>Fenestra {{VERSION}} est disponible</h1>
+    <p>Vous utilisez {{CURRENT}}. Téléchargez la nouvelle version ou lisez les notes.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Télécharger</a><a class="btn ghost" href="{{NOTES}}">Notes de version</a><button class="btn ghost" type="button" onclick="window.close()">Plus tard</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+  <div data-lang="de" hidden>
+    <p class="kicker">Update verfügbar</p>
+    <h1>Fenestra {{VERSION}} ist verfügbar</h1>
+    <p>Sie verwenden {{CURRENT}}. Laden Sie die neue Version herunter oder lesen Sie die Versionshinweise.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Herunterladen</a><a class="btn ghost" href="{{NOTES}}">Versionshinweise</a><button class="btn ghost" type="button" onclick="window.close()">Später</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+  <div data-lang="it" hidden>
+    <p class="kicker">Aggiornamento disponibile</p>
+    <h1>Fenestra {{VERSION}} è disponibile</h1>
+    <p>Stai usando {{CURRENT}}. Scarica la nuova versione o leggi le note.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Scarica</a><a class="btn ghost" href="{{NOTES}}">Note di rilascio</a><button class="btn ghost" type="button" onclick="window.close()">Più tardi</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+  <div data-lang="nl" hidden>
+    <p class="kicker">Update beschikbaar</p>
+    <h1>Fenestra {{VERSION}} is beschikbaar</h1>
+    <p>Je gebruikt {{CURRENT}}. Download de nieuwe versie of lees de releaseopmerkingen.</p>
+    <div class="actions"><a class="btn primary" href="{{DOWNLOAD}}">Downloaden</a><a class="btn ghost" href="{{NOTES}}">Releaseopmerkingen</a><button class="btn ghost" type="button" onclick="window.close()">Later</button></div>
+    <p class="sha">SHA-256: {{SHA}}</p>
+  </div>
+</main>
+<script>
+(function () {
+  var code = ((navigator.language || "en").split("-")[0] || "en").toLowerCase();
+  var blocks = document.querySelectorAll("[data-lang]");
+  var found = false;
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].getAttribute("data-lang") === code) { blocks[i].hidden = false; found = true; }
+    else blocks[i].hidden = true;
+  }
+  if (!found) blocks[0].hidden = false;
+})();
+</script>
+</body>
+</html>
