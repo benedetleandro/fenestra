@@ -41,6 +41,12 @@ O que **não** é protegido, por design:
   pode sondar a porta local (DNS rebinding é parcialmente mitigado pelo binding
   em loopback, mas não totalmente).
 
+## Privacidade
+
+O site e o aplicativo não usam cookies, analytics, publicidade ou telemetria.
+As únicas preferências locais são o idioma escolhido e o aviso de privacidade
+dispensado. Detalhes: [página de privacidade](https://benedetleandro.github.io/fenestra/privacy.html).
+
 ## Escopo
 
 Fora de escopo: vulnerabilidades que exigem que o atacante já tenha execução de

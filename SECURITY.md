@@ -40,6 +40,12 @@ What is **not** protected, by design:
   probe the local port (DNS rebinding is partially mitigated by binding to
   loopback only, but not fully).
 
+## Privacy
+
+The website and the application do not use cookies, analytics, advertising or
+telemetry. The only local preferences are the chosen language and the dismissed
+privacy notice. Details: [privacy page](https://benedetleandro.github.io/fenestra/privacy.html).
+
 ## Scope
 
 Out of scope: vulnerabilities that require the attacker to already have local
