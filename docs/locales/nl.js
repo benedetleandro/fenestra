@@ -158,7 +158,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.security": "Beveiliging",
     "footer.top": "Terug naar boven ↑",
     "mac.kicker": "Vanuit de bron",
-    "compile.link": "Zelf compileren →"
+    "compile.link": "Zelf compileren →",
+    "build.docs": "Documentatie op GitHub →"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

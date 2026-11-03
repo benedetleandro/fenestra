@@ -158,7 +158,8 @@ window.FENESTRA_LOCALES.es = {
     "footer.security": "Seguridad",
     "footer.top": "Volver arriba ↑",
     "mac.kicker": "Desde el código",
-    "compile.link": "Compilar desde el código →"
+    "compile.link": "Compilar desde el código →",
+    "build.docs": "Documentación en GitHub →"
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",
@@ -350,7 +351,8 @@ window.FENESTRA_LOCALES.fr = {
     "footer.security": "Sécurité",
     "footer.top": "Haut de page ↑",
     "mac.kicker": "Depuis les sources",
-    "compile.link": "Compiler depuis les sources →"
+    "compile.link": "Compiler depuis les sources →",
+    "build.docs": "Documentation sur GitHub →"
   },
   "html": {
     "hero.title": "Double-cliquez.<br><span class=\"shine\">Ça tourne, tout simplement.</span>",
@@ -542,7 +544,8 @@ window.FENESTRA_LOCALES.de = {
     "footer.security": "Sicherheit",
     "footer.top": "Nach oben ↑",
     "mac.kicker": "Aus dem Quellcode",
-    "compile.link": "Aus dem Quellcode bauen →"
+    "compile.link": "Aus dem Quellcode bauen →",
+    "build.docs": "Dokumentation auf GitHub →"
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",
@@ -734,7 +737,8 @@ window.FENESTRA_LOCALES.it = {
     "footer.security": "Sicurezza",
     "footer.top": "Torna su ↑",
     "mac.kicker": "Dai sorgenti",
-    "compile.link": "Compila dai sorgenti →"
+    "compile.link": "Compila dai sorgenti →",
+    "build.docs": "Documentazione su GitHub →"
   },
   "html": {
     "hero.title": "Doppio clic.<br><span class=\"shine\">Funziona e basta.</span>",
@@ -926,7 +930,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.security": "Beveiliging",
     "footer.top": "Terug naar boven ↑",
     "mac.kicker": "Vanuit de bron",
-    "compile.link": "Zelf compileren →"
+    "compile.link": "Zelf compileren →",
+    "build.docs": "Documentatie op GitHub →"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

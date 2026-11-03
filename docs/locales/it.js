@@ -158,7 +158,8 @@ window.FENESTRA_LOCALES.it = {
     "footer.security": "Sicurezza",
     "footer.top": "Torna su ↑",
     "mac.kicker": "Dai sorgenti",
-    "compile.link": "Compila dai sorgenti →"
+    "compile.link": "Compila dai sorgenti →",
+    "build.docs": "Documentazione su GitHub →"
   },
   "html": {
     "hero.title": "Doppio clic.<br><span class=\"shine\">Funziona e basta.</span>",

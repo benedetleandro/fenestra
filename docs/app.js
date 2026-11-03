@@ -16,6 +16,7 @@
     "nav.manual": "Manual",
     "nav.macos": "Compile você mesmo",
     "compile.link": "Compilar do código →",
+    "build.docs": "Documentação no GitHub →",
     "index.title": "Menu",
     "skip.label": "Pular para o conteúdo",
 
@@ -450,6 +451,30 @@
       }
       var ua = navigator.userAgent;
       select(/Mac/i.test(ua) ? "mac" : /Linux/i.test(ua) ? "linux" : "win");
+    })(bars[b]);
+  }
+})();
+
+/* --------------------------------------------------------- browser tabs */
+(function () {
+  var bars = document.querySelectorAll(".browser-tabs");
+  for (var b = 0; b < bars.length; b++) {
+    (function (bar) {
+      var wrap = bar.parentElement;
+      var buttons = bar.querySelectorAll(".btab");
+      var panels = wrap.querySelectorAll(".browser-panels .bpanel");
+      function select(name) {
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].setAttribute("aria-selected", buttons[i].getAttribute("data-browser") === name ? "true" : "false");
+        }
+        for (var j = 0; j < panels.length; j++) {
+          panels[j].classList.toggle("active", panels[j].getAttribute("data-browser-panel") === name);
+        }
+      }
+      for (var k = 0; k < buttons.length; k++) {
+        buttons[k].addEventListener("click", function () { select(this.getAttribute("data-browser")); });
+      }
+      if (buttons.length) select(buttons[0].getAttribute("data-browser"));
     })(bars[b]);
   }
 })();

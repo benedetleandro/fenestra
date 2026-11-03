@@ -40,7 +40,7 @@
   }
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=0.7.0.11">
+  <link rel="stylesheet" href="styles.css?v=0.7.0.13">
 </head>
 <body id="top">
 
@@ -104,12 +104,13 @@
     <a href="#compat"><span class="si-n">03</span><span data-i18n="nav.compat">Compatibility</span></a>
     <a href="#platforms"><span class="si-n">04</span><span data-i18n="nav.plat">Platforms</span></a>
     <a href="#install"><span class="si-n">05</span><span data-i18n="nav.install">Install</span></a>
-    <a href="#browser"><span class="si-n">06</span><span data-i18n="nav.browser">Browser</span></a>
-    <a href="#macos"><span class="si-n">07</span><span data-i18n="nav.macos">Compile it yourself</span></a>
-    <a href="#under"><span class="si-n">08</span><span data-i18n="nav.under">Under the hood</span></a>
-    <a href="#security"><span class="si-n">09</span><span data-i18n="nav.sec">Security</span></a>
-    <a href="#name"><span class="si-n">10</span><span data-i18n="nav.name">The name</span></a>
-    <a href="#faq"><span class="si-n">11</span><span data-i18n="nav.faq">FAQ</span></a>
+    <a href="#macos"><span class="si-n">06</span><span data-i18n="nav.macos">Compile it yourself</span></a>
+    <a href="#usage"><span class="si-n">07</span><span data-i18n="install.usage">Usage</span></a>
+    <a href="#browser"><span class="si-n">08</span><span data-i18n="nav.browser">Browser</span></a>
+    <a href="#under"><span class="si-n">09</span><span data-i18n="nav.under">Under the hood</span></a>
+    <a href="#security"><span class="si-n">10</span><span data-i18n="nav.sec">Security</span></a>
+    <a href="#name"><span class="si-n">11</span><span data-i18n="nav.name">The name</span></a>
+    <a href="#faq"><span class="si-n">12</span><span data-i18n="nav.faq">FAQ</span></a>
   </aside>
 
     <div class="page-content">
@@ -381,20 +382,7 @@
           </a>
         </div>
 
-        <div class="install-default">
-          <p class="card-links"><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
-          <h3 data-i18n="install.defTitle">Make it the default for .html</h3>
-          <p class="muted" data-i18n="install.defText">One time, three clicks. Windows does not let an app do this alone.</p>
-          <ol class="def-list">
-            <li data-i18n-html="install.def1">Right-click any index.html and choose <b>Open with → Choose another app</b>.</li>
-            <li data-i18n-html="install.def2">Select <b>Fenestra</b>.</li>
-            <li data-i18n-html="install.def3">Check <b>Always use this app</b> and confirm.</li>
-          </ol>
-          <div class="side-note" data-i18n="install.note">
-            Windows allows exactly one handler per extension. The handler is invisible; the window
-            that opens is Edge.
-          </div>
-        </div>
+        
 
         <div class="os-notes">
           <div class="os-note">
@@ -421,77 +409,11 @@
           </div>
         </div>
 
-        <h3 style="margin-top:56px" data-i18n="install.usage">Usage</h3>
-        <div class="code-block">
-          <button class="copy" type="button" data-i18n="code.copy">Copy</button>
-          <pre><span class="cmt"># open a build</span>
-<span class="cmd">Fenestra.exe "C:\projects\app\dist\index.html"</span>
-
-<span class="cmt"># open a folder</span>
-<span class="cmd">Fenestra.exe "C:\projects\app\dist"</span>
-
-<span class="cmt"># force the server, skip detection</span>
-<span class="cmd">Fenestra.exe --serve "C:\path\index.html"</span>
-
-<span class="cmt"># choose the browser (edge is the default)</span>
-<span class="cmd">Fenestra.exe --browser chrome</span>
-<span class="cmd">Fenestra.exe --browsers</span>
-
-<span class="cmt"># register / unregister the .html handler</span>
-<span class="cmd">Fenestra.exe --install</span>
-<span class="cmd">Fenestra.exe --uninstall</span></pre>
-        </div>
-      </div>
+              </div>
     </section>
 
     <!-- ---------------------------------------------------------- browser -->
-    <section id="browser">
-      <div class="wrap">
-        <p class="kicker" data-i18n="browser.kicker">Browser</p>
-        <h2 data-i18n="browser.title">Pick the browser, once</h2>
-        <p class="section-lead" data-i18n="browser.lead">
-          Fenestra opens a normal tab in the browser you choose. The choice is saved and applies
-          to every double-click from now on.
-        </p>
-        <p class="side-note" data-i18n="browser.first">Fenestra reads the system default browser on every open (the http association), so changing it in Windows is picked up immediately. Nothing is stored unless you pin a browser in settings.</p>
-        <p class="side-note" data-i18n="browser.settings">Double-click Fenestra with no file to open this screen again.</p>
-
-        <div class="two-col">
-          <div>
-            <h3 data-i18n="browser.choose">Choose it</h3>
-            <div class="code-block">
-              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
-              <pre><span class="cmt"># Windows</span>
-<span class="cmd">Fenestra.exe --browser firefox</span>
-
-<span class="cmt"># Linux / macOS</span>
-<span class="cmd">fenestra --browser firefox</span>
-
-<span class="cmt"># hand the choice to the OS</span>
-<span class="cmd">fenestra --browser default</span></pre>
-            </div>
-            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
-          </div>
-
-          <div>
-            <h3 data-i18n="browser.system">Use the system default</h3>
-            <p class="muted" data-i18n="browser.systemText">
-              With --browser default, the operating system decides. To change what that means:
-            </p>
-            <ul class="def-list">
-              <li data-i18n="browser.win">Windows: Settings → Apps → Default apps → choose your browser.</li>
-              <li data-i18n="browser.mac">macOS: System Settings → Desktop &amp; Dock → Default web browser.</li>
-              <li data-i18n="browser.linux">Linux: xdg-settings set default-web-browser firefox.desktop</li>
-            </ul>
-          </div>
-        </div>
-
-        <p class="side-note" data-i18n="browser.store">
-          Stored in %LOCALAPPDATA%\Fenestra\browser.txt (Windows), ~/.config/fenestra/browser
-          (Linux) and ~/Library/Application Support/Fenestra/browser (macOS).
-        </p>
-      </div>
-    </section>
+    
 
     <!-- ------------------------------------------------------------ macos -->
     <section id="macos">
@@ -504,10 +426,12 @@
           notarized binary, Apple charges US$ 99/year, and Gatekeeper blocks unsigned downloads.
         </p>
 
+        <p class="section-actions"><a class="btn btn-ghost" href="https://github.com/benedetleandro/fenestra#readme" target="_blank" rel="noopener" data-i18n="build.docs">Documentation on GitHub →</a></p>
+
         <div class="build-tabs" role="tablist">
-          <button class="tab" type="button" data-tab="win">Windows</button>
-          <button class="tab" type="button" data-tab="linux">Linux</button>
-          <button class="tab" type="button" data-tab="mac">macOS</button>
+          <button class="tab" type="button" data-tab="win"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button>
+          <button class="tab" type="button" data-tab="linux"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</button>
+          <button class="tab" type="button" data-tab="mac"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</button>
         </div>
 
         <div class="build-panels">
@@ -552,6 +476,150 @@
             <p><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/README.md" target="_blank" rel="noopener" data-i18n="mac.readme">Full macOS instructions →</a></p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="usage">
+      <div class="wrap">
+        <p class="kicker" data-i18n="install.usage">Usage</p>
+        <h2 data-i18n="install.usage">Usage</h2>
+        <div class="code-block">
+          <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+          <pre><span class="cmt"># open a build</span>
+<span class="cmd">Fenestra.exe "C:\projects\app\dist\index.html"</span>
+
+<span class="cmt"># open a folder</span>
+<span class="cmd">Fenestra.exe "C:\projects\app\dist"</span>
+
+<span class="cmt"># force the server, skip detection</span>
+<span class="cmd">Fenestra.exe --serve "C:\path\index.html"</span>
+
+<span class="cmt"># choose the browser (edge is the default)</span>
+<span class="cmd">Fenestra.exe --browser chrome</span>
+<span class="cmd">Fenestra.exe --browsers</span>
+
+<span class="cmt"># register / unregister the .html handler</span>
+<span class="cmd">Fenestra.exe --install</span>
+<span class="cmd">Fenestra.exe --uninstall</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser">
+      <div class="wrap">
+        <p class="kicker" data-i18n="browser.kicker">Browser</p>
+        <h2 data-i18n="browser.title">Pick the browser, once</h2>
+        <p class="section-lead" data-i18n="browser.lead">
+          Fenestra opens a normal tab in the browser you choose. The choice is saved and applies
+          to every double-click from now on.
+        </p>
+        <p class="side-note" data-i18n="browser.first">Fenestra reads the system default browser on every open (the http association), so changing it in Windows is picked up immediately. Nothing is stored unless you pin a browser in settings.</p>
+        <p class="side-note" data-i18n="browser.settings">Double-click Fenestra with no file to open this screen again.</p>
+
+        <div class="browser-tabs" role="tablist">
+          <button class="btab" type="button" data-browser="edge"><img src="logos/edge.svg" alt="" width="20" height="20">Edge</button>
+          <button class="btab" type="button" data-browser="chrome"><img src="logos/chrome.svg" alt="" width="20" height="20">Chrome</button>
+          <button class="btab" type="button" data-browser="firefox"><img src="logos/firefox.svg" alt="" width="20" height="20">Firefox</button>
+          <button class="btab" type="button" data-browser="brave"><img src="logos/brave.svg" alt="" width="20" height="20">Brave</button>
+          <button class="btab" type="button" data-browser="vivaldi"><img src="logos/vivaldi.svg" alt="" width="20" height="20">Vivaldi</button>
+          <button class="btab" type="button" data-browser="opera"><img src="logos/opera.svg" alt="" width="20" height="20">Opera</button>
+          <button class="btab" type="button" data-browser="chromium"><img src="logos/chromium.svg" alt="" width="20" height="20">Chromium</button>
+        </div>
+
+        <div class="browser-panels">
+          <div class="bpanel" data-browser-panel="edge">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser edge</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser edge</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="chrome">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser chrome</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser chrome</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="firefox">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser firefox</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser firefox</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="brave">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser brave</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser brave</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="vivaldi">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser vivaldi</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser vivaldi</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="opera">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser opera</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser opera</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="chromium">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser chromium</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser chromium</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+        </div>
+
+        <h3 data-i18n="browser.system">Use the system default</h3>
+        <p class="muted" data-i18n="browser.systemText">
+          With --browser default, the operating system decides. To change what that means:
+        </p>
+        <ul class="def-list">
+          <li data-i18n="browser.win">Windows: Settings → Apps → Default apps → choose your browser.</li>
+          <li data-i18n="browser.mac">macOS: System Settings → Desktop &amp; Dock → Default web browser.</li>
+          <li data-i18n="browser.linux">Linux: xdg-settings set default-web-browser firefox.desktop</li>
+        </ul>
+
+        <p class="side-note" data-i18n="browser.store">
+          Stored in %LOCALAPPDATA%\Fenestra\browser.txt (Windows), ~/.config/fenestra/browser
+          (Linux) and ~/Library/Application Support/Fenestra/browser (macOS).
+        </p>
       </div>
     </section>
 
@@ -678,15 +746,16 @@
     <a href="#compat"><span class="pi-n">03</span><span data-i18n="nav.compat">Compatibility</span></a>
     <a href="#platforms"><span class="pi-n">04</span><span data-i18n="nav.plat">Platforms</span></a>
     <a href="#install"><span class="pi-n">05</span><span data-i18n="nav.install">Install</span></a>
-    <a href="#browser"><span class="pi-n">06</span><span data-i18n="nav.browser">Browser</span></a>
-    <a href="#macos"><span class="pi-n">07</span><span data-i18n="nav.macos">Compile it yourself</span></a>
-    <a href="#under"><span class="pi-n">08</span><span data-i18n="nav.under">Under the hood</span></a>
-    <a href="#security"><span class="pi-n">09</span><span data-i18n="nav.sec">Security</span></a>
-    <a href="#name"><span class="pi-n">10</span><span data-i18n="nav.name">The name</span></a>
-    <a href="#faq"><span class="pi-n">11</span><span data-i18n="nav.faq">FAQ</span></a>
+    <a href="#macos"><span class="pi-n">06</span><span data-i18n="nav.macos">Compile it yourself</span></a>
+    <a href="#usage"><span class="pi-n">07</span><span data-i18n="install.usage">Usage</span></a>
+    <a href="#browser"><span class="pi-n">08</span><span data-i18n="nav.browser">Browser</span></a>
+    <a href="#under"><span class="pi-n">09</span><span data-i18n="nav.under">Under the hood</span></a>
+    <a href="#security"><span class="pi-n">10</span><span data-i18n="nav.sec">Security</span></a>
+    <a href="#name"><span class="pi-n">11</span><span data-i18n="nav.name">The name</span></a>
+    <a href="#faq"><span class="pi-n">12</span><span data-i18n="nav.faq">FAQ</span></a>
   </nav>
 
-  <script src="locales.js?v=4"></script>
-  <script src="app.js?v=0.7.0.13"></script>
+  <script src="locales.js?v=5"></script>
+  <script src="app.js?v=0.7.0.14"></script>
 </body>
 </html>

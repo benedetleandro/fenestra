@@ -1189,3 +1189,13 @@ footer {
 .os-note h3 { margin: 0 0 8px; font-size: 16px; }
 .os-note .side-note { margin: 10px 0 0; }
 @media (max-width: 860px) { .os-notes { grid-template-columns: 1fr; } }
+
+.section-actions { margin: 4px 0 0; }
+.build-tabs .tab svg { width: 16px; height: 16px; }
+.browser-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 24px 0 18px; }
+.btab { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--muted); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btab img { width: 20px; height: 20px; object-fit: contain; }
+.btab:hover { color: var(--text); border-color: #333a4a; }
+.btab[aria-selected="true"] { color: var(--text); border-color: #3a4152; background: var(--panel-2); }
+.browser-panels .bpanel { display: none; }
+.browser-panels .bpanel.active { display: block; }

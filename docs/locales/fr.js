@@ -158,7 +158,8 @@ window.FENESTRA_LOCALES.fr = {
     "footer.security": "Sécurité",
     "footer.top": "Haut de page ↑",
     "mac.kicker": "Depuis les sources",
-    "compile.link": "Compiler depuis les sources →"
+    "compile.link": "Compiler depuis les sources →",
+    "build.docs": "Documentation sur GitHub →"
   },
   "html": {
     "hero.title": "Double-cliquez.<br><span class=\"shine\">Ça tourne, tout simplement.</span>",
