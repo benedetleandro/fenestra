@@ -11,7 +11,7 @@ window.FENESTRA_LOCALES.nl = {
     "nav.plat": "Platformen",
     "nav.install": "Installeren",
     "nav.browser": "Browser",
-    "nav.macos": "macOS",
+    "nav.macos": "Zelf compileren",
     "nav.under": "Onder de motorkap",
     "nav.sec": "Beveiliging",
     "nav.name": "De naam",
@@ -22,7 +22,7 @@ window.FENESTRA_LOCALES.nl = {
     "hero.meta1": "MIT-licentie",
     "hero.meta2": "geen .NET SDK",
     "hero.meta3": "één bestand, geen installer",
-    "hero.macos": "Op macOS? Bouw het zelf →",
+    "hero.macos": "Elk systeem? Zelf compileren →",
     "mock.tab": "Mijn app",
     "problem.kicker": "Het probleem",
     "problem.title": "Het probleem is niet het bestand, maar de origin",
@@ -101,8 +101,8 @@ window.FENESTRA_LOCALES.nl = {
     "browser.mac": "macOS: Systeeminstellingen → Bureaublad en Dock → Standaard webbrowser.",
     "browser.linux": "Linux: xdg-settings set default-web-browser firefox.desktop",
     "browser.store": "Opgeslagen in %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser\n          (Linux) en ~/Library/Application Support/Fenestra/browser (macOS).",
-    "mac.title": "Bouw het zelf — dat is het punt",
-    "mac.lead": "Er is geen genotariseerde binary: Apple rekent daar US$ 99 per jaar voor, en een niet-ondertekende\n          download wordt door Gatekeeper geblokkeerd. Dus bouw je het lokaal, uit broncode die je zelf kunt lezen.",
+    "mac.title": "Zelf compileren",
+    "mac.lead": "Er zijn binaries voor Windows en Linux, en Homebrew dekt de macOS-CLI. Maar je kunt ze allemaal vanuit de bron compileren — en op macOS is dat de enige weg: geen genotariseerd binary, Apple rekent 99 US$ per jaar en Gatekeeper blokkeert niet-ondertekende downloads.",
     "mac.s1t": "Installeer Go",
     "mac.s1d": "De officiële installer is door Google ondertekend, dus macOS geeft geen waarschuwing. Het is het enige dat je installeert.",
     "mac.s2t": "Haal de broncode op",
@@ -156,7 +156,8 @@ window.FENESTRA_LOCALES.nl = {
     "footer.release": "Release",
     "footer.license": "MIT-licentie",
     "footer.security": "Beveiliging",
-    "footer.top": "Terug naar boven ↑"
+    "footer.top": "Terug naar boven ↑",
+    "mac.kicker": "Vanuit de bron"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

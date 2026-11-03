@@ -11,7 +11,7 @@ window.FENESTRA_LOCALES.fr = {
     "nav.plat": "Plateformes",
     "nav.install": "Installation",
     "nav.browser": "Navigateur",
-    "nav.macos": "macOS",
+    "nav.macos": "Compilez-le vous-même",
     "nav.under": "Sous le capot",
     "nav.sec": "Sécurité",
     "nav.name": "Le nom",
@@ -22,7 +22,7 @@ window.FENESTRA_LOCALES.fr = {
     "hero.meta1": "Licence MIT",
     "hero.meta2": "sans SDK .NET",
     "hero.meta3": "un seul fichier, sans installateur",
-    "hero.macos": "Sous macOS ? Compilez-le vous-même →",
+    "hero.macos": "Tous les systèmes ? Compilez-le vous-même →",
     "mock.tab": "Mon application",
     "problem.kicker": "Le problème",
     "problem.title": "Le problème vient de l’origine, pas du fichier",
@@ -101,8 +101,8 @@ window.FENESTRA_LOCALES.fr = {
     "browser.mac": "macOS : Réglages Système → Bureau et Dock → Navigateur web par défaut.",
     "browser.linux": "Linux : xdg-settings set default-web-browser firefox.desktop",
     "browser.store": "Stocké dans %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser\n          (Linux) et ~/Library/Application Support/Fenestra/browser (macOS).",
-    "mac.title": "Compilez-le vous-même — c’est tout l’esprit",
-    "mac.lead": "Il n’y a pas de binaire notarisé. Apple facture 99 $ US par an pour cela, et un téléchargement non signé\n          est bloqué par Gatekeeper. Vous le compilez donc en local, à partir d’un code source que vous pouvez lire.",
+    "mac.title": "Compilez-le vous-même",
+    "mac.lead": "Des binaires existent pour Windows et Linux, et Homebrew couvre le CLI macOS. Mais vous pouvez compiler chacun d'eux depuis les sources — et sur macOS c'est la seule voie : pas de binaire notarié, Apple facture 99 US$/an et Gatekeeper bloque les téléchargements non signés.",
     "mac.s1t": "Installer Go",
     "mac.s1d": "L’installateur officiel est signé par Google, macOS n’affiche donc aucun avertissement. C’est la seule chose à installer.",
     "mac.s2t": "Récupérer le code source",
@@ -156,7 +156,8 @@ window.FENESTRA_LOCALES.fr = {
     "footer.release": "Version",
     "footer.license": "Licence MIT",
     "footer.security": "Sécurité",
-    "footer.top": "Haut de page ↑"
+    "footer.top": "Haut de page ↑",
+    "mac.kicker": "Depuis les sources"
   },
   "html": {
     "hero.title": "Double-cliquez.<br><span class=\"shine\">Ça tourne, tout simplement.</span>",

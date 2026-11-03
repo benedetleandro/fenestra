@@ -10,7 +10,7 @@
     "nav.plat": "Platforms",
     "nav.install": "Install",
     "nav.browser": "Browser",
-    "nav.macos": "macOS",
+    "nav.macos": "Compile it yourself",
     "nav.under": "Under the hood",
     "nav.sec": "Security",
     "nav.name": "The name",
@@ -21,7 +21,7 @@
     "hero.meta1": "MIT license",
     "hero.meta2": "no .NET SDK",
     "hero.meta3": "one file, no installer",
-    "hero.macos": "On macOS? Build it yourself →",
+    "hero.macos": "Any system? Compile it yourself →",
     "mock.tab": "My app",
     "problem.kicker": "The problem",
     "problem.title": "The problem is the origin, not the file",
@@ -100,8 +100,8 @@
     "browser.mac": "macOS: System Settings → Desktop & Dock → Default web browser.",
     "browser.linux": "Linux: xdg-settings set default-web-browser firefox.desktop",
     "browser.store": "Stored in %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser\n          (Linux) and ~/Library/Application Support/Fenestra/browser (macOS).",
-    "mac.title": "Build it yourself — that is the point",
-    "mac.lead": "There is no notarized binary. Apple charges US$ 99/year for that, and an unsigned\n          download is blocked by Gatekeeper. So you build it locally, from source you can read.",
+    "mac.title": "Compile it yourself",
+    "mac.lead": "Binaries exist for Windows and Linux, and Homebrew covers the macOS CLI. But you can build every one of them from source — and on macOS it is the only way: there is no notarized binary, Apple charges US$ 99/year, and Gatekeeper blocks unsigned downloads.",
     "mac.s1t": "Install Go",
     "mac.s1d": "The official installer is signed by Google, so macOS shows no warning. It is the only thing you install.",
     "mac.s2t": "Get the source",
@@ -155,7 +155,8 @@
     "footer.release": "Release",
     "footer.license": "MIT License",
     "footer.security": "Security",
-    "footer.top": "Back to top ↑"
+    "footer.top": "Back to top ↑",
+    "mac.kicker": "Build from source"
   },
   "html": {
     "hero.title": "Double-click.<br><span class=\"shine\">It just runs.</span>",

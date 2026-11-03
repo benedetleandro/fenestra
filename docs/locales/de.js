@@ -11,7 +11,7 @@ window.FENESTRA_LOCALES.de = {
     "nav.plat": "Plattformen",
     "nav.install": "Installation",
     "nav.browser": "Browser",
-    "nav.macos": "macOS",
+    "nav.macos": "Selbst kompilieren",
     "nav.under": "Unter der Haube",
     "nav.sec": "Sicherheit",
     "nav.name": "Der Name",
@@ -22,7 +22,7 @@ window.FENESTRA_LOCALES.de = {
     "hero.meta1": "MIT-Lizenz",
     "hero.meta2": "kein .NET SDK",
     "hero.meta3": "eine Datei, kein Installer",
-    "hero.macos": "Unter macOS? Selbst bauen →",
+    "hero.macos": "Jedes System? Selbst kompilieren →",
     "mock.tab": "Meine App",
     "problem.kicker": "Das Problem",
     "problem.title": "Das Problem ist der Origin, nicht die Datei",
@@ -101,8 +101,8 @@ window.FENESTRA_LOCALES.de = {
     "browser.mac": "macOS: Systemeinstellungen → Desktop & Dock → Standard-Webbrowser.",
     "browser.linux": "Linux: xdg-settings set default-web-browser firefox.desktop",
     "browser.store": "Gespeichert in %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser\n          (Linux) und ~/Library/Application Support/Fenestra/browser (macOS).",
-    "mac.title": "Selbst bauen – das ist der Punkt",
-    "mac.lead": "Es gibt kein notarisiertes Binary. Apple verlangt dafür 99 US$ pro Jahr, und ein unsignierter\n          Download wird von Gatekeeper blockiert. Also bauen Sie es lokal – aus Quellcode, den Sie lesen können.",
+    "mac.title": "Selbst kompilieren",
+    "mac.lead": "Für Windows und Linux gibt es Binärdateien, und Homebrew deckt die macOS-CLI ab. Sie können aber jedes davon aus dem Quellcode kompilieren — unter macOS ist das der einzige Weg: kein notarisiertes Binary, Apple verlangt 99 US$ pro Jahr, Gatekeeper blockiert unsignierte Downloads.",
     "mac.s1t": "Go installieren",
     "mac.s1d": "Der offizielle Installer ist von Google signiert, macOS zeigt also keine Warnung. Er ist das Einzige, was Sie installieren.",
     "mac.s2t": "Quellcode holen",
@@ -156,7 +156,8 @@ window.FENESTRA_LOCALES.de = {
     "footer.release": "Release",
     "footer.license": "MIT-Lizenz",
     "footer.security": "Sicherheit",
-    "footer.top": "Nach oben ↑"
+    "footer.top": "Nach oben ↑",
+    "mac.kicker": "Aus dem Quellcode"
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",

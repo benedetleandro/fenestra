@@ -11,7 +11,7 @@ window.FENESTRA_LOCALES.it = {
     "nav.plat": "Piattaforme",
     "nav.install": "Installa",
     "nav.browser": "Browser",
-    "nav.macos": "macOS",
+    "nav.macos": "Compilalo tu",
     "nav.under": "Sotto il cofano",
     "nav.sec": "Sicurezza",
     "nav.name": "Il nome",
@@ -22,7 +22,7 @@ window.FENESTRA_LOCALES.it = {
     "hero.meta1": "licenza MIT",
     "hero.meta2": "niente .NET SDK",
     "hero.meta3": "un solo file, nessun installer",
-    "hero.macos": "Sei su macOS? Fai la build da te →",
+    "hero.macos": "Qualsiasi sistema? Compilalo tu →",
     "mock.tab": "La mia app",
     "problem.kicker": "Il problema",
     "problem.title": "Il problema è l'origine, non il file",
@@ -101,8 +101,8 @@ window.FENESTRA_LOCALES.it = {
     "browser.mac": "macOS: Impostazioni di Sistema → Desktop e Dock → Browser web predefinito.",
     "browser.linux": "Linux: xdg-settings set default-web-browser firefox.desktop",
     "browser.store": "Salvato in %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser\n          (Linux) e ~/Library/Application Support/Fenestra/browser (macOS).",
-    "mac.title": "Fai la build da te: è proprio il punto",
-    "mac.lead": "Non esiste un binario notarizzato. Apple chiede 99 US$/anno per questo, e un download\n          non firmato viene bloccato da Gatekeeper. Così fai la build in locale, da un sorgente che puoi leggere.",
+    "mac.title": "Compilalo tu",
+    "mac.lead": "Esistono binari per Windows e Linux, e Homebrew copre la CLI macOS. Ma puoi compilare ognuno dai sorgenti — e su macOS è l'unica via: niente binario notarizzato, Apple chiede 99 US$ all'anno e Gatekeeper blocca i download non firmati.",
     "mac.s1t": "Installa Go",
     "mac.s1d": "L'installer ufficiale è firmato da Google, quindi macOS non mostra avvisi. È l'unica cosa che devi installare.",
     "mac.s2t": "Scarica il sorgente",
@@ -156,7 +156,8 @@ window.FENESTRA_LOCALES.it = {
     "footer.release": "Release",
     "footer.license": "Licenza MIT",
     "footer.security": "Sicurezza",
-    "footer.top": "Torna su ↑"
+    "footer.top": "Torna su ↑",
+    "mac.kicker": "Dai sorgenti"
   },
   "html": {
     "hero.title": "Doppio clic.<br><span class=\"shine\">Funziona e basta.</span>",

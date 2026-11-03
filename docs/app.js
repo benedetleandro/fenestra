@@ -14,7 +14,7 @@
     "nav.sec": "Segurança",
     "nav.name": "O nome",
     "nav.manual": "Manual",
-    "nav.macos": "macOS",
+    "nav.macos": "Compile você mesmo",
     "index.title": "Menu",
     "skip.label": "Pular para o conteúdo",
 
@@ -26,7 +26,7 @@
     "hero.meta1": "Licença MIT",
     "hero.meta2": "sem SDK .NET",
     "hero.meta3": "um arquivo, sem instalador",
-    "hero.macos": "No macOS? Compile você mesmo →",
+    "hero.macos": "Qualquer sistema? Compile você mesmo →",
     "mock.tab": "Meu app",
 
     "problem.kicker": "O problema",
@@ -90,8 +90,9 @@
     "plat.linux.tag": "estático",
     "plat.macos.tag": "build",
 
-    "mac.title": "Compile você mesmo — essa é a ideia",
-    "mac.lead": "Não existe binário notarizado. A Apple cobra US$ 99/ano por isso, e um download sem assinatura é bloqueado pelo Gatekeeper. Então você compila localmente, a partir de um código que pode ler.",
+    "mac.title": "Compile você mesmo",
+    "mac.kicker": "A partir do código-fonte",
+    "mac.lead": "Existem binários para Windows e Linux, e o Homebrew cobre o CLI do macOS. Mas você pode compilar qualquer um deles a partir do código — e no macOS esse é o único caminho: não há binário notarizado, a Apple cobra US$ 99/ano e o Gatekeeper bloqueia downloads sem assinatura.",
     "mac.s1t": "Instale o Go",
     "mac.s1d": "O instalador oficial é assinado pelo Google, então o macOS não mostra aviso. É a única coisa que você instala.",
     "mac.s2t": "Pegue o código",

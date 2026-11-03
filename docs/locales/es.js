@@ -11,7 +11,7 @@ window.FENESTRA_LOCALES.es = {
     "nav.plat": "Plataformas",
     "nav.install": "Instalar",
     "nav.browser": "Navegador",
-    "nav.macos": "macOS",
+    "nav.macos": "Compílalo tú mismo",
     "nav.under": "Por dentro",
     "nav.sec": "Seguridad",
     "nav.name": "El nombre",
@@ -22,7 +22,7 @@ window.FENESTRA_LOCALES.es = {
     "hero.meta1": "Licencia MIT",
     "hero.meta2": "sin .NET SDK",
     "hero.meta3": "un solo archivo, sin instalador",
-    "hero.macos": "¿Estás en macOS? Compílalo tú mismo →",
+    "hero.macos": "¿Cualquier sistema? Compílalo tú mismo →",
     "mock.tab": "Mi app",
     "problem.kicker": "El problema",
     "problem.title": "El problema es el origen, no el archivo",
@@ -101,8 +101,8 @@ window.FENESTRA_LOCALES.es = {
     "browser.mac": "macOS: Ajustes del Sistema → Escritorio y Dock → Navegador web predeterminado.",
     "browser.linux": "Linux: xdg-settings set default-web-browser firefox.desktop",
     "browser.store": "Se guarda en %LOCALAPPDATA%\\Fenestra\\browser.txt (Windows), ~/.config/fenestra/browser\n          (Linux) y ~/Library/Application Support/Fenestra/browser (macOS).",
-    "mac.title": "Compílalo tú mismo — esa es la idea",
-    "mac.lead": "No hay binario notarizado. Apple cobra US$ 99 al año por eso, y Gatekeeper bloquea una\n          descarga sin firmar. Así que lo compilas en local, con código que puedes leer.",
+    "mac.title": "Compílalo tú mismo",
+    "mac.lead": "Hay binarios para Windows y Linux, y Homebrew cubre el CLI de macOS. Pero puedes compilar cualquiera de ellos desde el código — y en macOS es la única vía: no hay binario notarizado, Apple cobra US$ 99 al año y Gatekeeper bloquea las descargas sin firmar.",
     "mac.s1t": "Instala Go",
     "mac.s1d": "El instalador oficial está firmado por Google, así que macOS no muestra ningún aviso. Es lo único que instalas.",
     "mac.s2t": "Consigue el código",
@@ -156,7 +156,8 @@ window.FENESTRA_LOCALES.es = {
     "footer.release": "Versión",
     "footer.license": "Licencia MIT",
     "footer.security": "Seguridad",
-    "footer.top": "Volver arriba ↑"
+    "footer.top": "Volver arriba ↑",
+    "mac.kicker": "Desde el código"
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",
