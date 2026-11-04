@@ -498,3 +498,12 @@
     })(bars[b]);
   }
 })();
+
+/* Keep old #macos bookmarks working after the section was renamed. */
+(function () {
+  if (location.hash === "#macos") {
+    history.replaceState(null, "", "#compile");
+    var el = document.getElementById("compile");
+    if (el) el.scrollIntoView();
+  }
+})();
