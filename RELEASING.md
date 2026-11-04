@@ -23,9 +23,11 @@ Fenestra is alpha. Releases are **milestones**, not every commit.
    fails if they disagree.
 3. Commit as `Release X.Y.Z`.
 4. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`.
-5. The release workflow builds and publishes the assets.
-6. Update the Homebrew tap with the new URLs and SHA-256.
-7. Close the issues and the milestone.
+5. Update `docs/version.json` with the new version, notes URL, download URL and manual URL. `sha256` may stay empty until the assets exist; the update page hides it when empty.
+6. The release workflow builds `Fenestra.exe`, the Linux and macOS binaries, `manual.html`, and `SHA256SUMS`.
+7. Test the update tab before tagging: run the app with a local `version.json` that advertises the new version and confirm `/__fenestra/update` opens once.
+8. Update the Homebrew tap with the new URLs and SHA-256.
+9. Close the issues and the milestone.
 
 ## Versioning
 

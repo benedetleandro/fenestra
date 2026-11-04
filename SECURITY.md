@@ -47,6 +47,13 @@ The website and the application do not use cookies, analytics, advertising or
 telemetry. The only local preferences are the chosen language and the dismissed
 privacy notice. Details: [privacy page](https://benedetleandro.github.io/fenestra/privacy.html).
 
+## Update checks
+
+The application may fetch a static `version.json` from the project site. The
+request contains no identifier, no usage data and no project names; it is cached
+for seven days. `--check-update` forces a check, and `FENESTRA_NO_UPDATE_TAB=1`
+disables the automatic check and the update tab. There is no telemetry.
+
 ## Scope
 
 Out of scope: vulnerabilities that require the attacker to already have local

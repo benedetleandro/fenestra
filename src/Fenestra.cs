@@ -803,11 +803,23 @@ namespace Fenestra
 
                     string method = parts[0].ToUpperInvariant();
                     bool head = method == "HEAD";
-                    if (method != "GET" && !head) { SendText(ns, 405, "Method not allowed"); return; }
+                    if (method != "GET" && !head &&
+                        !(method == "POST" && line.IndexOf("/__fenestra/update/dismiss", StringComparison.Ordinal) >= 0))
+                    {
+                        SendText(ns, 405, "Method not allowed");
+                        return;
+                    }
 
                     string target = parts[1];
                     int q = target.IndexOf('?');
                     if (q >= 0) target = target.Substring(0, q);
+
+                    if (target == "/__fenestra/update/dismiss")
+                    {
+                        if (_update != null) SaveSetting("lastUpdateTabVersion", _update.Version);
+                        SendText(ns, 200, "ok");
+                        return;
+                    }
 
                     if (target == "/__fenestra/update")
                     {

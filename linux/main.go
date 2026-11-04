@@ -296,6 +296,14 @@ func handler(root, defaultDoc string) http.Handler {
 			serveUpdatePage(w)
 			return
 		}
+		if r.URL.Path == "/__fenestra/update/dismiss" {
+			if currentUpdate != nil {
+				_ = os.MkdirAll(configDir(), 0o750)
+				_ = os.WriteFile(filepath.Join(configDir(), "update-tab"), []byte(currentUpdate.Version), 0o600)
+			}
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
 
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
