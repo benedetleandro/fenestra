@@ -7,7 +7,7 @@
 
 ## Versions prises en charge
 
-Fenestra est un projet 1.0. Seul le dernier commit sur `main` est pris en charge.
+Fenestra est un projet 1.1. Seul le dernier commit sur `main` est pris en charge.
 
 ## Signaler une vulnérabilité
 

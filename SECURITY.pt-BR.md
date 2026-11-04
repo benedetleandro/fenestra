@@ -5,7 +5,7 @@
 
 ## Versões suportadas
 
-O Fenestra é um projeto 1.0. Só o último commit da `main` é suportado.
+O Fenestra é um projeto 1.1. Só o último commit da `main` é suportado.
 
 ## Reportar uma vulnerabilidade
 

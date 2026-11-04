@@ -14,7 +14,7 @@ Geen terminal. Geen `npx serve`. Geen extensie om in te schakelen. Geen eigen br
 
 [**Website →**](https://benedetleandro.github.io/fenestra/) · [Privacy](https://benedetleandro.github.io/fenestra/privacy.html)
 
-> **Status: 1.0.** De HTTP-server en de browserintegratie werken. De
+> **Status: 1.1.** De HTTP-server en de browserintegratie werken. De
 > bestandskoppeling vereist een eenmalige bevestiging van de gebruiker — Windows
 > staat niet toe dat een app zelf de standaardhandler wordt.
 

@@ -7,7 +7,7 @@
 
 ## Versioni supportate
 
-Fenestra è un progetto 1.0. È supportato solo l'ultimo commit su `main`.
+Fenestra è un progetto 1.1. È supportato solo l'ultimo commit su `main`.
 
 ## Segnalare una vulnerabilità
 

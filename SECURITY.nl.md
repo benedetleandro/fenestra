@@ -7,7 +7,7 @@
 
 ## Ondersteunde versies
 
-Fenestra is een 1.0-project. Alleen de laatste commit op `main` wordt ondersteund.
+Fenestra is een 1.1-project. Alleen de laatste commit op `main` wordt ondersteund.
 
 ## Een kwetsbaarheid melden
 

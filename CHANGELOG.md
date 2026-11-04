@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.1.0 — 2026-11-04
+
+- One-time "What's new" tab after an update, once per version, with release notes and the manual.
+- Homebrew formula installs `manual.html` into `pkgshare`, so the manual is also available at `$(brew --prefix)/share/fenestra/manual.html`.
+- Update page shows the Homebrew upgrade command and a "Don't show again" action.
 ## 1.0.0 — 2026-11-04
 
 - First stable release.

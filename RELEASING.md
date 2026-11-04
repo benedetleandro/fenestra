@@ -3,7 +3,7 @@
 [English](RELEASING.md) · [Português](RELEASING.pt-BR.md) · [Español](RELEASING.es.md) · [Français](RELEASING.fr.md) · [Deutsch](RELEASING.de.md) · [Italiano](RELEASING.it.md) · [Nederlands](RELEASING.nl.md)
 
 
-Fenestra is alpha. Releases are **milestones**, not every commit.
+Fenestra is 1.x. Releases are **milestones**, not every commit.
 
 ## Policy
 
@@ -31,6 +31,5 @@ Fenestra is alpha. Releases are **milestones**, not every commit.
 
 ## Versioning
 
-`0.x` while alpha. Breaking changes bump the minor version. Fixes go into the
-next milestone, not into a new tag. `1.0.0` is reserved for the first stable
-release.
+`1.x` is stable. Breaking changes bump the major version. Fixes go into the
+next milestone, not into a new tag.

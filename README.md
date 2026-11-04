@@ -12,7 +12,7 @@ No terminal. No `npx serve`. No extension to enable. No custom browser window.
 
 [**Website →**](https://benedetleandro.github.io/fenestra/) · [Privacy](https://benedetleandro.github.io/fenestra/privacy.html)
 
-> **Status: 1.0.** The HTTP server and the browser integration work. The file
+> **Status: 1.1.** The HTTP server and the browser integration work. The file
 > association requires a one-time confirmation from the user — Windows does not
 > allow an app to become the default handler on its own.
 

@@ -14,7 +14,7 @@ Aucun terminal. Aucun `npx serve`. Aucune extension à activer. Aucune fenêtre 
 
 [**Site web →**](https://benedetleandro.github.io/fenestra/) · [Confidentialité](https://benedetleandro.github.io/fenestra/privacy.html)
 
-> **État : 1.0.** Le serveur HTTP et l’intégration au navigateur fonctionnent. L’association
+> **État : 1.1.** Le serveur HTTP et l’intégration au navigateur fonctionnent. L’association
 > de fichiers nécessite une confirmation unique de l’utilisateur — Windows n’autorise
 > pas une application à devenir gestionnaire par défaut de sa propre initiative.
 
