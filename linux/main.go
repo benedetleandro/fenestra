@@ -134,6 +134,7 @@ Browsers: edge, chrome, chromium, firefox, brave, vivaldi, opera, default
 // ------------------------------------------------------------------ run
 
 func run(target string, force bool) {
+	initWhatsNew()
 	abs, err := filepath.Abs(target)
 	if err != nil {
 		fatal(err)
@@ -192,7 +193,11 @@ func run(target string, force bool) {
 		if p, ok := readLock(lock); ok && ping(p, root) {
 			checkForUpdates(false)
 			launch(fmt.Sprintf("http://127.0.0.1:%d/%s", p, urlPath(entry)))
-			maybeOpenUpdateTab(p)
+			if currentUpdate == nil {
+				maybeOpenWhatsNew(p)
+			} else {
+				maybeOpenUpdateTab(p)
+			}
 			return
 		}
 		ln, port = listen(root)
@@ -218,7 +223,11 @@ func run(target string, force bool) {
 	url := fmt.Sprintf("http://127.0.0.1:%d/%s", port, urlPath(entry))
 	cmd := launch(url)
 	if !force {
-		maybeOpenUpdateTab(port)
+		if currentUpdate == nil {
+			maybeOpenWhatsNew(port)
+		} else {
+			maybeOpenUpdateTab(port)
+		}
 	}
 	if cmd != nil {
 		go func() {
@@ -294,6 +303,10 @@ func handler(root, defaultDoc string) http.Handler {
 		}
 		if r.URL.Path == "/__fenestra/update" {
 			serveUpdatePage(w)
+			return
+		}
+		if r.URL.Path == "/__fenestra/whatsnew" {
+			serveWhatsNew(w)
 			return
 		}
 		if r.URL.Path == "/__fenestra/update/dismiss" {

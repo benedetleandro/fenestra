@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fenestra — What's new</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #08090c; color: #e9ebf0; font: 16px/1.6 "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 64px 24px; }
+  .kicker { color: #9cc4ff; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.1; margin: 14px 0 16px; letter-spacing: -.02em; }
+  p { color: #a8b0c0; margin: 0 0 24px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  a.btn, button.btn { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 9px; font: inherit; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; }
+  .primary { background: #e9ebf0; color: #0b0c10; }
+  .ghost { border: 1px solid #2a2f3a; color: #e9ebf0; background: transparent; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div data-lang="en">
+    <p class="kicker">What's new</p>
+    <h1>You're on Fenestra {{VERSION}}</h1>
+    <p>Thanks for updating. Read the release notes or open the manual.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Release notes</a><a class="btn ghost" href="fenestra://manual">Manual</a><button class="btn ghost" type="button" onclick="window.close()">Close</button></div>
+  </div>
+  <div data-lang="pt" hidden>
+    <p class="kicker">Novidades</p>
+    <h1>Você está no Fenestra {{VERSION}}</h1>
+    <p>Obrigado por atualizar. Veja as notas ou abra o manual.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Notas da versão</a><a class="btn ghost" href="fenestra://manual">Manual</a><button class="btn ghost" type="button" onclick="window.close()">Fechar</button></div>
+  </div>
+  <div data-lang="es" hidden>
+    <p class="kicker">Novedades</p>
+    <h1>Estás en Fenestra {{VERSION}}</h1>
+    <p>Gracias por actualizar. Lee las notas o abre el manual.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Notas de la versión</a><a class="btn ghost" href="fenestra://manual">Manual</a><button class="btn ghost" type="button" onclick="window.close()">Cerrar</button></div>
+  </div>
+  <div data-lang="fr" hidden>
+    <p class="kicker">Nouveautés</p>
+    <h1>Vous êtes sur Fenestra {{VERSION}}</h1>
+    <p>Merci pour la mise à jour. Lisez les notes ou ouvrez le manuel.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Notes de version</a><a class="btn ghost" href="fenestra://manual">Manuel</a><button class="btn ghost" type="button" onclick="window.close()">Fermer</button></div>
+  </div>
+  <div data-lang="de" hidden>
+    <p class="kicker">Neuerungen</p>
+    <h1>Sie sind auf Fenestra {{VERSION}}</h1>
+    <p>Danke für das Update. Lesen Sie die Versionshinweise oder öffnen Sie das Handbuch.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Versionshinweise</a><a class="btn ghost" href="fenestra://manual">Handbuch</a><button class="btn ghost" type="button" onclick="window.close()">Schließen</button></div>
+  </div>
+  <div data-lang="it" hidden>
+    <p class="kicker">Novità</p>
+    <h1>Sei su Fenestra {{VERSION}}</h1>
+    <p>Grazie per l'aggiornamento. Leggi le note o apri il manuale.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Note di rilascio</a><a class="btn ghost" href="fenestra://manual">Manuale</a><button class="btn ghost" type="button" onclick="window.close()">Chiudi</button></div>
+  </div>
+  <div data-lang="nl" hidden>
+    <p class="kicker">Nieuw</p>
+    <h1>Je gebruikt Fenestra {{VERSION}}</h1>
+    <p>Bedankt voor het updaten. Lees de releaseopmerkingen of open de handleiding.</p>
+    <div class="actions"><a class="btn primary" href="{{NOTES}}">Releaseopmerkingen</a><a class="btn ghost" href="fenestra://manual">Handleiding</a><button class="btn ghost" type="button" onclick="window.close()">Sluiten</button></div>
+  </div>
+</main>
+<script>
+(function () {
+  var code = ((navigator.language || "en").split("-")[0] || "en").toLowerCase();
+  var blocks = document.querySelectorAll("[data-lang]");
+  var found = false;
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].getAttribute("data-lang") === code) { blocks[i].hidden = false; found = true; }
+    else blocks[i].hidden = true;
+  }
+  if (!found) blocks[0].hidden = false;
+})();
+</script>
+</body>
+</html>

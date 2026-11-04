@@ -27,6 +27,7 @@ namespace Fenestra
         private static System.Threading.Timer _idleTimer;
         private static UpdateInfo _update;
         private static bool _updateChecked;
+        private static string _whatsNewVersion;
 
         [STAThread]
         private static void Main(string[] args)
@@ -34,6 +35,7 @@ namespace Fenestra
             try
             {
                 args = ExtractPort(args);
+                InitWhatsNew();
                 WriteManual();
                 if (args.Length == 1 && args[0].StartsWith("fenestra://", StringComparison.OrdinalIgnoreCase))
                 {
@@ -607,7 +609,11 @@ namespace Fenestra
                 {
                     CheckForUpdates(false);
                     OpenBrowser(existing);
-                    if (!force) MaybeOpenUpdateTab(existing);
+                    if (!force)
+                    {
+                        if (_update == null) MaybeOpenWhatsNew(existing);
+                        else MaybeOpenUpdateTab(existing);
+                    }
                     return;
                 }
 
@@ -627,7 +633,11 @@ namespace Fenestra
 
             CheckForUpdates(false);
             Process browser = OpenBrowser(port);
-            if (!force) MaybeOpenUpdateTab(port);
+            if (!force)
+            {
+                if (_update == null) MaybeOpenWhatsNew(port);
+                else MaybeOpenUpdateTab(port);
+            }
             WatchBrowser(browser);
 
             while (true) Thread.Sleep(1000);
@@ -813,6 +823,14 @@ namespace Fenestra
                     string target = parts[1];
                     int q = target.IndexOf('?');
                     if (q >= 0) target = target.Substring(0, q);
+
+                    if (target == "/__fenestra/whatsnew")
+                    {
+                        if (string.IsNullOrEmpty(_whatsNewVersion)) { SendText(ns, 404, "No what's new page"); return; }
+                        byte[] page = Encoding.UTF8.GetBytes(WhatsNewPageHtml());
+                        Respond(ns, 200, "text/html; charset=utf-8", page, head, "Cache-Control: no-store\r\n");
+                        return;
+                    }
 
                     if (target == "/__fenestra/update/dismiss")
                     {
@@ -1517,6 +1535,43 @@ namespace Fenestra
             }
 
             return null;
+        }
+
+        private static void InitWhatsNew()
+        {
+            string last = ReadSetting("lastRunVersion");
+            if (string.IsNullOrEmpty(last))
+            {
+                SaveSetting("lastRunVersion", BuildInfo.Version);
+                return;
+            }
+            if (last != BuildInfo.Version) _whatsNewVersion = BuildInfo.Version;
+        }
+
+        private static void MaybeOpenWhatsNew(int port)
+        {
+            if (string.IsNullOrEmpty(_whatsNewVersion)) return;
+            if (Environment.GetEnvironmentVariable("FENESTRA_NO_UPDATE_TAB") == "1") return;
+            if (Environment.GetEnvironmentVariable("FENESTRA_NO_OPEN") == "1") return;
+            Launch("http://127.0.0.1:" + port + "/__fenestra/whatsnew");
+            SaveSetting("lastRunVersion", _whatsNewVersion);
+            _whatsNewVersion = null;
+        }
+
+        private static string WhatsNewPageHtml()
+        {
+            string html = null;
+            using (Stream s = typeof(Program).Assembly.GetManifestResourceStream("whatsnew.html"))
+            {
+                if (s != null)
+                using (StreamReader r = new StreamReader(s, Encoding.UTF8))
+                {
+                    html = r.ReadToEnd();
+                }
+            }
+            if (html == null) html = "<!doctype html><meta charset=\"utf-8\"><h1>Fenestra {{VERSION}}</h1>";
+            return html.Replace("{{VERSION}}", _whatsNewVersion ?? BuildInfo.Version)
+                .Replace("{{NOTES}}", "https://github.com/benedetleandro/fenestra/releases/tag/v" + (_whatsNewVersion ?? BuildInfo.Version));
         }
 
         private sealed class UpdateInfo
