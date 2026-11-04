@@ -40,7 +40,7 @@
   }
   </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=1.1.0">
+  <link rel="stylesheet" href="styles.css?v=1.1.0.1">
 </head>
 <body id="top">
 
@@ -104,7 +104,7 @@
     <a href="#compat"><span class="si-n">03</span><span data-i18n="nav.compat">Compatibility</span></a>
     <a href="#platforms"><span class="si-n">04</span><span data-i18n="nav.plat">Platforms</span></a>
     <a href="#install"><span class="si-n">05</span><span data-i18n="nav.install">Install</span></a>
-    <a href="#macos"><span class="si-n">06</span><span data-i18n="nav.macos">Compile it yourself</span></a>
+    <a href="#compile"><span class="si-n">06</span><span data-i18n="nav.macos">Compile it yourself</span></a>
     <a href="#browser"><span class="si-n">07</span><span data-i18n="nav.browser">Browser</span></a>
     <a href="#usage"><span class="si-n">08</span><span data-i18n="install.usage">Usage</span></a>
     <a href="#under"><span class="si-n">09</span><span data-i18n="nav.under">Under the hood</span></a>
@@ -142,7 +142,7 @@
             <span data-i18n="hero.meta3">one file, no installer</span>
           </div>
 
-          <p class="hero-macos"><a href="#macos" data-i18n="hero.macos">Any system? Compile it yourself →</a></p>
+          <p class="hero-macos"><a href="#compile" data-i18n="hero.macos">Any system? Compile it yourself →</a></p>
         </div>
 
         <div class="browser" aria-hidden="true">
@@ -313,7 +313,7 @@
             <ul>
               <li data-i18n-html="plat.win.run">Download <code>Fenestra.exe</code> and run it, or make it the <code>.html</code> handler.</li>
             </ul>
-            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/src/Fenestra.cs" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/src/Fenestra.cs" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#compile" data-i18n="compile.link">Build from source →</a></p>
           </article>
 
           <article class="platform">
@@ -325,7 +325,7 @@
             <ul>
               <li data-i18n-html="plat.linux.run"><code>chmod +x fenestra-linux-amd64</code> and run it, or use <code>--install</code> to register the handler.</li>
             </ul>
-            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#compile" data-i18n="compile.link">Build from source →</a></p>
           </article>
 
           <article class="platform">
@@ -336,7 +336,7 @@
             <p data-i18n="plat.macos.desc">No notarized app bundle: the CLI installs via Homebrew, the Finder app you build locally.</p>
             <ul>
             </ul>
-            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/macos/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#macos" data-i18n="compile.link">Build from source →</a></p>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="#compile" data-i18n="compile.link">Build from source →</a></p>
           </article>
         </div>
 
@@ -374,7 +374,7 @@
             <span class="dl-meta">6.1 MB · static</span>
             <span class="dl-go" data-i18n="dl.download">Download →</span>
           </a>
-          <a class="dl-card" href="#macos">
+          <a class="dl-card" href="#compile">
             <span class="dl-os">macOS</span>
             <strong>Homebrew</strong>
             <span class="dl-meta">brew install</span>
@@ -416,7 +416,7 @@
     
 
     <!-- ------------------------------------------------------------ macos -->
-    <section id="macos">
+    <section id="compile">
       <div class="wrap">
         <p class="kicker" data-i18n="mac.kicker">Build from source</p>
         <h2 data-i18n="mac.title">Compile it yourself</h2>
@@ -426,7 +426,7 @@
           notarized binary, Apple charges US$ 99/year, and Gatekeeper blocks unsigned downloads.
         </p>
 
-        <p class="section-actions"><a class="btn btn-ghost" href="https://github.com/benedetleandro/fenestra#readme" target="_blank" rel="noopener" data-i18n="build.docs">Documentation on GitHub →</a></p>
+        <p class="section-actions"><a class="btn btn-ghost" href="https://github.com/benedetleandro/fenestra/releases/latest" target="_blank" rel="noopener" data-i18n="build.files">Release files on GitHub →</a></p>
 
         <div class="build-tabs" role="tablist">
           <button class="tab" type="button" data-tab="win"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</button>
@@ -758,7 +758,7 @@
     <a href="#compat"><span class="pi-n">03</span><span data-i18n="nav.compat">Compatibility</span></a>
     <a href="#platforms"><span class="pi-n">04</span><span data-i18n="nav.plat">Platforms</span></a>
     <a href="#install"><span class="pi-n">05</span><span data-i18n="nav.install">Install</span></a>
-    <a href="#macos"><span class="pi-n">06</span><span data-i18n="nav.macos">Compile it yourself</span></a>
+    <a href="#compile"><span class="pi-n">06</span><span data-i18n="nav.macos">Compile it yourself</span></a>
     <a href="#browser"><span class="pi-n">07</span><span data-i18n="nav.browser">Browser</span></a>
     <a href="#usage"><span class="pi-n">08</span><span data-i18n="install.usage">Usage</span></a>
     <a href="#under"><span class="pi-n">09</span><span data-i18n="nav.under">Under the hood</span></a>
@@ -775,8 +775,8 @@
     </div>
   </div>
 
-  <script src="locales.js?v=1.1.0"></script>
-  <script src="app.js?v=1.1.0"></script>
+  <script src="locales.js?v=1.1.0.1"></script>
+  <script src="app.js?v=1.1.0.1"></script>
   <script>
   (function () {
     try { if (localStorage.getItem("fenestra-privacy") === "1") return; } catch (e) {}

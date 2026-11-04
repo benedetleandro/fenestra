@@ -159,7 +159,6 @@ window.FENESTRA_LOCALES.es = {
     "footer.top": "Volver arriba ↑",
     "mac.kicker": "Desde el código",
     "compile.link": "Compilar desde el código →",
-    "build.docs": "Documentación en GitHub →",
     "browser.safariNote": "Safari solo existe en macOS.",
     "privacy.kicker": "Privacidad",
     "privacy.title": "Privacidad, en lenguaje claro",
@@ -176,7 +175,8 @@ window.FENESTRA_LOCALES.es = {
     "privacy.link": "Privacidad",
     "privacy.notice": "Sin cookies. Solo guardamos el idioma que eliges.",
     "privacy.ok": "Entendido",
-    "privacy.more": "Privacidad"
+    "privacy.more": "Privacidad",
+    "build.files": "Archivos de la versión en GitHub →"
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",
@@ -372,7 +372,6 @@ window.FENESTRA_LOCALES.fr = {
     "footer.top": "Haut de page ↑",
     "mac.kicker": "Depuis les sources",
     "compile.link": "Compiler depuis les sources →",
-    "build.docs": "Documentation sur GitHub →",
     "browser.safariNote": "Safari n'existe que sur macOS.",
     "privacy.kicker": "Confidentialité",
     "privacy.title": "La confidentialité, en termes simples",
@@ -389,7 +388,8 @@ window.FENESTRA_LOCALES.fr = {
     "privacy.link": "Confidentialité",
     "privacy.notice": "Aucun cookie. Nous n'enregistrons que la langue que vous choisissez.",
     "privacy.ok": "J'ai compris",
-    "privacy.more": "Confidentialité"
+    "privacy.more": "Confidentialité",
+    "build.files": "Fichiers de la version sur GitHub →"
   },
   "html": {
     "hero.title": "Double-cliquez.<br><span class=\"shine\">Ça tourne, tout simplement.</span>",
@@ -585,7 +585,6 @@ window.FENESTRA_LOCALES.de = {
     "footer.top": "Nach oben ↑",
     "mac.kicker": "Aus dem Quellcode",
     "compile.link": "Aus dem Quellcode bauen →",
-    "build.docs": "Dokumentation auf GitHub →",
     "browser.safariNote": "Safari gibt es nur unter macOS.",
     "privacy.kicker": "Datenschutz",
     "privacy.title": "Datenschutz, in klarer Sprache",
@@ -602,7 +601,8 @@ window.FENESTRA_LOCALES.de = {
     "privacy.link": "Datenschutz",
     "privacy.notice": "Keine Cookies. Wir speichern nur die von Ihnen gewählte Sprache.",
     "privacy.ok": "Verstanden",
-    "privacy.more": "Datenschutz"
+    "privacy.more": "Datenschutz",
+    "build.files": "Versionsdateien auf GitHub →"
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",
@@ -798,7 +798,6 @@ window.FENESTRA_LOCALES.it = {
     "footer.top": "Torna su ↑",
     "mac.kicker": "Dai sorgenti",
     "compile.link": "Compila dai sorgenti →",
-    "build.docs": "Documentazione su GitHub →",
     "browser.safariNote": "Safari esiste solo su macOS.",
     "privacy.kicker": "Privacy",
     "privacy.title": "La privacy, in parole semplici",
@@ -815,7 +814,8 @@ window.FENESTRA_LOCALES.it = {
     "privacy.link": "Privacy",
     "privacy.notice": "Nessun cookie. Memorizziamo solo la lingua che scegli.",
     "privacy.ok": "Ho capito",
-    "privacy.more": "Privacy"
+    "privacy.more": "Privacy",
+    "build.files": "File della versione su GitHub →"
   },
   "html": {
     "hero.title": "Doppio clic.<br><span class=\"shine\">Funziona e basta.</span>",
@@ -1011,7 +1011,6 @@ window.FENESTRA_LOCALES.nl = {
     "footer.top": "Terug naar boven ↑",
     "mac.kicker": "Vanuit de bron",
     "compile.link": "Zelf compileren →",
-    "build.docs": "Documentatie op GitHub →",
     "browser.safariNote": "Safari is alleen beschikbaar op macOS.",
     "privacy.kicker": "Privacy",
     "privacy.title": "Privacy, in duidelijke taal",
@@ -1028,7 +1027,8 @@ window.FENESTRA_LOCALES.nl = {
     "privacy.link": "Privacy",
     "privacy.notice": "Geen cookies. We slaan alleen de taal op die je kiest.",
     "privacy.ok": "Begrepen",
-    "privacy.more": "Privacy"
+    "privacy.more": "Privacy",
+    "build.files": "Bestanden van de release op GitHub →"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",

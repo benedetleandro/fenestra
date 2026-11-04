@@ -159,7 +159,6 @@ window.FENESTRA_LOCALES.es = {
     "footer.top": "Volver arriba ↑",
     "mac.kicker": "Desde el código",
     "compile.link": "Compilar desde el código →",
-    "build.docs": "Documentación en GitHub →",
     "browser.safariNote": "Safari solo existe en macOS.",
     "privacy.kicker": "Privacidad",
     "privacy.title": "Privacidad, en lenguaje claro",
@@ -176,7 +175,8 @@ window.FENESTRA_LOCALES.es = {
     "privacy.link": "Privacidad",
     "privacy.notice": "Sin cookies. Solo guardamos el idioma que eliges.",
     "privacy.ok": "Entendido",
-    "privacy.more": "Privacidad"
+    "privacy.more": "Privacidad",
+    "build.files": "Archivos de la versión en GitHub →"
   },
   "html": {
     "hero.title": "Doble clic.<br><span class=\"shine\">Y simplemente funciona.</span>",

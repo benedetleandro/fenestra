@@ -159,7 +159,6 @@ window.FENESTRA_LOCALES.de = {
     "footer.top": "Nach oben ↑",
     "mac.kicker": "Aus dem Quellcode",
     "compile.link": "Aus dem Quellcode bauen →",
-    "build.docs": "Dokumentation auf GitHub →",
     "browser.safariNote": "Safari gibt es nur unter macOS.",
     "privacy.kicker": "Datenschutz",
     "privacy.title": "Datenschutz, in klarer Sprache",
@@ -176,7 +175,8 @@ window.FENESTRA_LOCALES.de = {
     "privacy.link": "Datenschutz",
     "privacy.notice": "Keine Cookies. Wir speichern nur die von Ihnen gewählte Sprache.",
     "privacy.ok": "Verstanden",
-    "privacy.more": "Datenschutz"
+    "privacy.more": "Datenschutz",
+    "build.files": "Versionsdateien auf GitHub →"
   },
   "html": {
     "hero.title": "Doppelklick.<br><span class=\"shine\">Läuft einfach.</span>",

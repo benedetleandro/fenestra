@@ -159,7 +159,6 @@
     "mac.kicker": "Build from source",
     "compile.link": "Build from source →",
     "browser.safariNote": "Safari is available on macOS only.",
-    "build.docs": "Documentation on GitHub →",
     "privacy.kicker": "Privacy",
     "privacy.title": "Privacy, in plain language",
     "privacy.lead": "Fenestra is a local tool. This site does not use cookies, analytics, advertising or tracking.",
@@ -178,7 +177,8 @@
     "privacy.link": "Privacy",
     "privacy.notice": "No cookies. We only store the language you choose.",
     "privacy.ok": "Got it",
-    "privacy.more": "Privacy"
+    "privacy.more": "Privacy",
+    "build.files": "Release files on GitHub →"
   },
   "html": {
     "hero.title": "Double-click.<br><span class=\"shine\">It just runs.</span>",

@@ -16,7 +16,7 @@
     "nav.manual": "Manual",
     "nav.macos": "Compile você mesmo",
     "compile.link": "Compilar do código →",
-    "build.docs": "Documentação no GitHub →",
+    "build.files": "Arquivos da versão no GitHub →",
     "index.title": "Menu",
     "skip.label": "Pular para o conteúdo",
 

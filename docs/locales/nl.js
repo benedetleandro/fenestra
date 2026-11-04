@@ -159,7 +159,6 @@ window.FENESTRA_LOCALES.nl = {
     "footer.top": "Terug naar boven ↑",
     "mac.kicker": "Vanuit de bron",
     "compile.link": "Zelf compileren →",
-    "build.docs": "Documentatie op GitHub →",
     "browser.safariNote": "Safari is alleen beschikbaar op macOS.",
     "privacy.kicker": "Privacy",
     "privacy.title": "Privacy, in duidelijke taal",
@@ -176,7 +175,8 @@ window.FENESTRA_LOCALES.nl = {
     "privacy.link": "Privacy",
     "privacy.notice": "Geen cookies. We slaan alleen de taal op die je kiest.",
     "privacy.ok": "Begrepen",
-    "privacy.more": "Privacy"
+    "privacy.more": "Privacy",
+    "build.files": "Bestanden van de release op GitHub →"
   },
   "html": {
     "hero.title": "Dubbelklikken.<br><span class=\"shine\">Het draait gewoon.</span>",
