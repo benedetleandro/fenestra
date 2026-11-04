@@ -14,7 +14,7 @@ Niente terminale. Niente `npx serve`. Nessuna estensione da abilitare. Nessuna f
 
 [**Sito web →**](https://benedetleandro.github.io/fenestra/) · [Privacy](https://benedetleandro.github.io/fenestra/privacy.html)
 
-> **Stato: alpha.** Il server HTTP e l'integrazione con il browser funzionano.
+> **Stato: 1.0.** Il server HTTP e l'integrazione con il browser funzionano.
 > L'associazione dei file richiede una conferma una tantum da parte dell'utente:
 > Windows non permette a un'app di diventare da sola il gestore predefinito.
 

@@ -5,7 +5,7 @@
 
 ## Supported versions
 
-Fenestra is an alpha project. Only the latest commit on `main` is supported.
+Fenestra is a 1.0 project. Only the latest commit on `main` is supported.
 
 ## Reporting a vulnerability
 

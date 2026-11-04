@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 1.0.0 — 2026-11-04
+
+- First stable release.
+- Website and manual in seven languages (EN, PT, ES, FR, DE, IT, NL), with automatic detection and a compact language menu.
+- Privacy page and first-visit notice; no cookies, analytics, advertising or telemetry. The language is stored only after an explicit choice.
+- `manual.html` is embedded in the Windows executable and the Go binaries, extracted by `--manual`, and copied next to the binary by the build scripts.
+- Update check: static `version.json`, seven-day cache, `--check-update`, a `--version` notice, and a one-time update tab at `/__fenestra/update`.
+- Browser picker as tabs with logos for Edge, Chrome, Firefox, Brave, Vivaldi, Opera, Chromium and Safari.
+- Documentation in ES/FR/DE/IT/NL; release assets include `manual.html` and `SHA256SUMS`.
 - Browser choice is stateless: the default is read from the live http/https association on every open, and no preference file is written unless a browser is pinned in settings. The legacy `handler.txt` is removed.
 - Double-click Fenestra with no file to open the browser settings screen and pick the default browser; `--settings` does the same.
 

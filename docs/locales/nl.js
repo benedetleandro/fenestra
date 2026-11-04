@@ -17,7 +17,7 @@ window.FENESTRA_LOCALES.nl = {
     "nav.name": "De naam",
     "nav.faq": "FAQ",
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
-    "hero.download": "Download v0.7.0",
+    "hero.download": "Download v1.0.0",
     "hero.how": "Hoe het werkt",
     "hero.meta1": "MIT-licentie",
     "hero.meta2": "geen .NET SDK",

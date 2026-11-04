@@ -17,7 +17,7 @@ window.FENESTRA_LOCALES.de = {
     "nav.name": "Der Name",
     "nav.faq": "FAQ",
     "hero.badge": "Windows · Linux · macOS · Edge, Chrome, Firefox",
-    "hero.download": "v0.7.0 herunterladen",
+    "hero.download": "v1.0.0 herunterladen",
     "hero.how": "So funktioniert es",
     "hero.meta1": "MIT-Lizenz",
     "hero.meta2": "kein .NET SDK",

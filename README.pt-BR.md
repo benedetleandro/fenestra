@@ -8,7 +8,7 @@ porque o Fenestra serviu o arquivo em localhost.**
 Sem terminal. Sem `npx serve`. Sem extensão para ativar. Sem janela de navegador
 falsa.
 
-> **Status: alfa.** O servidor e a integração com o navegador funcionam. A associação
+> **Status: 1.0.** O servidor e a integração com o navegador funcionam. A associação
 > do `.html` exige uma confirmação única do usuário — o Windows não permite que
 > um programa se torne o manipulador padrão sozinho.
 

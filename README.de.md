@@ -15,7 +15,7 @@ eigenes Browserfenster.
 
 [**Website →**](https://benedetleandro.github.io/fenestra/) · [Datenschutz](https://benedetleandro.github.io/fenestra/privacy.html)
 
-> **Status: Alpha.** Der HTTP-Server und die Browser-Integration funktionieren. Die
+> **Status: 1.0.** Der HTTP-Server und die Browser-Integration funktionieren. Die
 > Dateizuordnung erfordert eine einmalige Bestätigung durch Sie – Windows erlaubt es
 > einer Anwendung nicht, von sich aus zum Standardhandler zu werden.
 

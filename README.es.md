@@ -14,7 +14,7 @@ Sin terminal. Sin `npx serve`. Sin extensión que activar. Sin ventana de navega
 
 [**Sitio web →**](https://benedetleandro.github.io/fenestra/) · [Privacidad](https://benedetleandro.github.io/fenestra/privacy.html)
 
-> **Estado: alpha.** El servidor HTTP y la integración con el navegador funcionan. La
+> **Estado: 1.0.** El servidor HTTP y la integración con el navegador funcionan. La
 > asociación de archivos requiere una confirmación única del usuario — Windows no
 > permite que una aplicación se convierta por sí sola en el controlador predeterminado.
 
