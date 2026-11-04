@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en" class="i18n-pending">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fenestra — Presentation</title>
+  <meta name="description" content="Fenestra in one page: double-click a local site, it opens over localhost. Windows, Linux and macOS; source and checksums public.">
+  <meta name="theme-color" content="#08090c">
+  <link rel="canonical" href="https://benedetleandro.github.io/fenestra/presentation.html">
+  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }</style>
+  <noscript><style>html.i18n-pending body { visibility: visible; }</style></noscript>
+  <script>setTimeout(function () { document.documentElement.classList.remove("i18n-pending"); }, 3000);</script>
+  <link rel="stylesheet" href="styles.css?v=1.1.0.2">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Fenestra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+          <path d="M3 9h18M9.5 9v11"/>
+          <circle cx="6" cy="6.5" r="0.9" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Fenestra</span>
+      </a>
+
+      <button class="page-fab" id="pageFab" type="button" aria-label="Index" data-i18n-aria="index.title">&#9776; <span data-i18n="index.title">Menu</span></button>
+
+      <div class="header-right">
+        <div class="lang-menu" id="langMenu">
+          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.7 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.7-4-9s1.4-6.6 4-9Z"/></svg>
+            <span id="langCode">EN</span>
+            <span class="lang-chev">&#9662;</span>
+          </button>
+          <div class="lang-pop" id="langPop" role="listbox" aria-label="Language">
+            <button type="button" data-lang="en" role="option">English</button>
+            <button type="button" data-lang="pt" role="option">Português</button>
+            <button type="button" data-lang="es" role="option">Español</button>
+            <button type="button" data-lang="fr" role="option">Français</button>
+            <button type="button" data-lang="de" role="option">Deutsch</button>
+            <button type="button" data-lang="it" role="option">Italiano</button>
+            <button type="button" data-lang="nl" role="option">Nederlands</button>
+          </div>
+        </div>
+
+        <a class="header-manual" href="manual.html" data-i18n="nav.manual">Manual</a>
+
+        <a class="header-cta" href="https://github.com/benedetleandro/fenestra/releases/latest" data-i18n="nav.download">Download</a>
+
+        <a class="gh-link" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="badge">
+            <span class="dot"></span>
+            <span data-i18n="hero.badge">Windows · Linux · macOS · Edge, Chrome, Firefox</span>
+          </div>
+          <h1 data-i18n-html="hero.title">Double-click.<br><span class="shine">It just runs.</span></h1>
+          <p class="lead" data-i18n-html="hero.lead">
+            Fenestra is a tiny local server that turns any <code>dist/index.html</code>
+            into a working site in your browser. No terminal, no extension, no custom browser.
+          </p>
+          <div class="cta">
+            <a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra/releases/latest" data-i18n="pres.hero.download">Download for Windows</a>
+            <a class="btn btn-ghost" href="manual.html" data-i18n="pres.hero.manual">Open the manual</a>
+            <a class="btn btn-ghost" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener" data-i18n="pres.hero.source">Read the source</a>
+          </div>
+          <div class="hero-meta">
+            <span>~120 KB</span>
+            <span data-i18n="hero.meta1">MIT license</span>
+            <span data-i18n="hero.meta2">no .NET SDK</span>
+            <span data-i18n="hero.meta3">one file, no installer</span>
+          </div>
+          <p class="hero-macos"><a href="index.html#compile" data-i18n="hero.macos">Any system? Compile it yourself →</a></p>
+        </div>
+
+        <div class="browser" aria-hidden="true">
+          <div class="browser-top">
+            <div class="browser-dots"><i></i><i></i><i></i></div>
+            <div class="browser-tab"><b></b><span data-i18n="mock.tab">My app</span></div>
+          </div>
+          <div class="browser-url">
+            <span class="lock"></span>
+            <span>http://127.0.0.1:53912/</span>
+          </div>
+          <div class="browser-body">
+            <div class="skel-head"></div>
+            <div class="skel-grid">
+              <div class="skel-card"><i></i><i></i></div>
+              <div class="skel-card"><i></i><i></i></div>
+              <div class="skel-card"><i></i><i></i></div>
+              <div class="skel-card"><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem">
+      <div class="wrap">
+        <p class="kicker" data-i18n="problem.kicker">The problem</p>
+        <h2 data-i18n="problem.title">The problem is the origin, not the file</h2>
+        <p class="section-lead" data-i18n-html="problem.lead">
+          Modern builds use ES modules. Under <code>file://</code> the browser treats the page as an
+          opaque origin: modules are blocked by CORS, <code>/assets/...</code> resolves to the root
+          of the drive, and service workers do not exist. The file is fine. The origin is not.
+        </p>
+
+        <div class="split">
+          <div class="card bad">
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              <span class="tag">file://</span>
+            </h3>
+            <p data-i18n="problem.badLead">What happens when you double-click a build today:</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i18n="problem.bad1">Module scripts blocked by CORS</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i18n="problem.bad2">Absolute paths point at the drive root</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i18n="problem.bad3">No service worker, no manifest, blank page</span></li>
+            </ul>
+          </div>
+
+          <div class="card good">
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              <span class="tag">http://127.0.0.1</span>
+            </h3>
+            <p data-i18n="problem.goodLead">What happens when Fenestra serves the same folder:</p>
+            <ul>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good1">Modules load, exactly like production</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good2">SPA routes survive a refresh</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="problem.good3">Same tab, same profile, your browser</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="wrap">
+        <p class="kicker" data-i18n="how.kicker">How it works</p>
+        <h2 data-i18n="how.title">Three steps, none of them yours</h2>
+        <p class="section-lead" data-i18n="how.lead">
+          Fenestra attaches itself to the double-click and decides what the file needs.
+        </p>
+
+        <div class="steps">
+          <div class="step reveal">
+            <span class="num">01</span>
+            <h3 data-i18n="how.s1t">You open the file</h3>
+            <p data-i18n="how.s1d">Double-click it, drag the folder onto the executable, or pass a path on the command line.</p>
+          </div>
+          <div class="step reveal">
+            <span class="num">02</span>
+            <h3 data-i18n="how.s2t">Fenestra decides</h3>
+            <p data-i18n="how.s2d">It reads the HTML. Needs an HTTP origin? It starts a server on a stable port. Does not? It opens the file directly.</p>
+          </div>
+          <div class="step reveal">
+            <span class="num">03</span>
+            <h3 data-i18n="how.s3t">Your browser shows it</h3>
+            <p data-i18n="how.s3d">A normal tab, in your window, with your profile, your extensions and your address bar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <p class="kicker" data-i18n="pres.features.k">What is inside</p>
+        <h2 data-i18n="pres.features.title">Everything that is inside</h2>
+        <p class="section-lead" data-i18n="pres.features.lead">The same behavior the manual explains, item by item.</p>
+        <div class="pres-grid">
+        <div class="pres-card"><h3 data-i18n="pres.f1t">Stable port per folder</h3><p data-i18n="pres.f1d">The same origin every run: localStorage, cookies and the service worker survive.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f2t">SPA fallback</h3><p data-i18n="pres.f2d">Extensionless routes fall back to index.html, so refresh works.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f3t">Plain HTML, no server</h3><p data-i18n="pres.f3d">Files that do not need an origin open directly, without a server.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f4t">Source builds detected</h3><p data-i18n="pres.f4d">An entry under /src/ serves the sibling dist/, build/ or out/.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f5t">Path confinement</h3><p data-i18n="pres.f5d">Parent paths, drive tricks and hidden files are rejected or 403.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f6t">Browser picker</h3><p data-i18n="pres.f6d">Edge, Chrome, Firefox, Brave, Vivaldi, Opera, Chromium and Safari.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f7t">Offline manual</h3><p data-i18n="pres.f7d">Embedded in the executable, seven languages, opened with --manual.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f8t">No background daemon</h3><p data-i18n="pres.f8d">Stops with the browser it started, or after 4 idle hours.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f9t">No cookies or telemetry</h3><p data-i18n="pres.f9d">The only thing stored is the language you choose.</p></div>
+        <div class="pres-card"><h3 data-i18n="pres.f10t">One-time update tab</h3><p data-i18n="pres.f10d">A static version.json is checked once a week; one tab per version, dismissible.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="platforms">
+      <div class="wrap">
+        <p class="kicker" data-i18n="plat.kicker">Platforms</p>
+        <h2 data-i18n="plat.title">One idea, three systems</h2>
+        <p class="section-lead" data-i18n="plat.lead">
+          Same job everywhere: turn a folder into localhost and open it in your browser.
+          The packaging changes because each system has its own rules.
+        </p>
+
+        <div class="platforms">
+          <article class="platform">
+            <header>
+              <span class="os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg>Windows</span>
+              <span class="pill yes" data-i18n="plat.win.tag">.exe</span>
+            </header>
+            <p data-i18n="plat.win.desc">A single ~120 KB executable. No installer, no runtime — .NET Framework 4.8 already ships with Windows.</p>
+            <ul>
+              <li data-i18n-html="plat.win.run">Download <code>Fenestra.exe</code> and run it, or make it the <code>.html</code> handler.</li>
+            </ul>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/src/Fenestra.cs" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="index.html#compile" data-i18n="compile.link">Build from source →</a></p>
+          </article>
+
+          <article class="platform">
+            <header>
+              <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Linux</span>
+              <span class="pill yes" data-i18n="plat.linux.tag">static</span>
+            </header>
+            <p data-i18n="plat.linux.desc">One static binary, no runtime, for amd64 and arm64.</p>
+            <ul>
+              <li data-i18n-html="plat.linux.run"><code>chmod +x fenestra-linux-amd64</code> and run it, or use <code>--install</code> to register the handler.</li>
+            </ul>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="index.html#compile" data-i18n="compile.link">Build from source →</a></p>
+          </article>
+
+          <article class="platform">
+            <header>
+              <span class="os"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6"/><path d="M2.5 19h19"/></svg>macOS</span>
+              <span class="pill yes" data-i18n="plat.macos.tag">build</span>
+            </header>
+            <p data-i18n="plat.macos.desc">No notarized app bundle: the CLI installs via Homebrew, the Finder app you build locally.</p>
+            <ul>
+            </ul>
+            <p class="card-links"><a class="src" href="https://github.com/benedetleandro/fenestra/blob/main/linux/main.go" target="_blank" rel="noopener" data-i18n="plat.audit">Audit the source →</a><span class="sep">·</span><a class="src" href="index.html#compile" data-i18n="compile.link">Build from source →</a></p>
+          </article>
+        </div>
+
+        <p class="side-note" data-i18n="plat.note">
+          Every release also ships the complete source as zip and tar.gz. Nothing here is closed.
+        </p>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <p class="kicker" data-i18n="install.kicker">Install</p>
+        <h2 data-i18n="install.title">One file. No installer.</h2>
+        <p class="section-lead" data-i18n="install.lead">
+          Pick the package for your system. Every one of them is a single file — no installer, no runtime.
+        </p>
+        <div class="dl-grid">
+          <a class="dl-card" href="https://github.com/benedetleandro/fenestra/releases/latest/download/Fenestra.exe">
+            <span class="dl-os">Windows 10/11</span>
+            <strong>Fenestra.exe</strong>
+            <span class="dl-meta">~120 KB · .exe</span>
+            <span class="dl-go" data-i18n="dl.download">Download →</span>
+          </a>
+          <a class="dl-card" href="https://github.com/benedetleandro/fenestra/releases/latest/download/fenestra-linux-amd64">
+            <span class="dl-os">Linux · amd64</span>
+            <strong>fenestra-linux-amd64</strong>
+            <span class="dl-meta">6.5 MB · static</span>
+            <span class="dl-go" data-i18n="dl.download">Download →</span>
+          </a>
+          <a class="dl-card" href="https://github.com/benedetleandro/fenestra/releases/latest/download/fenestra-linux-arm64">
+            <span class="dl-os">Linux · arm64</span>
+            <strong>fenestra-linux-arm64</strong>
+            <span class="dl-meta">6.1 MB · static</span>
+            <span class="dl-go" data-i18n="dl.download">Download →</span>
+          </a>
+          <a class="dl-card" href="index.html#compile">
+            <span class="dl-os">macOS</span>
+            <strong>Homebrew</strong>
+            <span class="dl-meta">brew install</span>
+            <span class="dl-go" data-i18n="dl.guide">See the guide →</span>
+          </a>
+        </div>
+        <div class="os-notes">
+          <div class="os-note">
+            <h3 data-i18n="install.dl">Windows</h3>
+            <p class="muted" data-i18n="install.dlText">The ~120 KB .exe above runs as-is. No installer, no runtime.</p>
+            <div class="side-note" data-i18n="install.signNote">The binary is not code-signed yet, so Windows SmartScreen will ask for confirmation once.</div>
+          </div>
+          <div class="os-note">
+            <h3>Linux</h3>
+            <p class="side-note" data-i18n-html="install.linux">One static binary, no Wine, no runtime. Download <code>fenestra-linux-amd64</code> and run it with <code>chmod +x</code>.</p>
+          </div>
+          <div class="os-note">
+            <h3>macOS</h3>
+            <p class="side-note" data-i18n-html="install.macos">No prebuilt binary: notarization costs US$ 99/year. The <code>macos/</code> folder is a build kit — install Go, run one command.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="browser">
+      <div class="wrap">
+        <p class="kicker" data-i18n="browser.kicker">Browser</p>
+        <h2 data-i18n="browser.title">Pick the browser, once</h2>
+        <p class="section-lead" data-i18n="browser.lead">
+          Fenestra opens a normal tab in the browser you choose. The choice is saved and applies
+          to every double-click from now on.
+        </p>
+        <p class="side-note" data-i18n="browser.first">Fenestra reads the system default browser on every open (the http association), so changing it in Windows is picked up immediately. Nothing is stored unless you pin a browser in settings.</p>
+        <p class="side-note" data-i18n="browser.settings">Double-click Fenestra with no file to open this screen again.</p>
+
+        <div class="browser-tabs" role="tablist">
+          <button class="btab" type="button" data-browser="edge"><img src="logos/edge.svg" alt="" width="20" height="20">Edge</button>
+          <button class="btab" type="button" data-browser="chrome"><img src="logos/chrome.svg" alt="" width="20" height="20">Chrome</button>
+          <button class="btab" type="button" data-browser="firefox"><img src="logos/firefox.svg" alt="" width="20" height="20">Firefox</button>
+          <button class="btab" type="button" data-browser="brave"><img src="logos/brave.svg" alt="" width="20" height="20">Brave</button>
+          <button class="btab" type="button" data-browser="vivaldi"><img src="logos/vivaldi.svg" alt="" width="20" height="20">Vivaldi</button>
+          <button class="btab" type="button" data-browser="opera"><img src="logos/opera.svg" alt="" width="20" height="20">Opera</button>
+          <button class="btab" type="button" data-browser="chromium"><img src="logos/chromium.svg" alt="" width="20" height="20">Chromium</button>
+          <button class="btab" type="button" data-browser="safari"><img src="logos/safari.svg" alt="" width="20" height="20">Safari</button>
+        </div>
+
+        <div class="browser-panels">
+          <div class="bpanel" data-browser-panel="edge">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser edge</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser edge</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="chrome">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser chrome</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser chrome</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="firefox">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser firefox</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser firefox</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="brave">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser brave</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser brave</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="vivaldi">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser vivaldi</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser vivaldi</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="opera">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser opera</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser opera</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="chromium">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># Windows</span>
+<span class="cmd">Fenestra.exe --browser chromium</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">fenestra --browser chromium</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.list">See what is installed with --browsers.</p>
+          </div>
+          <div class="bpanel" data-browser-panel="safari">
+            <div class="code-block">
+              <button class="copy" type="button" data-i18n="code.copy">Copy</button>
+              <pre><span class="cmt"># macOS only</span>
+<span class="cmd">fenestra --browser safari</span></pre>
+            </div>
+            <p class="side-note" data-i18n="browser.safariNote">Safari is available on macOS only.</p>
+          </div>
+        </div>
+
+        <h3 data-i18n="browser.system">Use the system default</h3>
+        <p class="muted" data-i18n="browser.systemText">
+          With --browser default, the operating system decides. To change what that means:
+        </p>
+        <ul class="def-list">
+          <li data-i18n="browser.win">Windows: Settings → Apps → Default apps → choose your browser.</li>
+          <li data-i18n="browser.mac">macOS: System Settings → Desktop &amp; Dock → Default web browser.</li>
+          <li data-i18n="browser.linux">Linux: xdg-settings set default-web-browser firefox.desktop</li>
+        </ul>
+
+        <p class="side-note" data-i18n="browser.store">
+          Stored in %LOCALAPPDATA%\Fenestra\browser.txt (Windows), ~/.config/fenestra/browser
+          (Linux) and ~/Library/Application Support/Fenestra/browser (macOS).
+        </p>
+      </div>
+    </section>
+
+<section id="security">
+      <div class="wrap">
+        <p class="kicker" data-i18n="sec.kicker">Security</p>
+        <h2 data-i18n="sec.title">Local means local</h2>
+        <p class="section-lead" data-i18n="sec.lead">
+          Loopback only, no telemetry, no accounts, no remote code. It serves the folder you opened
+          and nothing else — but every file under that folder is reachable, including dotfiles.
+        </p>
+        <div class="side-note" data-i18n="sec.note">
+          Do not point Fenestra at a directory that contains secrets. The full threat model is in
+          SECURITY.md in the repository.
+        </div>
+      </div>
+    </section>
+
+    <section id="limits">
+      <div class="wrap">
+        <p class="kicker" data-i18n="pres.limits.k">Honesty</p>
+        <h2 data-i18n="pres.limits.title">What it does not do</h2>
+        <p class="section-lead" data-i18n="pres.limits.lead">Honest boundaries, in one place.</p>
+        <ul class="pres-limits">
+          <li data-i18n="pres.l1">No backend or API proxy — Fenestra serves files only.</li>
+          <li data-i18n="pres.l2">No source compilation — use the project's own dev server.</li>
+          <li data-i18n="pres.l3">No TLS or authentication — localhost only.</li>
+          <li data-i18n="pres.l4">No notarized macOS app — the build kit compiles one locally.</li>
+          <li data-i18n="pres.l5">Unsigned binaries — SmartScreen and Gatekeeper may warn once.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="wrap">
+        <p class="kicker" data-i18n="pres.cta.k">Next</p>
+        <h2 data-i18n="pres.cta.title">Audit, use, compile</h2>
+        <p class="section-lead" data-i18n="pres.cta.text">The source archive at the tag, build scripts for every system, and checksums for every asset.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener" data-i18n="pres.cta.source">Source on GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/benedetleandro/fenestra/releases/latest" data-i18n="pres.cta.release">Release files</a>
+          <a class="btn btn-ghost" href="manual.html" data-i18n="pres.cta.manual">Manual</a>
+        </div>
+        <p class="side-note pres-closing" data-i18n="pres.closing">If it is useful to even one person, it was worth it.</p>
+      </div>
+    </section>
+  </main>
+
+<footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.6"/>
+          <path d="M3 9h18M9.5 9v11"/>
+        </svg>
+        <span data-i18n="footer.tag">Fenestra · made for the double-click</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/benedetleandro/fenestra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/benedetleandro/fenestra/releases/latest" target="_blank" rel="noopener" data-i18n="footer.release">Release</a>
+        <a href="https://github.com/benedetleandro/fenestra/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="footer.license">MIT License</a>
+        <a href="https://github.com/benedetleandro/fenestra/blob/main/SECURITY.md" target="_blank" rel="noopener" data-i18n="footer.security">Security</a>
+        <a href="presentation.html" data-i18n="pres.foot.link">Presentation</a>
+        <a href="privacy.html" data-i18n="privacy.link">Privacy</a>
+        <a href="index.html#top" data-i18n="footer.top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="locales.js?v=1.1.0.2"></script>
+  <script src="app.js?v=1.1.0.2"></script>
+</body>
+</html>
