@@ -2,7 +2,18 @@
 <html lang="pt-BR" class="i18n-pending">
 <head>
 <meta charset="utf-8">
-  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }</style>
+  <style>html.i18n-pending body { visibility: hidden; } html { background: #08090c; }
+  .once { border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin: 18px 0 22px; background: var(--panel); }
+  .once h3 { margin: 0 0 12px; font-size: 17px; }
+  .once-flow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; }
+  .once-node { flex: 1 1 150px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: rgba(255,255,255,.02); }
+  .once-node strong { display: block; font-size: 13px; }
+  .once-node span { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .once-arrow { color: var(--muted-2); font-size: 18px; }
+  .once ol { margin: 0; padding-left: 18px; color: var(--muted); }
+  .once li { margin: 6px 0; }
+  @media (max-width: 700px) { .once-arrow { display: none; } }
+</style>
   <noscript><style>html.i18n-pending body { visibility: visible; }</style></noscript>
   <script>setTimeout(function () { document.documentElement.classList.remove("i18n-pending"); }, 3000);</script>
 
@@ -315,6 +326,19 @@
         <h2>Make Fenestra the default for .html</h2>
         <p class="lead2">Every system has its own way. Pick yours:</p>
         <p class="side-note">This step is optional. To open a project once, drag its <code>index.html</code> onto Fenestra or pass the path; the <code>.html</code> handler stays unchanged.</p>
+        <div class="once">
+          <h3>Open once, without setting a default</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Browser</strong><span>project opens</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Close the window</strong><span>server stops</span></div>
+          </div>
+          <ol><li>Drag the <code>index.html</code> onto Fenestra, or pass its path on the command line.</li><li>The project opens in a normal browser tab.</li><li>Close the window Fenestra opened. The local server stops with it.</li></ol>
+          <p class="side-note">If the browser was already running, the server stops after 4 idle hours; closing only the tab does not close the browser process.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -360,8 +384,7 @@
             </div>
           </div>
         </div>
-              <p class="side-note">If the browser was already running, the server stops after 4 idle hours. Closing the tab alone does not close the browser process.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-en">
@@ -502,6 +525,19 @@ settings.json   (only when you pin a browser)</div>
         <h2>Torne o Fenestra o padrão para .html</h2>
         <p class="lead2">Cada sistema tem o seu jeito. Escolha o seu:</p>
         <p class="side-note">Este passo é opcional. Para abrir um projeto uma vez, arraste o <code>index.html</code> sobre o Fenestra ou passe o caminho; o handler de <code>.html</code> não muda.</p>
+        <div class="once">
+          <h3>Abra uma vez, sem tornar padrão</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Navegador</strong><span>projeto aberto</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Feche a janela</strong><span>servidor encerra</span></div>
+          </div>
+          <ol><li>Arraste o <code>index.html</code> sobre o Fenestra, ou passe o caminho na linha de comando.</li><li>O projeto abre numa aba normal do navegador.</li><li>Feche a janela que o Fenestra abriu. O servidor local encerra junto.</li></ol>
+          <p class="side-note">Se o navegador já estava aberto, o servidor encerra após 4 horas ociosas; fechar só a aba não encerra o processo do navegador.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -547,8 +583,7 @@ settings.json   (only when you pin a browser)</div>
             </div>
           </div>
         </div>
-              <p class="side-note">Se o navegador já estava aberto, o servidor encerra após 4 horas ociosas. Fechar apenas a aba não encerra o processo do navegador.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-pt">
@@ -689,6 +724,19 @@ settings.json   (só quando você fixa um navegador)</div>
         <h2>Haz que Fenestra sea el predeterminado para .html</h2>
         <p class="lead2">Cada sistema tiene su propio método. Elige el tuyo:</p>
         <p class="side-note">Este paso es opcional. Para abrir un proyecto una vez, arrastra el <code>index.html</code> sobre Fenestra o pasa la ruta; el controlador de <code>.html</code> no cambia.</p>
+        <div class="once">
+          <h3>Abrir una vez, sin hacerlo predeterminado</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Navegador</strong><span>proyecto abierto</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Cierra la ventana</strong><span>el servidor se detiene</span></div>
+          </div>
+          <ol><li>Arrastra el <code>index.html</code> sobre Fenestra o pasa la ruta en la línea de comandos.</li><li>El proyecto se abre en una pestaña normal del navegador.</li><li>Cierra la ventana que abrió Fenestra. El servidor local se detiene con ella.</li></ol>
+          <p class="side-note">Si el navegador ya estaba abierto, el servidor se detiene tras 4 horas de inactividad; cerrar solo la pestaña no cierra el proceso del navegador.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -734,8 +782,7 @@ settings.json   (só quando você fixa um navegador)</div>
             </div>
           </div>
         </div>
-              <p class="side-note">Si el navegador ya estaba abierto, el servidor se detiene tras 4 horas de inactividad. Cerrar solo la pestaña no cierra el proceso del navegador.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-es">
@@ -876,6 +923,19 @@ settings.json   (solo cuando fijas un navegador)</div>
         <h2>Faire de Fenestra le programme par défaut pour .html</h2>
         <p class="lead2">Chaque système a sa propre méthode. Choisissez la vôtre :</p>
         <p class="side-note">Cette étape est facultative. Pour ouvrir un projet une seule fois, faites glisser son <code>index.html</code> sur Fenestra ou passez le chemin ; l’association <code>.html</code> reste inchangée.</p>
+        <div class="once">
+          <h3>Ouvrir une fois, sans le définir par défaut</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Navigateur</strong><span>projet ouvert</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Fermez la fenêtre</strong><span>le serveur s’arrête</span></div>
+          </div>
+          <ol><li>Faites glisser l’<code>index.html</code> sur Fenestra ou passez son chemin en ligne de commande.</li><li>Le projet s’ouvre dans un onglet normal du navigateur.</li><li>Fermez la fenêtre ouverte par Fenestra. Le serveur local s’arrête avec elle.</li></ol>
+          <p class="side-note">Si le navigateur était déjà ouvert, le serveur s’arrête après 4 heures d’inactivité ; fermer l’onglet ne ferme pas le processus du navigateur.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -921,8 +981,7 @@ settings.json   (solo cuando fijas un navegador)</div>
             </div>
           </div>
         </div>
-              <p class="side-note">Si le navigateur était déjà ouvert, le serveur s’arrête après 4 heures d’inactivité. Fermer l’onglet ne ferme pas le processus du navigateur.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-fr">
@@ -1063,6 +1122,19 @@ settings.json   (only when you pin a browser)</div>
         <h2>Fenestra zum Standard für .html machen</h2>
         <p class="lead2">Jedes System hat seinen eigenen Weg. Wählen Sie Ihren:</p>
         <p class="side-note">Dieser Schritt ist optional. Um ein Projekt einmal zu öffnen, ziehen Sie seine <code>index.html</code> auf Fenestra oder übergeben Sie den Pfad; die <code>.html</code>-Zuordnung bleibt unverändert.</p>
+        <div class="once">
+          <h3>Einmal öffnen, ohne Standard zu werden</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Browser</strong><span>Projekt offen</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Fenster schließen</strong><span>Server beendet</span></div>
+          </div>
+          <ol><li>Ziehen Sie die <code>index.html</code> auf Fenestra oder übergeben Sie den Pfad auf der Kommandozeile.</li><li>Das Projekt öffnet sich in einem normalen Browser-Tab.</li><li>Schließen Sie das von Fenestra geöffnete Fenster. Der lokale Server beendet sich mit ihm.</li></ol>
+          <p class="side-note">Wenn der Browser bereits lief, beendet sich der Server nach 4 Stunden ohne Anfragen; nur den Tab zu schließen beendet den Browserprozess nicht.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -1108,8 +1180,7 @@ settings.json   (only when you pin a browser)</div>
             </div>
           </div>
         </div>
-              <p class="side-note">Wenn der Browser bereits lief, beendet sich der Server nach 4 Stunden ohne Anfragen. Das Schließen des Tabs beendet den Browserprozess nicht.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-de">
@@ -1250,6 +1321,19 @@ settings.json   (nur wenn Sie einen Browser festlegen)</div>
         <h2>Rendi Fenestra il predefinito per .html</h2>
         <p class="lead2">Ogni sistema ha il suo modo. Scegli il tuo:</p>
         <p class="side-note">Questo passaggio è facoltativo. Per aprire un progetto una volta, trascina il suo <code>index.html</code> su Fenestra o passa il percorso; l’associazione <code>.html</code> non cambia.</p>
+        <div class="once">
+          <h3>Apri una volta, senza renderlo predefinito</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Browser</strong><span>progetto aperto</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Chiudi la finestra</strong><span>il server si ferma</span></div>
+          </div>
+          <ol><li>Trascina l’<code>index.html</code> su Fenestra o passa il percorso da riga di comando.</li><li>Il progetto si apre in una scheda normale del browser.</li><li>Chiudi la finestra aperta da Fenestra. Il server locale si ferma con essa.</li></ol>
+          <p class="side-note">Se il browser era già aperto, il server si ferma dopo 4 ore di inattività; chiudere solo la scheda non chiude il processo del browser.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -1295,8 +1379,7 @@ settings.json   (nur wenn Sie einen Browser festlegen)</div>
             </div>
           </div>
         </div>
-              <p class="side-note">Se il browser era già aperto, il server si ferma dopo 4 ore di inattività. Chiudere la scheda non chiude il processo del browser.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-it">
@@ -1437,6 +1520,19 @@ settings.json   (solo quando fissi un browser)</div>
         <h2>Maak Fenestra de standaard voor .html</h2>
         <p class="lead2">Elk systeem heeft zijn eigen aanpak. Kies de jouwe:</p>
         <p class="side-note">Deze stap is optioneel. Om een project één keer te openen, sleep je de <code>index.html</code> naar Fenestra of geef je het pad mee; de <code>.html</code>-koppeling blijft ongewijzigd.</p>
+        <div class="once">
+          <h3>Eén keer openen, zonder standaard te worden</h3>
+          <div class="once-flow">
+            <div class="once-node"><strong>Fenestra</strong><span>+ index.html</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Browser</strong><span>project open</span></div>
+            <div class="once-arrow">&#8594;</div>
+            <div class="once-node"><strong>Sluit het venster</strong><span>server stopt</span></div>
+          </div>
+          <ol><li>Sleep de <code>index.html</code> naar Fenestra of geef het pad mee op de opdrachtregel.</li><li>Het project opent in een normaal browsertabblad.</li><li>Sluit het venster dat Fenestra heeft geopend. De lokale server stopt ermee.</li></ol>
+          <p class="side-note">Als de browser al open was, stopt de server na 4 uur zonder verzoeken; alleen het tabblad sluiten beëindigt het browserproces niet.</p>
+        </div>
+        
         <div class="os-cards">
           <div class="os-card">
             <div class="os-head"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.6 10.4 4.5v6.9H3zM11.4 4.3 21 3v8.4h-9.6zM3 12.6h7.4v6.9L3 18.4zM11.4 12.6H21V21l-9.6-1.3z"/></svg><h3>Windows</h3></div>
@@ -1482,8 +1578,7 @@ settings.json   (solo quando fissi un browser)</div>
             </div>
           </div>
         </div>
-              <p class="side-note">Als de browser al open was, stopt de server na 4 uur zonder verzoeken. Alleen het tabblad sluiten beëindigt het browserproces niet.</p>
-      </div>
+              </div>
     </section>
 
     <section id="browser-nl">
